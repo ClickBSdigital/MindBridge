@@ -1,0 +1,69 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f8f9fa;
+}
+
+.sidebar {
+  background: #6246ea;
+  color: #fff;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 20px;
+}
+
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  text-align: center;
+  color: #fff;
+}
+
+.nav-link {
+  color: #d6d6ff;
+  padding: 10px;
+  display: block;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+  background: #4530b8;
+  color: #fff;
+}
+
+main {
+  margin-left: 230px;
+}
+
+.welcome-box {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.solicitacao-card {
+  border: none;
+  border-radius: 15px;
+  margin-top: 20px;
+}
+
+.urgencia {
+  font-weight: bold;
+  display: block;
+  margin-top: 5px;
+}
+
+.nivel-alta { color: #dc3545; }
+.nivel-media { color: #fd7e14; }
+.nivel-baixa { color: #198754; }
+
+.table {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}

@@ -1,0 +1,95 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f8f9fa;
+}
+
+.sidebar {
+  background: #6246ea;
+  color: #fff;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 20px;
+}
+
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  text-align: center;
+  color: #fff;
+}
+
+.nav-link {
+  color: #d6d6ff;
+  padding: 10px;
+  display: block;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+  background: #4530b8;
+  color: #fff;
+}
+
+main {
+  margin-left: 230px;
+}
+
+.welcome-box {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.mood-check {
+  margin: 20px 0;
+}
+
+.mood-btn {
+  background: #e0e0ff;
+  border: none;
+  border-radius: 50%;
+  font-size: 28px;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.mood-btn:hover {
+  transform: scale(1.1);
+  background: #d0c4ff;
+}
+
+.btn-help {
+  background: #6246ea;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-help:hover {
+  background: #4530b8;
+}
+
+.profissional-card {
+  border: none;
+  border-radius: 15px;
+  margin-top: 20px;
+}
+
+.status-online {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.status-offline {
+  color: #dc3545;
+  font-weight: bold;
+}

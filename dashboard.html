@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindBridge | Painel do Usuário</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <script defer src="dashboard.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <h1 class="logo">Mind<span>Bridge</span></h1>
+    <div class="perfil">
+      <img src="assets/user.png" alt="Perfil" class="avatar">
+    </div>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+      <ul>
+        <li class="active">🏠 Início</li>
+        <li>❤️ Check-in Emocional</li>
+        <li>💬 Pedir Ajuda</li>
+        <li>📅 Sessões</li>
+        <li>⚙️ Configurações</li>
+      </ul>
+    </aside>
+
+    <main class="conteudo">
+      <section class="boas-vindas">
+        <h2>Olá, Eliandro 👋</h2>
+        <p>Como você está se sentindo hoje?</p>
+        <button id="btnCheckin">Fazer Check-in Emocional</button>
+      </section>
+
+      <section class="cards">
+        <div class="card">
+          <h3>Último Humor Registrado</h3>
+          <p id="humor">🙂 Tranquilo</p>
+        </div>
+        <div class="card">
+          <h3>Próxima Sessão</h3>
+          <p>14/11 às 16h com Dra. Marina</p>
+        </div>
+        <div class="card ajuda">
+          <h3>Precisa de Apoio Agora?</h3>
+          <button id="btnAjuda">Falar com um Profissional</button>
+        </div>
+      </section>
+
+      <section class="grafico">
+        <h3>Histórico de Humor</h3>
+        <canvas id="graficoHumor"></canvas>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

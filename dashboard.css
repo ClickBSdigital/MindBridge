@@ -1,0 +1,147 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #0f0f17;
+  color: #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+  background: #181826;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #272742;
+}
+
+.logo {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 28px;
+  color: #9a6cff;
+}
+
+.logo span {
+  color: #00c3ff;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* Layout principal */
+.container {
+  display: flex;
+  flex: 1;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #161622;
+  padding-top: 20px;
+  border-right: 1px solid #242444;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 15px 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sidebar li:hover,
+.sidebar li.active {
+  background-color: #1f1f32;
+  color: #00c3ff;
+}
+
+/* Conteúdo */
+.conteudo {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.boas-vindas h2 {
+  font-family: 'Bebas Neue';
+  font-size: 32px;
+  margin-bottom: 5px;
+  color: #b695ff;
+}
+
+.boas-vindas p {
+  color: #aaa;
+  margin-bottom: 15px;
+}
+
+.boas-vindas button {
+  background: linear-gradient(90deg, #9a6cff, #00c3ff);
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.boas-vindas button:hover {
+  transform: scale(1.05);
+}
+
+/* Cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.card {
+  background-color: #181828;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+  color: #9a6cff;
+}
+
+.card.ajuda {
+  background: linear-gradient(135deg, #9a6cff22, #00c3ff22);
+}
+
+.card button {
+  background: #00c3ff;
+  border: none;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.card button:hover {
+  background: #02d1ff;
+}
+
+/* Gráfico */
+.grafico {
+  margin-top: 40px;
+}
+
+.grafico h3 {
+  margin-bottom: 15px;
+  color: #9a6cff;
+}

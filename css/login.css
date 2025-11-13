@@ -1,0 +1,68 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #a0c4ff, #bdb2ff, #ffc6ff);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.login-box {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 40px 30px;
+  text-align: center;
+  animation: fadeIn 1s ease;
+}
+
+.title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  color: #6246ea;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 25px;
+}
+
+.form-control, .form-select {
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.btn-login {
+  background-color: #6246ea;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 10px;
+  transition: 0.3s;
+}
+
+.btn-login:hover {
+  background-color: #4530b8;
+}
+
+a {
+  color: #6246ea;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
