@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindBridge | Bem-vindo</title>
+
+  <!-- FONTES -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="home.css">
+
+  <!-- JS -->
+  <script defer src="home.js"></script>
+</head>
+
+<body>
+
+  <!-- ▬▬▬ NAVBAR ▬▬▬ -->
+  <header class="navbar">
+    <h1 class="logo">Mind<span>Bridge</span></h1>
+    <nav>
+      <a href="#inicio">Início</a>
+      <a href="#blog">Blog</a>
+      <a href="#videos">Vídeos</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato">Contato</a>
+      <button id="btnLogin">Entrar</button>
+    </nav>
+  </header>
+
+  <!-- ▬▬▬ HERO ▬▬▬ -->
+  <section id="inicio" class="hero">
+    <div class="hero-text">
+      <h2>Cuidar da mente é atravessar pontes interiores.</h2>
+      <p>O MindBridge aproxima você do apoio emocional que precisa — com tecnologia humana e acolhedora.</p>
+
+      <button class="cta" onclick="window.location.href='login/login.html'">
+        Começar
+      </button>
+    </div>
+
+    <img src="assets/hero-img.png" class="hero-img" alt="Imagem MindBridge">
+  </section>
+
+  <!-- ▬▬▬ BLOG ▬▬▬ -->
+  <section id="blog" class="secao">
+    <h3 class="titulo">Artigos Recentes</h3>
+
+    <div class="cards">
+      <div class="card">
+        <h4>5 passos para acalmar sua mente</h4>
+        <p>Técnicas de respiração e atenção plena que funcionam.</p>
+        <a href="#">Ler mais</a>
+      </div>
+
+      <div class="card">
+        <h4>Como lidar com crises emocionais</h4>
+        <p>Entenda os sinais de alerta e como agir.</p>
+        <a href="#">Ler mais</a>
+      </div>
+
+      <div class="card">
+        <h4>Por que pedir ajuda é importante</h4>
+        <p>A saúde mental é um caminho, não um destino.</p>
+        <a href="#">Ler mais</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ▬▬▬ VIDEOS ▬▬▬ -->
+  <section id="videos" class="secao">
+    <h3 class="titulo">Vídeos que acalmam</h3>
+
+    <div class="videos-container">
+      <iframe src="https://www.youtube.com/embed/2OEL4P1Rz04" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/ZToicYcHIOU" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/inpok4MKVLM" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- ▬▬▬ SOBRE ▬▬▬ -->
+  <section id="sobre" class="secao sobre">
+    <h3 class="titulo">Sobre o MindBridge</h3>
+
+    <p>
+      O MindBridge nasceu para oferecer suporte emocional acessível, imediato e humano.
+      Nossa missão é conectar tecnologia, acolhimento e ciência em um só lugar.
+    </p>
+  </section>
+
+  <!-- ▬▬▬ CONTATO ▬▬▬ -->
+  <section id="contato" class="secao contato">
+    <h3 class="titulo">Contato</h3>
+
+    <form>
+      <input type="text" placeholder="Seu nome" required>
+      <input type="email" placeholder="Seu e-mail" required>
+      <textarea placeholder="Sua mensagem" required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+
+  <!-- ▬▬▬ FOOTER ▬▬▬ -->
+  <footer>
+    MindBridge © 2025 — Cuidando de você.
+  </footer>
+
+</body>
+</html>
