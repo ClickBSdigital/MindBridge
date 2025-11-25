@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Dashboard Monitor</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-low { background: var(--amarelo-acolhimento); color: var(--cinza-escuro); }
+        .status-medium { background: var(--laranja-atencao); color: var(--branco); }
+        .status-high { background: var(--vermelho-emergencia); color: var(--branco); }
+        
+        .chat-room {
+            border-left: 4px solid var(--cinza-medio);
+            padding: 15px;
+            margin-bottom: 10px;
+            background: var(--branco);
+            border-radius: 0 10px 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-room.low { border-left-color: var(--amarelo-acolhimento); }
+        .chat-room.medium { border-left-color: var(--laranja-atencao); }
+        .chat-room.high { border-left-color: var(--vermelho-emergencia); }
+        
+        .chat-room:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .metric-card {
+            background: var(--branco);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--azul-primario);
+        }
+        
+        .availability-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--cinza-medio);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--verde-seguro);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">MindBridge - Monitor</div>
+            <div class="user-menu">
+                <span>Bem-vindo, Carlos (Mediador)</span>
+                <div class="availability-toggle">
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <span>Disponível</span>
+                </div>
+                <a href="index.html" class="btn btn-warning">Sair</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- MÉTRICAS EM TEMPO REAL -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">12</div>
+                <div>Conversas Ativas</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">3</div>
+                <div>Alertas Críticos</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">45</div>
+                <div>Atendimentos Hoje</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">98%</div>
+                <div>Taxa de Resposta</div>
+            </div>
+        </div>
+
+        <!-- ALERTAS CRÍTICOS -->
+        <div class="card">
+            <h3>🚨 Alertas Críticos (Requer Intervenção)</h3>
+            <div class="chat-room high" onclick="openSupervision('critical1')">
+                <div style="display: flex; justify-content: between; align-items: center;">
+                    <div>
+                        <strong>Sala #287 - João Silva</strong>
+                        <div style="font-size: 14px; color: var(--cinza-medio);">
+                            Menção explícita a ideação suicida
+                        </div>
+                    </div>
+                    <div class="status-badge status-high">ALTA URGÊNCIA</div>
+                </div>
+                <div style="margin-top: 10px; font-size: 14px;">
+                    <strong>Última mensagem:</strong> "Não aguento mais, quero sumir..."
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 10px; font-size: 12px;">
+                    <span>⏰ 2 min atrás</span>
+                    <span>👤 Mediador: Maria</span>
+                </div>
+            </div>
+            
+            <div class="chat-room medium" onclick="openSupervision('critical2')">
+                <div style="display: flex; justify-content: between; align-items: center;">
+                    <div>
+                        <strong>Sala #156 - Ana Costa</strong>
+                        <div style="font-size: 14px; color: var(--cinza-medio);">
+                            Linguagem autoflagelante detectada
+                        </div>
+                    </div>
+                    <div class="status-badge status-medium">MÉDIA URGÊNCIA</div>
+                </div>
+                <div style="margin-top: 10px; font-size: 14px;">
+                    <strong>Última mensagem:</strong> "Estou me machucando de novo..."
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 10px; font-size: 12px;">
+                    <span>⏰ 5 min atrás</span>
+                    <span>👤 Mediador: Pedro</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SALAS ATIVAS -->
+        <div class="card">
+            <h3>💬 Salas de Conversa Ativas</h3>
+            <div class="chat-room low" onclick="joinChat('room1')">
+                <div style="display: flex; justify-content: between; align-items: center;">
+                    <div>
+                        <strong>Sala #042 - Mariana Oliveira</strong>
+                        <div style="font-size: 14px; color: var(--cinza-medio);">
+                            Ansiedade e estresse
+                        </div>
+                    </div>
+                    <div class="status-badge status-low">BAIXO RISCO</div>
+                </div>
+                <div style="margin-top: 10px; font-size: 14px;">
+                    <strong>Última mensagem:</strong> "Estou muito ansiosa com o trabalho..."
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 10px; font-size: 12px;">
+                    <span>⏰ Ativa agora</span>
+                    <span>👤 Mediador: João</span>
+                </div>
+            </div>
+            
+            <div class="chat-room low" onclick="joinChat('room2')">
+                <div style="display: flex; justify-content: between; align-items: center;">
+                    <div>
+                        <strong>Sala #103 - Roberto Santos</strong>
+                        <div style="font-size: 14px; color: var(--cinza-medio);">
+                            Solidão e isolamento
+                        </div>
+                    </div>
+                    <div class="status-badge status-low">BAIXO RISCO</div>
+                </div>
+                <div style="margin-top: 10px; font-size: 14px;">
+                    <strong>Última mensagem:</strong> "Me sinto muito sozinho ultimamente..."
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 10px; font-size: 12px;">
+                    <span>⏰ 3 min atrás</span>
+                    <span>👤 Mediador: Ana</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FERRAMENTAS DO MONITOR -->
+        <div class="card">
+            <h3>🛠️ Ferramentas de Monitoramento</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                <button class="btn btn-primary" onclick="openSupervisionPanel()">
+                    🖥️ Painel de Supervisão
+                </button>
+                <button class="btn btn-primary" onclick="openFlaggedChats()">
+                    🚩 Conversas Sinalizadas
+                </button>
+                <button class="btn btn-primary" onclick="openTraining()">
+                    📚 Recursos de Treinamento
+                </button>
+                <button class="btn btn-primary" onclick="generateReport()">
+                    📊 Gerar Relatório
+                </button>
+            </div>
+        </div>
+
+        <!-- HISTÓRICO RECENTE -->
+        <div class="card">
+            <h3>📋 Histórico Recente</h3>
+            <div style="max-height: 300px; overflow-y: auto;">
+                <div style="padding: 10px; border-bottom: 1px solid var(--cinza-claro);">
+                    <strong>Sala #099 - Finalizada</strong>
+                    <div style="font-size: 14px; color: var(--cinza-medio);">
+                        Usuário: Carla Mendes | Duração: 25min | Avaliação: ⭐⭐⭐⭐☆
+                    </div>
+                </div>
+                <div style="padding: 10px; border-bottom: 1px solid var(--cinza-claro);">
+                    <strong>Sala #088 - Finalizada</strong>
+                    <div style="font-size: 14px; color: var(--cinza-medio);">
+                        Usuário: Paulo Rocha | Duração: 18min | Encaminhado para profissional
+                    </div>
+                </div>
+                <div style="padding: 10px; border-bottom: 1px solid var(--cinza-claro);">
+                    <strong>Sala #076 - Finalizada</strong>
+                    <div style="font-size: 14px; color: var(--cinza-medio);">
+                        Usuário: Teresa Lima | Duração: 32min | Avaliação: ⭐⭐⭐⭐⭐
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function joinChat(roomId) {
+            window.location.href = `chat-monitor.html?room=${roomId}`;
+        }
+        
+        function openSupervision(alertId) {
+            window.location.href = `supervision.html?alert=${alertId}`;
+        }
+        
+        function openSupervisionPanel() {
+            alert('Abrindo painel de supervisão...');
+        }
+        
+        function openFlaggedChats() {
+            alert('Abrindo conversas sinalizadas...');
+        }
+        
+        function openTraining() {
+            alert('Abrindo recursos de treinamento...');
+        }
+        
+        function generateReport() {
+            alert('Gerando relatório...');
+        }
+        
+        // Simular atualização em tempo real
+        setInterval(() => {
+            // Atualizar métricas (simulação)
+            console.log('Atualizando dashboard do monitor...');
+        }, 30000);
+    </script>
+</body>
+</html>

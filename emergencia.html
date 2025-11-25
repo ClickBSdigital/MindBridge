@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Emergência</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .emergency-screen {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--vermelho-emergencia), var(--laranja-atencao));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--branco);
+            padding: 20px;
+        }
+        
+        .emergency-content {
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 20px;
+            color: var(--cinza-escuro);
+            max-width: 600px;
+        }
+        
+        .countdown {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--vermelho-emergencia);
+            margin: 20px 0;
+        }
+        
+        .emergency-contacts {
+            margin-top: 30px;
+            text-align: left;
+        }
+        
+        .contact-item {
+            padding: 15px;
+            background: var(--cinza-claro);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="emergency-screen">
+        <div class="emergency-content">
+            <h1>🚨 CONEXÃO DE EMERGÊNCIA</h1>
+            <p>Estamos conectando você com um profissional imediatamente</p>
+            
+            <div class="countdown" id="countdown">3</div>
+            
+            <p>Por favor, aguarde enquanto encontramos alguém para te ajudar...</p>
+            
+            <div class="emergency-contacts">
+                <h3>📞 Contatos de Emergência:</h3>
+                <div class="contact-item">
+                    <strong>CVV - Centro de Valorização da Vida</strong><br>
+                    188 (Ligação Gratuita)<br>
+                    <a href="tel:188">Ligar Agora</a>
+                </div>
+                <div class="contact-item">
+                    <strong>SAMU</strong><br>
+                    192<br>
+                    <a href="tel:192">Ligar Agora</a>
+                </div>
+                <div class="contact-item">
+                    <strong>Bombeiros</strong><br>
+                    193<br>
+                    <a href="tel:193">Ligar Agora</a>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="window.location.href='chat.html?emergency=true'" style="margin-top: 20px;">
+                Entrar no Chat de Emergência
+            </button>
+            
+            <div style="margin-top: 20px;">
+                <a href="dashboard-usuario.html" style="color: var(--cinza-medio);">
+                    ← Voltar ao Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simular contagem regressiva
+        let count = 3;
+        const countdownElement = document.getElementById('countdown');
+        
+        const countdown = setInterval(() => {
+            count--;
+            countdownElement.textContent = count;
+            
+            if (count === 0) {
+                clearInterval(countdown);
+                window.location.href = 'chat.html?emergency=true';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

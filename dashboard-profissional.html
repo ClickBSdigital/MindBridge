@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Dashboard Profissional</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .professional-header {
+            background: var(--verde-esperanca);
+            color: var(--branco);
+        }
+        
+        .patient-card {
+            border: 2px solid var(--cinza-claro);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .patient-card:hover {
+            border-color: var(--verde-esperanca);
+            transform: translateY(-2px);
+        }
+        
+        .patient-card.urgent {
+            border-color: var(--vermelho-emergencia);
+            background: rgba(220, 53, 69, 0.05);
+        }
+        
+        .risk-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .risk-low { background: var(--verde-seguro); }
+        .risk-medium { background: var(--laranja-atencao); }
+        .risk-high { background: var(--vermelho-emergencia); }
+        
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .schedule-slot {
+            padding: 15px;
+            border: 2px solid var(--cinza-claro);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .schedule-slot.available {
+            border-color: var(--verde-seguro);
+            background: rgba(40, 167, 69, 0.1);
+        }
+        
+        .schedule-slot.booked {
+            border-color: var(--azul-primario);
+            background: rgba(74, 144, 226, 0.1);
+        }
+        
+        .assessment-tools {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .tool-btn {
+            padding: 10px;
+            border: 1px solid var(--azul-primario);
+            border-radius: 8px;
+            background: var(--branco);
+            color: var(--azul-primario);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .tool-btn:hover {
+            background: var(--azul-primario);
+            color: var(--branco);
+        }
+    </style>
+</head>
+<body>
+    <div class="header professional-header">
+        <div class="header-content">
+            <div class="logo">MindBridge - Profissional</div>
+            <div class="user-menu">
+                <span>Dra. Ana Costa - CRP 12345/MS</span>
+                <a href="index.html" class="btn btn-warning">Sair</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- RESUMO PROFISSIONAL -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">8</div>
+                <div>Pacientes Hoje</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">3</div>
+                <div>Encaminhamentos Pendentes</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">45min</div>
+                <div>Próxima Disponibilidade</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">12</div>
+                <div>Relatórios Pendentes</div>
+            </div>
+        </div>
+
+        <!-- ENCAMINHAMENTOS URGENTES -->
+        <div class="card">
+            <h3>🚨 Encaminhamentos Urgentes</h3>
+            <div class="patient-card urgent" onclick="openPatientChart('patient1')">
+                <div style="display: flex; justify-content: between; align-items: start;">
+                    <div style="flex: 1;">
+                        <strong>João Silva - 28 anos</strong>
+                        <div style="font-size: 14px; color: var(--cinza-medio);">
+                            <span class="risk-indicator risk-high"></span>
+                            Risco Suicida Alto • Encaminhado por: Carlos (Mediador)
+                        </div>
+                        <div style="margin-top: 10px; font-size: 14px;">
+                            <strong>Histórico:</strong> Ideaçāo suicida recorrente, histórico de depressão, isolamento social
+                        </div>
+                    </div>
+                    <button class="btn btn-emergency" onclick="event.stopPropagation(); startEmergencySession('patient1')">
+                        Atender Agora
+                    </button>
+                </div>
+            </div>
+            
+            <div class="patient-card" onclick="openPatientChart('patient2')">
+                <div style="display: flex; justify-content: between; align-items: start;">
+                    <div style="flex: 1;">
+                        <strong>Mariana Oliveira - 32 anos</strong>
+                        <div style="font-size: 14px; color: var(--cinza-medio);">
+                            <span class="risk-indicator risk-medium"></span>
+                            Transtorno de Ansiedade • Encaminhado por: Maria (Mediador)
+                        </div>
+                        <div style="margin-top: 10px; font-size: 14px;">
+                            <strong>Queixa principal:</strong> Crises de pânico, insônia, dificuldade de concentração
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); scheduleSession('patient2')">
+                        Agendar Sessão
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AGENDA DO DIA -->
+        <div class="card">
+            <h3>📅 Agenda de Hoje</h3>
+            <div class="schedule-grid">
+                <div class="schedule-slot booked">
+                    <strong>09:00 - 09:50</strong>
+                    <div>Pedro Santos</div>
+                    <div style="font-size: 12px; color: var(--cinza-medio);">Follow-up Depressão</div>
+                </div>
+                <div class="schedule-slot available">
+                    <strong>10:00 - 10:50</strong>
+                    <div>Disponível</div>
+                    <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px; margin-top: 5px;">
+                        Bloquear
+                    </button>
+                </div>
+                <div class="schedule-slot booked">
+                    <strong>11:00 - 11:50</strong>
+                    <div>Ana Beatriz</div>
+                    <div style="font-size: 12px; color: var(--cinza-medio);">Avaliação Inicial</div>
+                </div>
+                <div class="schedule-slot booked">
+                    <strong>14:00 - 14:50</strong>
+                    <div>Carlos Mendes</div>
+                    <div style="font-size: 12px; color: var(--cinza-medio);">TCC - Sessão 3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FERRAMENTAS CLÍNICAS -->
+        <div class="card">
+            <h3>🛠️ Ferramentas Clínicas</h3>
+            <div class="assessment-tools">
+                <div class="tool-btn" onclick="openAssessment('phq9')">PHQ-9</div>
+                <div class="tool-btn" onclick="openAssessment('gad7')">GAD-7</div>
+                <div class="tool-btn" onclick="openAssessment('bdi')">BDI</div>
+                <div class="tool-btn" onclick="openAssessment('who5')">WHO-5</div>
+                <div class="tool-btn" onclick="openAssessment('custom')">Avaliação Customizada</div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="openClinicalNotes()">
+                    📝 Anotações Clínicas
+                </button>
+                <button class="btn btn-primary" onclick="openPrescriptions()">
+                    💊 Prescrições e Encaminhamentos
+                </button>
+                <button class="btn btn-primary" onclick="generateClinicalReport()">
+                    📊 Relatório Clínico
+                </button>
+            </div>
+        </div>
+
+        <!-- PRÓXIMAS SESSÕES -->
+        <div class="card">
+            <h3>⏰ Próximas Sessões</h3>
+            <div style="max-height: 300px; overflow-y: auto;">
+                <div style="padding: 10px; border-bottom: 1px solid var(--cinza-claro);">
+                    <strong>Amanhã - 09:00</strong>
+                    <div style="font-size: 14px; color: var(--cinza-medio);">
+                        João Silva • Avaliação de risco
+                    </div>
+                </div>
+                <div style="padding: 10px; border-bottom: 1px solid var(--cinza-claro);">
+                    <strong>Amanhã - 14:00</strong>
+                    <div style="font-size: 14px; color: var(--cinza-medio);">
+                        Mariana Oliveira • Primeira sessão TCC
+                    </div>
+                </div>
+                <div style="padding: 10px; border-bottom: 1px solid var(--cinza-claro);">
+                    <strong>05/12 - 10:00</strong>
+                    <div style="font-size: 14px; color: var(--cinza-medio);">
+                        Carlos Mendes • Follow-up medicação
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ESTATÍSTICAS PROFISSIONAIS -->
+        <div class="card">
+            <h3>📈 Estatísticas do Mês</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; text-align: center;">
+                <div>
+                    <div style="font-size: 18px; font-weight: bold; color: var(--verde-esperanca);">42</div>
+                    <div style="font-size: 12px;">Sessões Realizadas</div>
+                </div>
+                <div>
+                    <div style="font-size: 18px; font-weight: bold; color: var(--azul-primario);">8</div>
+                    <div style="font-size: 12px;">Novos Pacientes</div>
+                </div>
+                <div>
+                    <div style="font-size: 18px; font-weight: bold; color: var(--laranja-atencao);">92%</div>
+                    <div style="font-size: 12px;">Taxa de Comparecimento</div>
+                </div>
+                <div>
+                    <div style="font-size: 18px; font-weight: bold; color: var(--vermelho-emergencia);">3</div>
+                    <div style="font-size: 12px;">Intervenções de Crise</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openPatientChart(patientId) {
+            window.location.href = `patient-chart.html?patient=${patientId}`;
+        }
+        
+        function startEmergencySession(patientId) {
+            window.location.href = `professional-chat.html?patient=${patientId}&emergency=true`;
+        }
+        
+        function scheduleSession(patientId) {
+            alert(`Agendando sessão para paciente ${patientId}...`);
+        }
+        
+        function openAssessment(tool) {
+            alert(`Abrindo ferramenta de avaliação: ${tool}`);
+        }
+        
+        function openClinicalNotes() {
+            alert('Abrindo anotações clínicas...');
+        }
+        
+        function openPrescriptions() {
+            alert('Abrindo prescrições e encaminhamentos...');
+        }
+        
+        function generateClinicalReport() {
+            alert('Gerando relatório clínico...');
+        }
+        
+        // Notificação de novo encaminhamento (simulação)
+        setTimeout(() => {
+            if(confirm('Novo encaminhamento urgente recebido! Deseja visualizar?')) {
+                openPatientChart('newPatient');
+            }
+        }, 10000);
+    </script>
+</body>
+</html>

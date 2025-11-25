@@ -1,38 +1,66 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MindBridge | A Ponte para o Cuidado</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Bebas+Neue&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/login.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Login</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="login-container">
-    <div class="login-box shadow-lg">
-      <h1 class="title">MindBridge</h1>
-      <p class="subtitle">Você não está sozinho.<br>Vamos atravessar essa ponte juntos.</p>
-      <form>
-        <div class="mb-3">
-          <label for="email" class="form-label">E-mail</label>
-          <input type="email" class="form-control" id="email" placeholder="seuemail@email.com">
+    <div class="login-container">
+        <div class="login-card">
+            <h1 class="login-title">MindBridge</h1>
+            <p style="text-align: center; margin-bottom: 30px; color: var(--cinza-medio);">
+                Primeiros Socorros Emocionais Inteligentes
+            </p>
+            
+            <div class="user-type-selector">
+                <div class="user-type-btn active" data-type="user">
+                    👤 Usuário
+                </div>
+                <div class="user-type-btn" data-type="monitor">
+                    🛡️ Monitor
+                </div>
+                <div class="user-type-btn" data-type="professional">
+                    👨‍⚕️ Profissional
+                </div>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">E-mail ou CPF:</label>
+                    <input type="text" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    Entrar
+                </button>
+            </form>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="#" style="color: var(--azul-primario); text-decoration: none;">
+                    Esqueci minha senha
+                </a>
+                <br>
+                <a href="#" style="color: var(--cinza-medio); text-decoration: none; font-size: 14px;">
+                    Primeiro acesso? Cadastre-se
+                </a>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; padding: 15px; background: var(--cinza-claro); border-radius: 10px;">
+                <strong>🚨 EMERGÊNCIA?</strong><br>
+                <a href="emergencia.html" class="btn btn-emergency" style="margin-top: 10px;">
+                    PRECISO DE AJUDA IMEDIATA
+                </a>
+            </div>
         </div>
-        <div class="mb-3">
-          <label for="senha" class="form-label">Senha</label>
-          <input type="password" class="form-control" id="senha" placeholder="••••••••">
-        </div>
-        <div class="mb-3">
-          <label for="tipo" class="form-label">Tipo de Usuário</label>
-          <select class="form-select" id="tipo">
-            <option value="usuario">Usuário Comum</option>
-            <option value="profissional">Profissional</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-login w-100">Entrar</button>
-        <p class="text-center mt-3 small">Não tem conta? <a href="#">Cadastre-se</a></p>
-      </form>
     </div>
-  </div>
+
+    <script src="js/script.js"></script>
 </body>
 </html>

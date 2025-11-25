@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Chat</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <!-- CABEÇALHO DO CHAT -->
+        <div class="chat-header">
+            <div>
+                <strong>Maria Silva</strong>
+                <div style="font-size: 12px;">Mediadora - Online</div>
+            </div>
+            <button class="flag-btn" onclick="openFlagModal()">🚩 Sinalizar</button>
+        </div>
+
+        <!-- ÁREA DE MENSAGENS -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="message mediator">
+                Olá! Eu sou a Maria, mediadora do MindBridge. Estou aqui para te ouvir. Como você está se sentindo hoje?
+            </div>
+            <div class="message user">
+                Oi Maria, estou me sentindo muito sobrecarregado com tudo...
+            </div>
+            <div class="message mediator">
+                Entendo que deve ser difícil. Pode me contar um pouco mais sobre o que está te sobrecarregando? Estou aqui para te escutar.
+            </div>
+        </div>
+
+        <!-- BOTÕES RÁPIDOS -->
+        <div class="quick-buttons">
+            <button class="quick-btn" onclick="sendQuickMessage('Estou em crise')">Estou em crise</button>
+            <button class="quick-btn" onclick="sendQuickMessage('Preciso falar')">Preciso falar</button>
+            <button class="quick-btn" onclick="sendQuickMessage('Sinto-me sozinho')">Sinto-me sozinho</button>
+        </div>
+
+        <!-- INPUT DE MENSAGEM -->
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Digite sua mensagem..." onkeypress="handleKeyPress(event)">
+            <button class="btn btn-primary" onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE SINALIZAÇÃO -->
+    <div class="flag-modal" id="flagModal">
+        <div class="flag-modal-content">
+            <h3>🚩 Sinalizar Conversa</h3>
+            <p>Selecione o tipo de sinalização:</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px; margin: 20px 0;">
+                <button class="btn btn-warning" onclick="flagConversation('Linguagem ofensiva')">
+                    Linguagem Ofensiva
+                </button>
+                <button class="btn btn-warning" onclick="flagConversation('Incentivo a comportamentos nocivos')">
+                    Incentivo a Comportamentos Nocivos
+                </button>
+                <button class="btn btn-emergency" onclick="flagConversation('Ideação suicida')">
+                    Ideação Suicida
+                </button>
+                <button class="btn btn-primary" onclick="flagConversation('Outros')">
+                    Outros
+                </button>
+            </div>
+            
+            <button class="btn" onclick="closeFlagModal()" style="background: var(--cinza-claro);">
+                Cancelar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const messagesDiv = document.getElementById('chatMessages');
+                const newMessage = document.createElement('div');
+                newMessage.className = 'message user';
+                newMessage.textContent = message;
+                messagesDiv.appendChild(newMessage);
+                
+                input.value = '';
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                
+                // Simular resposta automática
+                setTimeout(() => {
+                    const autoResponse = document.createElement('div');
+                    autoResponse.className = 'message mediator';
+                    autoResponse.textContent = 'Entendo... Pode me contar mais sobre isso?';
+                    messagesDiv.appendChild(autoResponse);
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendQuickMessage(text) {
+            document.getElementById('messageInput').value = text;
+            sendMessage();
+        }
+
+        function openFlagModal() {
+            document.getElementById('flagModal').style.display = 'block';
+        }
+
+        function closeFlagModal() {
+            document.getElementById('flagModal').style.display = 'none';
+        }
+
+        function flagConversation(type) {
+            alert(`Conversa sinalizada como: ${type}\nUm supervisor será notificado.`);
+            closeFlagModal();
+        }
+    </script>
+</body>
+</html>

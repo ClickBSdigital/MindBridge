@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Chat Monitor</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .monitor-tools {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: var(--cinza-claro);
+            border-top: 1px solid var(--cinza-medio);
+        }
+        
+        .risk-assessment {
+            background: var(--branco);
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+            border-left: 4px solid var(--amarelo-acolhimento);
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div>
+                <strong>João Silva</strong>
+                <div style="font-size: 12px;">
+                    <span class="risk-indicator risk-medium"></span>
+                    Risco Médio • 15min de conversa
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary" onclick="requestProfessional()">
+                    👨‍⚕️ Solicitar Profissional
+                </button>
+                <button class="flag-btn" onclick="openFlagModal()">🚩 Sinalizar</button>
+            </div>
+        </div>
+
+        <!-- AVALIAÇÃO DE RISCO -->
+        <div class="risk-assessment">
+            <strong>📊 Avaliação de Risco Atual</strong>
+            <div style="display: flex; gap: 20px; margin-top: 10px; font-size: 14px;">
+                <div>
+                    <strong>Ideiação Suicida:</strong> 
+                    <span style="color: var(--laranja-atencao);">Presente</span>
+                </div>
+                <div>
+                    <strong>Plano:</strong> 
+                    <span style="color: var(--verde-seguro);">Não relatado</span>
+                </div>
+                <div>
+                    <strong>Meios:</strong> 
+                    <span style="color: var(--verde-seguro);">Não mencionados</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="message user">
+                Oi, estou me sentindo muito mal hoje...
+            </div>
+            <div class="message mediator">
+                Olá João, sinto muito que esteja se sentindo assim. Pode me contar o que está acontecendo?
+            </div>
+            <div class="message user">
+                Tudo parece sem sentido. As vezes penso que seria melhor desaparecer.
+            </div>
+            <div class="message mediator">
+                Entendo que deve ser muito difícil ter esses pensamentos. Você está sentindo isso agora?
+            </div>
+        </div>
+
+        <!-- FERRAMENTAS DO MONITOR -->
+        <div class="monitor-tools">
+            <button class="quick-btn" onclick="sendTemplate('Como você está se sentindo fisicamente?')">
+                Saúde Física
+            </button>
+            <button class="quick-btn" onclick="sendTemplate('Você tem alguém para conversar?')">
+                Rede de Apoio
+            </button>
+            <button class="quick-btn" onclick="sendTemplate('O que te ajuda a se sentir melhor?')">
+                Estratégias de Coping
+            </button>
+            <button class="quick-btn" onclick="openCrisisProtocol()">
+                🚨 Protocolo de Crise
+            </button>
+        </div>
+
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Digite sua mensagem de apoio..." onkeypress="handleKeyPress(event)">
+            <button class="btn btn-primary" onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        // Funções específicas do monitor
+        function requestProfessional() {
+            if(confirm('Solicitar intervenção de profissional de saúde?')) {
+                alert('Profissional notificado! Ele entrará na conversa em breve.');
+            }
+        }
+        
+        function sendTemplate(message) {
+            document.getElementById('messageInput').value = message;
+            sendMessage();
+        }
+        
+        function openCrisisProtocol() {
+            alert('Abrindo protocolo de crise...\n\n1. Mantenha a calma\n2. Valide os sentimentos\n3. Avalie risco imediato\n4. Ofereça suporte\n5. Encaminhe se necessário');
+        }
+        
+        // Herda as funções básicas do chat
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const messagesDiv = document.getElementById('chatMessages');
+                const newMessage = document.createElement('div');
+                newMessage.className = 'message mediator';
+                newMessage.textContent = message;
+                messagesDiv.appendChild(newMessage);
+                
+                input.value = '';
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                
+                // Simular resposta do usuário
+                setTimeout(() => {
+                    const userResponse = document.createElement('div');
+                    userResponse.className = 'message user';
+                    userResponse.textContent = 'Não sei... só queria que essa dor passasse.';
+                    messagesDiv.appendChild(userResponse);
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }, 2000);
+            }
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>

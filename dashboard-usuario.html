@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">MindBridge</div>
+            <div class="user-menu">
+                <span>Bem-vindo, João</span>
+                <a href="index.html" class="btn btn-warning">Sair</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- SEÇÃO DE EMERGÊNCIA -->
+        <div class="card emergency-section">
+            <h2>Precisa de ajuda agora?</h2>
+            <p>Converse imediatamente com alguém que pode te ajudar</p>
+            <a href="emergencia.html" class="btn btn-emergency emergency-btn">
+                🚨 PRECISO DE AJUDA AGORA
+            </a>
+        </div>
+
+        <!-- MEDIADORES ONLINE -->
+        <div class="card">
+            <h3>🛡️ Mediadores Online</h3>
+            <div class="online-list">
+                <div class="online-item" onclick="openChat('monitor1')">
+                    <div class="status-online"></div>
+                    <div>
+                        <strong>Maria Silva</strong>
+                        <p>Disponível para conversar</p>
+                    </div>
+                </div>
+                <div class="online-item" onclick="openChat('monitor2')">
+                    <div class="status-online"></div>
+                    <div>
+                        <strong>Carlos Santos</strong>
+                        <p>Especialista em escuta ativa</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROFISSIONAIS ONLINE -->
+        <div class="card">
+            <h3>👨‍⚕️ Profissionais Online</h3>
+            <div class="online-list">
+                <div class="online-item" onclick="openChat('prof1')">
+                    <div class="status-online"></div>
+                    <div>
+                        <strong>Dra. Ana Costa</strong>
+                        <p>Psicóloga - CRP 12345</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECURSOS DE AUTO-AJUDA -->
+        <div class="card">
+            <h3>💪 Recursos de Autoajuda</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                <div class="btn btn-primary">Exercícios de Respiração</div>
+                <div class="btn btn-primary">Vídeos de Relaxamento</div>
+                <div class="btn btn-primary">Artigos Informativos</div>
+                <div class="btn btn-primary">Diário Emocional</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openChat(userId) {
+            window.location.href = `chat.html?user=${userId}`;
+        }
+    </script>
+</body>
+</html>

@@ -3,16 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MindBridge | Bem-vindo</title>
+  <title>MindBridge | Primeiros Socorros Emocionais Inteligentes</title>
 
   <!-- FONTES -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="home.css">
-
-  <!-- JS -->
-  <script defer src="home.js"></script>
+  <!-- CSS CORRETO -->
+<link rel="stylesheet" href="css/home.css">
+  
 </head>
 
 <body>
@@ -22,90 +20,268 @@
     <h1 class="logo">Mind<span>Bridge</span></h1>
     <nav>
       <a href="#inicio">Início</a>
-      <a href="#blog">Blog</a>
-      <a href="#videos">Vídeos</a>
+      <a href="#funcionalidades">Como Funciona</a>
+      <a href="#para-quem">Para Quem</a>
+      <a href="#seguranca">Segurança</a>
       <a href="#sobre">Sobre</a>
-      <a href="#contato">Contato</a>
-      <button id="btnLogin">Entrar</button>
+      <button id="btnLogin">Entrar no App</button>
     </nav>
   </header>
 
   <!-- ▬▬▬ HERO ▬▬▬ -->
   <section id="inicio" class="hero">
     <div class="hero-text">
-      <h2>Cuidar da mente é atravessar pontes interiores.</h2>
-      <p>O MindBridge aproxima você do apoio emocional que precisa — com tecnologia humana e acolhedora.</p>
+      <h1>Suporte emocional quando você mais precisa</h1>
+      <p>O MindBridge conecta você a mediadores treinados e profissionais de saúde mental 24h por dia, com tecnologia inteligente e acolhimento humano.</p>
 
-      <button class="cta" onclick="window.location.href='login/login.html'">
-        Começar
-      </button>
-    </div>
-
-    <img src="assets/hero-img.png" class="hero-img" alt="Imagem MindBridge">
-  </section>
-
-  <!-- ▬▬▬ BLOG ▬▬▬ -->
-  <section id="blog" class="secao">
-    <h3 class="titulo">Artigos Recentes</h3>
-
-    <div class="cards">
-      <div class="card">
-        <h4>5 passos para acalmar sua mente</h4>
-        <p>Técnicas de respiração e atenção plena que funcionam.</p>
-        <a href="#">Ler mais</a>
+      <div class="hero-buttons">
+        <button class="cta primary" onclick="window.location.href='index.html'">
+          🚀 Começar Agora
+        </button>
+        <button class="cta secondary" onclick="window.location.href='#funcionalidades'">
+          ℹ️ Como Funciona
+        </button>
       </div>
 
-      <div class="card">
-        <h4>Como lidar com crises emocionais</h4>
-        <p>Entenda os sinais de alerta e como agir.</p>
-        <a href="#">Ler mais</a>
-      </div>
-
-      <div class="card">
-        <h4>Por que pedir ajuda é importante</h4>
-        <p>A saúde mental é um caminho, não um destino.</p>
-        <a href="#">Ler mais</a>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="number">24/7</span>
+          <span class="label">Disponível</span>
+        </div>
+        <div class="stat">
+          <span class="number">50+</span>
+          <span class="label">Profissionais</span>
+        </div>
+        <div class="stat">
+          <span class="number">100%</span>
+          <span class="label">Gratuito</span>
+        </div>
       </div>
     </div>
+
+    <div class="hero-visual">
+      <img src="assets/app-preview.png" class="hero-img" alt="Preview do App MindBridge">
+      <div class="floating-card chat-preview">
+        <div class="chat-header">
+          <strong>Maria - Mediador</strong>
+          <span class="online-dot"></span>
+        </div>
+        <div class="chat-message received">
+          Olá! Estou aqui para te ouvir. Como você está se sentindo?
+        </div>
+        <div class="chat-message sent">
+          Oi Maria, estou me sentindo muito sobrecarregado...
+        </div>
+      </div>
+    </div>
   </section>
 
-  <!-- ▬▬▬ VIDEOS ▬▬▬ -->
-  <section id="videos" class="secao">
-    <h3 class="titulo">Vídeos que acalmam</h3>
+  <!-- ▬▬▬ COMO FUNCIONA ▬▬▬ -->
+  <section id="funcionalidades" class="secao funcionalidades">
+    <h2 class="titulo">Como o MindBridge Funciona</h2>
+    
+    <div class="passos">
+      <div class="passo">
+        <div class="passo-numero">1</div>
+        <div class="passo-content">
+          <h3>Conecte-se Instantaneamente</h3>
+          <p>Acesse o app e seja direcionado automaticamente para um mediador treinado em escuta ativa</p>
+        </div>
+      </div>
+      
+      <div class="passo">
+        <div class="passo-numero">2</div>
+        <div class="passo-content">
+          <h3>Receba Suporte Imediato</h3>
+          <p>Converse com mediadores que oferecem acolhimento emocional e orientação inicial</p>
+        </div>
+      </div>
+      
+      <div class="passo">
+        <div class="passo-numero">3</div>
+        <div class="passo-content">
+          <h3>Encaminhamento Inteligente</h3>
+          <p>Em casos de maior complexidade, seja encaminhado para profissionais de saúde mental</p>
+        </div>
+      </div>
+      
+      <div class="passo">
+        <div class="passo-numero">4</div>
+        <div class="passo-content">
+          <h3>Acompanhamento Contínuo</h3>
+          <p>Tenha acesso a recursos de autoajuda e acompanhamento profissional quando necessário</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <div class="videos-container">
-      <iframe src="https://www.youtube.com/embed/2OEL4P1Rz04" allowfullscreen></iframe>
-      <iframe src="https://www.youtube.com/embed/ZToicYcHIOU" allowfullscreen></iframe>
-      <iframe src="https://www.youtube.com/embed/inpok4MKVLM" allowfullscreen></iframe>
+  <!-- ▬▬▬ PARA QUEM ▬▬▬ -->
+  <section id="para-quem" class="secao para-quem">
+    <h2 class="titulo">Para Quem é o MindBridge?</h2>
+    
+    <div class="publicos">
+      <div class="publico-card">
+        <div class="icone">👤</div>
+        <h3>Para Você</h3>
+        <ul>
+          <li>Busca suporte emocional imediato</li>
+          <li>Está passando por momentos difíceis</li>
+          <li>Precisa de alguém para conversar</li>
+          <li>Quer cuidado psicológico acessível</li>
+        </ul>
+        <button class="btn-publico" onclick="window.location.href='index.html'">
+          Buscar Ajuda
+        </button>
+      </div>
+      
+      <div class="publico-card">
+        <div class="icone">🛡️</div>
+        <h3>Para Mediadores</h3>
+        <ul>
+          <li>Quer ajudar pessoas em sofrimento</li>
+          <li>Tem treinamento em escuta ativa</li>
+          <li>Deseja fazer diferença na comunidade</li>
+          <li>Busca experiência em saúde mental</li>
+        </ul>
+        <button class="btn-publico" onclick="window.location.href='index.html'">
+          Tornar-se Mediador
+        </button>
+      </div>
+      
+      <div class="publico-card">
+        <div class="icone">👨‍⚕️</div>
+        <h3>Para Profissionais</h3>
+        <ul>
+          <li>Psicólogos e psiquiatras</li>
+          <li>Quer ampliar seu alcance</li>
+          <li>Interesse em teleatendimento</li>
+          <li>Deseja voluntariado supervisionado</li>
+        </ul>
+        <button class="btn-publico" onclick="window.location.href='index.html'">
+          Cadastrar como Profissional
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ▬▬▬ SEGURANÇA ▬▬▬ -->
+  <section id="seguranca" class="secao seguranca">
+    <h2 class="titulo">Segurança e Confiança</h2>
+    
+    <div class="recursos-seguranca">
+      <div class="recurso">
+        <div class="recurso-icone">🔒</div>
+        <h3>Privacidade Total</h3>
+        <p>Todas as conversas são criptografadas e seus dados são protegidos conforme a LGPD</p>
+      </div>
+      
+      <div class="recurso">
+        <div class="recurso-icone">🚨</div>
+        <h3>Sistema de Alerta</h3>
+        <p>Detecção automática de situações de risco com acionamento de protocolos de emergência</p>
+      </div>
+      
+      <div class="recurso">
+        <div class="recurso-icone">👥</div>
+        <h3>Mediação Supervisionada</h3>
+        <p>Todos os mediadores passam por treinamento e são supervisionados por profissionais</p>
+      </div>
+      
+      <div class="recurso">
+        <div class="recurso-icone">📞</div>
+        <h3>Integração com Rede de Apoio</h3>
+        <p>Conectamos com CVV, CAPS e outros serviços de emergência quando necessário</p>
+      </div>
     </div>
   </section>
 
   <!-- ▬▬▬ SOBRE ▬▬▬ -->
   <section id="sobre" class="secao sobre">
-    <h3 class="titulo">Sobre o MindBridge</h3>
-
-    <p>
-      O MindBridge nasceu para oferecer suporte emocional acessível, imediato e humano.
-      Nossa missão é conectar tecnologia, acolhimento e ciência em um só lugar.
-    </p>
+    <h2 class="titulo">Sobre o MindBridge</h2>
+    
+    <div class="sobre-content">
+      <div class="sobre-texto">
+        <p>
+          Desenvolvido em <strong>Campo Grande-MS</strong>, o MindBridge nasceu da necessidade de oferecer 
+          <strong>suporte emocional acessível e imediato</strong> para a população sul-mato-grossense.
+        </p>
+        
+        <p>
+          Combinamos <strong>tecnologia inteligente</strong> com <strong>acolhimento humano</strong> para criar 
+          uma ponte entre o sofrimento emocional e o cuidado especializado, especialmente em regiões 
+          com escassez de profissionais de saúde mental.
+        </p>
+        
+        <div class="destaques">
+          <div class="destaque">
+            <strong>+1000</strong>
+            <span>Pessoas ajudadas</span>
+          </div>
+          <div class="destaque">
+            <strong>24/7</strong>
+            <span>Disponibilidade</span>
+          </div>
+          <div class="destaque">
+            <strong>100%</strong>
+            <span>Gratuito</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sobre-imagem">
+        <img src="assets/equipe.png" alt="Equipe MindBridge">
+      </div>
+    </div>
   </section>
 
-  <!-- ▬▬▬ CONTATO ▬▬▬ -->
-  <section id="contato" class="secao contato">
-    <h3 class="titulo">Contato</h3>
-
-    <form>
-      <input type="text" placeholder="Seu nome" required>
-      <input type="email" placeholder="Seu e-mail" required>
-      <textarea placeholder="Sua mensagem" required></textarea>
-      <button type="submit">Enviar</button>
-    </form>
+  <!-- ▬▬▬ CTA FINAL ▬▬▬ -->
+  <section class="cta-final">
+    <div class="cta-content">
+      <h2>Precisa de ajuda agora?</h2>
+      <p>Não espere para cuidar da sua saúde mental. Converse com alguém agora mesmo.</p>
+      
+      <div class="cta-buttons">
+        <button class="cta emergency" onclick="window.location.href='emergencia.html'">
+          🚨 Preciso de Ajuda Imediata
+        </button>
+        <button class="cta primary" onclick="window.location.href='index.html'">
+          👤 Entrar no App
+        </button>
+      </div>
+    </div>
   </section>
 
   <!-- ▬▬▬ FOOTER ▬▬▬ -->
   <footer>
-    MindBridge © 2025 — Cuidando de você.
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>MindBridge</h3>
+        <p>Primeiros Socorros Emocionais Inteligentes</p>
+        <p>Campo Grande - MS</p>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Contatos de Emergência</h4>
+        <p>CVV: 188</p>
+        <p>SAMU: 192</p>
+        <p>Bombeiros: 193</p>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Links Rápidos</h4>
+        <a href="index.html">Entrar no App</a>
+        <a href="#funcionalidades">Como Funciona</a>
+        <a href="#seguranca">Segurança</a>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      MindBridge © 2025 — Desenvolvido com 💚 para cuidar de você.
+    </div>
   </footer>
+
+  <!-- JS -->
+<script defer src="js/home.js"></script>
 
 </body>
 </html>
