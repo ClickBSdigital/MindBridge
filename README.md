@@ -1,4 +1,4 @@
-🧠 MindBridge - Primeiros Socorros Emocionais Inteligentes
+🧠 [MindBridge - Primeiros Socorros Emocionais Inteligentes](https://github.com/ClickBSdigital/MindBridge.git)
 📋 Sobre o Projeto
 O MindBridge é uma plataforma digital inovadora desenvolvida para oferecer suporte emocional imediato através de tecnologia inteligente e acolhimento humano. A plataforma conecta usuários em sofrimento emocional com mediadores treinados e profissionais de saúde mental, funcionando como uma ponte entre o momento de crise e o atendimento especializado.
 
