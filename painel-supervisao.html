@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Painel de Supervisão</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/supervisao.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">MindBridge - Supervisão</div>
+            <div class="user-menu">
+                <span>Carlos (Supervisor)</span>
+                <a href="dashboard-monitor.html" class="btn btn-secondary">← Voltar</a>
+                <a href="index.html" class="btn btn-warning">Sair</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- ESTATÍSTICAS RÁPIDAS -->
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Mediadores Ativos</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💬</div>
+                <div class="stat-info">
+                    <div class="stat-number">24</div>
+                    <div class="stat-label">Conversas Ativas</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🚨</div>
+                <div class="stat-info">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Alertas Hoje</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-info">
+                    <div class="stat-number">14min</div>
+                    <div class="stat-label">Tempo Médio</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="supervision-grid">
+            <!-- CONVERSAS EM ANDAMENTO -->
+            <div class="supervision-card">
+                <h3>🎯 Conversas em Andamento</h3>
+                <div class="conversation-list">
+                    <div class="conversation-item">
+                        <div class="conversation-header">
+                            <span class="conversation-id">#287</span>
+                            <span class="risk-badge high">Alta</span>
+                        </div>
+                        <div class="conversation-details">
+                            <strong>João Silva</strong>
+                            <p class="conversation-preview">"Não aguento mais, quero sumir..."</p>
+                            <div class="conversation-meta">
+                                <span>👤 Maria (Mediadora)</span>
+                                <span>⏰ 15:32</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-small btn-primary" onclick="viewConversation(287)">Acessar</button>
+                    </div>
+
+                    <div class="conversation-item">
+                        <div class="conversation-header">
+                            <span class="conversation-id">#156</span>
+                            <span class="risk-badge medium">Média</span>
+                        </div>
+                        <div class="conversation-details">
+                            <strong>Ana Costa</strong>
+                            <p class="conversation-preview">"Estou me machucando de novo..."</p>
+                            <div class="conversation-meta">
+                                <span>👤 Pedro (Mediador)</span>
+                                <span>⏰ 15:40</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-small btn-primary" onclick="viewConversation(156)">Acessar</button>
+                    </div>
+
+                    <div class="conversation-item">
+                        <div class="conversation-header">
+                            <span class="conversation-id">#042</span>
+                            <span class="risk-badge low">Baixa</span>
+                        </div>
+                        <div class="conversation-details">
+                            <strong>Mariana Oliveira</strong>
+                            <p class="conversation-preview">"Estou muito ansiosa com o trabalho..."</p>
+                            <div class="conversation-meta">
+                                <span>👤 João (Mediador)</span>
+                                <span>⏰ 15:45</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-small btn-primary" onclick="viewConversation(42)">Acessar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MEDIADORES ATIVOS -->
+            <div class="supervision-card">
+                <h3>👥 Mediadores Ativos</h3>
+                <div class="mediators-list">
+                    <div class="mediator-item">
+                        <div class="mediator-avatar">M</div>
+                        <div class="mediator-info">
+                            <strong>Maria Silva</strong>
+                            <div class="mediator-status available">
+                                <span class="status-dot"></span>
+                                Online - 3 conversas
+                            </div>
+                        </div>
+                        <div class="mediator-stats">
+                            <div class="stat">⭐ 4.8</div>
+                            <div class="stat">⏱️ 12min</div>
+                        </div>
+                    </div>
+
+                    <div class="mediator-item">
+                        <div class="mediator-avatar">P</div>
+                        <div class="mediator-info">
+                            <strong>Pedro Santos</strong>
+                            <div class="mediator-status available">
+                                <span class="status-dot"></span>
+                                Online - 2 conversas
+                            </div>
+                        </div>
+                        <div class="mediator-stats">
+                            <div class="stat">⭐ 4.5</div>
+                            <div class="stat">⏱️ 18min</div>
+                        </div>
+                    </div>
+
+                    <div class="mediator-item">
+                        <div class="mediator-avatar">J</div>
+                        <div class="mediator-info">
+                            <strong>João Costa</strong>
+                            <div class="mediator-status busy">
+                                <span class="status-dot"></span>
+                                Ocupado - 4 conversas
+                            </div>
+                        </div>
+                        <div class="mediator-stats">
+                            <div class="stat">⭐ 4.9</div>
+                            <div class="stat">⏱️ 8min</div>
+                        </div>
+                    </div>
+
+                    <div class="mediator-item">
+                        <div class="mediator-avatar">A</div>
+                        <div class="mediator-info">
+                            <strong>Ana Lima</strong>
+                            <div class="mediator-status away">
+                                <span class="status-dot"></span>
+                                Ausente
+                            </div>
+                        </div>
+                        <div class="mediator-stats">
+                            <div class="stat">⭐ 4.7</div>
+                            <div class="stat">⏱️ 15min</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FERRAMENTAS RÁPIDAS -->
+            <div class="supervision-card">
+                <h3>⚡ Ferramentas Rápidas</h3>
+                <div class="tools-grid">
+                    <button class="tool-btn" onclick="openAnnouncement()">
+                        <span class="tool-icon">📢</span>
+                        Anúncio Geral
+                    </button>
+                    <button class="tool-btn" onclick="openSupportRequest()">
+                        <span class="tool-icon">🆘</span>
+                        Pedir Suporte
+                    </button>
+                    <button class="tool-btn" onclick="openEscalation()">
+                        <span class="tool-icon">⬆️</span>
+                        Escalonar Caso
+                    </button>
+                    <button class="tool-btn" onclick="openTraining()">
+                        <span class="tool-icon">🎓</span>
+                        Treinamento
+                    </button>
+                    <button class="tool-btn" onclick="openAnalytics()">
+                        <span class="tool-icon">📊</span>
+                        Analytics
+                    </button>
+                    <button class="tool-btn" onclick="openSettings()">
+                        <span class="tool-icon">⚙️</span>
+                        Configurações
+                    </button>
+                </div>
+            </div>
+
+            <!-- CONVERSAS SINALIZADAS -->
+            <div class="supervision-card full-width">
+                <h3>🚩 Conversas Sinalizadas</h3>
+                <div class="flagged-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sala</th>
+                                <th>Usuário</th>
+                                <th>Motivo</th>
+                                <th>Mediador</th>
+                                <th>Tempo</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#287</td>
+                                <td>João Silva</td>
+                                <td><span class="flag-reason suicide">Ideação suicida</span></td>
+                                <td>Maria</td>
+                                <td>15:32</td>
+                                <td>
+                                    <button class="btn-action review" onclick="reviewFlag(287)">Revisar</button>
+                                    <button class="btn-action dismiss" onclick="dismissFlag(287)">Descartar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#156</td>
+                                <td>Ana Costa</td>
+                                <td><span class="flag-reason selfharm">Autoflagelação</span></td>
+                                <td>Pedro</td>
+                                <td>15:40</td>
+                                <td>
+                                    <button class="btn-action review" onclick="reviewFlag(156)">Revisar</button>
+                                    <button class="btn-action dismiss" onclick="dismissFlag(156)">Descartar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#099</td>
+                                <td>Carla Mendes</td>
+                                <td><span class="flag-reason aggression">Linguagem agressiva</span></td>
+                                <td>João</td>
+                                <td>14:20</td>
+                                <td>
+                                    <button class="btn-action review" onclick="reviewFlag(99)">Revisar</button>
+                                    <button class="btn-action dismiss" onclick="dismissFlag(99)">Descartar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#076</td>
+                                <td>Teresa Lima</td>
+                                <td><span class="flag-reason crisis">Crise emocional</span></td>
+                                <td>Ana</td>
+                                <td>13:45</td>
+                                <td>
+                                    <button class="btn-action review" onclick="reviewFlag(76)">Revisar</button>
+                                    <button class="btn-action dismiss" onclick="dismissFlag(76)">Descartar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/supervisao.js"></script>
+</body>
+</html>

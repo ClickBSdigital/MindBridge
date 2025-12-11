@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Recursos de Treinamento</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/treinamento.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">MindBridge - Treinamento</div>
+            <div class="user-menu">
+                <span>Carlos (Mediador)</span>
+                <a href="dashboard-monitor.html" class="btn btn-secondary">← Voltar</a>
+                <a href="index.html" class="btn btn-warning">Sair</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- CABEÇALHO DO TREINAMENTO -->
+        <div class="training-header">
+            <h1>🎓 Biblioteca de Treinamento</h1>
+            <p>Recursos para aprimorar suas habilidades como mediador</p>
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span>Seu Progresso: <strong>65%</strong></span>
+                    <span>26/40 módulos concluídos</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="training-grid">
+            <!-- MÓDULOS OBRIGATÓRIOS -->
+            <div class="training-section">
+                <h2>📋 Módulos Obrigatórios</h2>
+                <div class="modules-grid">
+                    <div class="module-card completed">
+                        <div class="module-icon">🎯</div>
+                        <h3>Primeiros Socorros Psicológicos</h3>
+                        <p>Protocolos básicos para situações de crise</p>
+                        <div class="module-meta">
+                            <span>⏱️ 45min</span>
+                            <span class="badge-completed">✔ Concluído</span>
+                        </div>
+                        <button class="btn btn-small btn-secondary" onclick="reviewModule('psp')">Revisar</button>
+                    </div>
+
+                    <div class="module-card completed">
+                        <div class="module-icon">🛡️</div>
+                        <h3>Prevenção ao Suicídio</h3>
+                        <p>Identificação de sinais e intervenção segura</p>
+                        <div class="module-meta">
+                            <span>⏱️ 60min</span>
+                            <span class="badge-completed">✔ Concluído</span>
+                        </div>
+                        <button class="btn btn-small btn-secondary" onclick="reviewModule('suicide')">Revisar</button>
+                    </div>
+
+                    <div class="module-card completed">
+                        <div class="module-icon">👂</div>
+                        <h3>Escuta Ativa</h3>
+                        <p>Técnicas para escuta empática e eficaz</p>
+                        <div class="module-meta">
+                            <span>⏱️ 30min</span>
+                            <span class="badge-completed">✔ Concluído</span>
+                        </div>
+                        <button class="btn btn-small btn-secondary" onclick="reviewModule('listening')">Revisar</button>
+                    </div>
+
+                    <div class="module-card in-progress">
+                        <div class="module-icon">⚖️</div>
+                        <h3>Ética e Limites</h3>
+                        <p>Princípios éticos e limites profissionais</p>
+                        <div class="module-meta">
+                            <span>⏱️ 40min</span>
+                            <span class="badge-progress">▶ 70%</span>
+                        </div>
+                        <button class="btn btn-small btn-primary" onclick="continueModule('ethics')">Continuar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VÍDEOS TREINAMENTO -->
+            <div class="training-section">
+                <h2>🎥 Vídeos de Treinamento</h2>
+                <div class="videos-grid">
+                    <div class="video-card" onclick="playVideo('crise')">
+                        <div class="video-thumbnail">
+                            <div class="play-button">▶</div>
+                            <div class="video-duration">12:45</div>
+                        </div>
+                        <div class="video-info">
+                            <h4>Manejo de Crises Emocionais</h4>
+                            <p>Dra. Ana Silva - Psicóloga Clínica</p>
+                            <div class="video-meta">
+                                <span>👁️ 2.4k visualizações</span>
+                                <span>⭐ 4.8</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="video-card" onclick="playVideo('comunicação')">
+                        <div class="video-thumbnail">
+                            <div class="play-button">▶</div>
+                            <div class="video-duration">18:20</div>
+                        </div>
+                        <div class="video-info">
+                            <h4>Comunicação Não-Violenta</h4>
+                            <p>Prof. Carlos Mendes</p>
+                            <div class="video-meta">
+                                <span>👁️ 1.8k visualizações</span>
+                                <span>⭐ 4.9</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="video-card" onclick="playVideo('burnout')">
+                        <div class="video-thumbnail">
+                            <div class="play-button">▶</div>
+                            <div class="video-duration">22:10</div>
+                        </div>
+                        <div class="video-info">
+                            <h4>Prevenção de Burnout</h4>
+                            <p>Dr. Roberto Alves</p>
+                            <div class="video-meta">
+                                <span>👁️ 3.1k visualizações</span>
+                                <span>⭐ 4.7</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMULADOR DE CASOS -->
+            <div class="training-section">
+                <h2>🔄 Simulador de Casos</h2>
+                <div class="simulator-container">
+                    <div class="simulator-scenario">
+                        <h3>Cenário: Ideação Suicida</h3>
+                        <p>"Usuário de 25 anos relata que não vê mais sentido na vida e pensa em 'sumir'. Como você responderia?"</p>
+                        
+                        <div class="simulator-options">
+                            <div class="option-card" onclick="selectOption(1)">
+                                <h4>Opção A</h4>
+                                <p>"Isso é grave. Vou conectar você com um profissional imediatamente."</p>
+                            </div>
+                            
+                            <div class="option-card" onclick="selectOption(2)">
+                                <h4>Opção B</h4>
+                                <p>"Posso entender que você está passando por um momento difícil. Pode me contar mais sobre como se sente?"</p>
+                            </div>
+                            
+                            <div class="option-card" onclick="selectOption(3)">
+                                <h4>Opção C</h4>
+                                <p>"Não pense assim! A vida é bela e tem muita coisa boa para viver."</p>
+                            </div>
+                        </div>
+                        
+                        <div class="simulator-feedback" id="feedback" style="display: none;">
+                            <h4>💡 Feedback do Especialista:</h4>
+                            <p id="feedback-text"></p>
+                            <button class="btn btn-small btn-primary" onclick="nextScenario()">Próximo Cenário</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECURSOS PARA DOWNLOAD -->
+            <div class="training-section">
+                <h2>📚 Recursos para Download</h2>
+                <div class="resources-list">
+                    <div class="resource-item">
+                        <div class="resource-icon">📄</div>
+                        <div class="resource-info">
+                            <h4>Manual do Mediador - 2024</h4>
+                            <p>Guia completo com protocolos e diretrizes</p>
+                        </div>
+                        <button class="btn btn-small btn-primary" onclick="downloadResource('manual')">Baixar PDF</button>
+                    </div>
+
+                    <div class="resource-item">
+                        <div class="resource-icon">📋</div>
+                        <div class="resource-info">
+                            <h4>Checklist de Segurança</h4>
+                            <p>Lista de verificação para casos de risco</p>
+                        </div>
+                        <button class="btn btn-small btn-primary" onclick="downloadResource('checklist')">Baixar PDF</button>
+                    </div>
+
+                    <div class="resource-item">
+                        <div class="resource-icon">🧠</div>
+                        <div class="resource-info">
+                            <h4>Frases de Acolhimento</h4>
+                            <p>Exemplos de respostas empáticas</p>
+                        </div>
+                        <button class="btn btn-small btn-primary" onclick="downloadResource('phrases')">Baixar PDF</button>
+                    </div>
+
+                    <div class="resource-item">
+                        <div class="resource-icon">📞</div>
+                        <div class="resource-info">
+                            <h4>Rede de Apoio</h4>
+                            <p>Contatos de serviços especializados</p>
+                        </div>
+                        <button class="btn btn-small btn-primary" onclick="downloadResource('network')">Baixar PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE VÍDEO -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeVideo()">&times;</span>
+            <h3 id="videoTitle"></h3>
+            <div class="video-player">
+                <div class="video-placeholder">
+                    🎥 Reprodução do vídeo de treinamento
+                    <p>Em um ambiente real, aqui estaria o player de vídeo.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/treinamento.js"></script>
+</body>
+</html>

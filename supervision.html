@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Supervisão - MindBridge</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>🛡️ Painel de Supervisão</h2>
+        <p>Alerta ID: <span id="alertId"></span></p>
+    </div>
+
+    <script>
+        const url = new URLSearchParams(window.location.search);
+        document.getElementById('alertId').textContent = url.get('alert');
+    </script>
+</body>
+</html>

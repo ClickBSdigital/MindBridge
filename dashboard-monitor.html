@@ -152,7 +152,7 @@
         <!-- ALERTAS CRÍTICOS -->
         <div class="card">
             <h3>🚨 Alertas Críticos (Requer Intervenção)</h3>
-            <div class="chat-room high" onclick="openSupervision('critical1')">
+            <div class="chat-room low" onclick="joinChat('room1')">
                 <div style="display: flex; justify-content: between; align-items: center;">
                     <div>
                         <strong>Sala #287 - João Silva</strong>
@@ -171,7 +171,7 @@
                 </div>
             </div>
             
-            <div class="chat-room medium" onclick="openSupervision('critical2')">
+            <div class="chat-room low" onclick="joinChat('room1')">
                 <div style="display: flex; justify-content: between; align-items: center;">
                     <div>
                         <strong>Sala #156 - Ana Costa</strong>
@@ -237,18 +237,18 @@
         <div class="card">
             <h3>🛠️ Ferramentas de Monitoramento</h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
-                <button class="btn btn-primary" onclick="openSupervisionPanel()">
+                <a href="painel-supervisao.html" class="btn btn-primary" style="text-decoration: none; text-align: center;">
                     🖥️ Painel de Supervisão
-                </button>
+                </a>
                 <button class="btn btn-primary" onclick="openFlaggedChats()">
                     🚩 Conversas Sinalizadas
                 </button>
-                <button class="btn btn-primary" onclick="openTraining()">
+                <a href="treinamento.html" class="btn btn-primary" style="text-decoration: none; text-align: center;">
                     📚 Recursos de Treinamento
-                </button>
-                <button class="btn btn-primary" onclick="generateReport()">
+                </a>
+                <a href="relatorios.html" class="btn btn-primary" style="text-decoration: none; text-align: center;">
                     📊 Gerar Relatório
-                </button>
+                </a>
             </div>
         </div>
 
@@ -284,30 +284,91 @@
         }
         
         function openSupervision(alertId) {
-            window.location.href = `supervision.html?alert=${alertId}`;
+            // Esta função pode ser mantida para links específicos
+            window.location.href = `painel-supervisao.html?alert=${alertId}`;
         }
         
         function openSupervisionPanel() {
-            alert('Abrindo painel de supervisão...');
+            window.location.href = "painel-supervisao.html";
         }
         
         function openFlaggedChats() {
-            alert('Abrindo conversas sinalizadas...');
+            // Mostra apenas as conversas sinalizadas no painel de supervisão
+            window.location.href = "painel-supervisao.html#flagged";
         }
         
         function openTraining() {
-            alert('Abrindo recursos de treinamento...');
+            window.location.href = "treinamento.html";
         }
         
         function generateReport() {
-            alert('Gerando relatório...');
+            window.location.href = "relatorios.html";
         }
         
         // Simular atualização em tempo real
         setInterval(() => {
             // Atualizar métricas (simulação)
+            updateMetrics();
             console.log('Atualizando dashboard do monitor...');
         }, 30000);
+        
+        function updateMetrics() {
+            // Simular pequenas variações nas métricas
+            const metrics = document.querySelectorAll('.metric-value');
+            if (metrics.length >= 4) {
+                // Conversas ativas (varia entre 10-15)
+                let active = parseInt(metrics[0].textContent);
+                active = Math.max(10, Math.min(15, active + Math.floor(Math.random() * 3) - 1));
+                metrics[0].textContent = active;
+                
+                // Alertas críticos (varia entre 2-5)
+                let alerts = parseInt(metrics[1].textContent);
+                alerts = Math.max(2, Math.min(5, alerts + Math.floor(Math.random() * 2) - 1));
+                metrics[1].textContent = alerts;
+                
+                // Atendimentos hoje (sempre aumenta)
+                let today = parseInt(metrics[2].textContent);
+                metrics[2].textContent = today + Math.floor(Math.random() * 2);
+                
+                // Taxa de resposta (varia entre 95%-99%)
+                let rate = parseInt(metrics[3].textContent);
+                rate = Math.max(95, Math.min(99, rate + Math.floor(Math.random() * 3) - 1));
+                metrics[3].textContent = rate + '%';
+            }
+        }
+        
+        // Função para o toggle de disponibilidade
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.querySelector('.toggle-switch input');
+            if (toggle) {
+                toggle.addEventListener('change', function() {
+                    const statusText = this.parentElement.nextElementSibling;
+                    if (this.checked) {
+                        statusText.textContent = 'Disponível';
+                        statusText.style.color = 'var(--verde-seguro)';
+                        alert('Status alterado para: Disponível');
+                    } else {
+                        statusText.textContent = 'Indisponível';
+                        statusText.style.color = 'var(--cinza-medio)';
+                        alert('Status alterado para: Indisponível');
+                    }
+                });
+            }
+            
+            // Adicionar efeitos de hover nas salas de chat
+            const chatRooms = document.querySelectorAll('.chat-room');
+            chatRooms.forEach(room => {
+                room.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(5px)';
+                    this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                });
+                
+                room.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+        });
     </script>
 </body>
 </html>

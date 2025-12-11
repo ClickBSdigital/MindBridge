@@ -1,0 +1,329 @@
+/* Painel de Supervisão */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: var(--branco);
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+
+.stat-icon {
+    font-size: 32px;
+    background: var(--azul-primario);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--azul-primario);
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--cinza-medio);
+}
+
+.supervision-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.supervision-card {
+    background: var(--branco);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.supervision-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.supervision-card h3 {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--cinza-claro);
+    color: var(--azul-primario);
+}
+
+/* Lista de Conversas */
+.conversation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.conversation-item {
+    border: 1px solid var(--cinza-claro);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.conversation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.conversation-id {
+    font-family: monospace;
+    background: var(--cinza-claro);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.risk-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.risk-badge.high {
+    background: var(--vermelho-emergencia);
+    color: white;
+}
+
+.risk-badge.medium {
+    background: var(--laranja-atencao);
+    color: white;
+}
+
+.risk-badge.low {
+    background: var(--amarelo-acolhimento);
+    color: var(--cinza-escuro);
+}
+
+.conversation-preview {
+    font-size: 14px;
+    color: var(--cinza-medio);
+    margin: 5px 0;
+    font-style: italic;
+}
+
+.conversation-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--cinza-medio);
+}
+
+/* Lista de Mediadores */
+.mediators-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.mediator-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.mediator-item:hover {
+    background: var(--cinza-claro);
+}
+
+.mediator-avatar {
+    width: 40px;
+    height: 40px;
+    background: var(--azul-primario);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.mediator-info {
+    flex: 1;
+}
+
+.mediator-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.mediator-status.available .status-dot {
+    background: var(--verde-seguro);
+}
+
+.mediator-status.busy .status-dot {
+    background: var(--laranja-atencao);
+}
+
+.mediator-status.away .status-dot {
+    background: var(--cinza-medio);
+}
+
+.mediator-stats {
+    display: flex;
+    gap: 10px;
+}
+
+.mediator-stats .stat {
+    background: var(--cinza-claro);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* Ferramentas Rápidas */
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.tool-btn {
+    background: var(--cinza-claro);
+    border: none;
+    padding: 15px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.tool-btn:hover {
+    background: var(--azul-primario);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.tool-icon {
+    font-size: 24px;
+}
+
+/* Tabela de Conversas Sinalizadas */
+.flagged-table {
+    overflow-x: auto;
+}
+
+.flagged-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.flagged-table th {
+    background: var(--cinza-claro);
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--cinza-escuro);
+    border-bottom: 2px solid var(--cinza-medio);
+}
+
+.flagged-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--cinza-claro);
+}
+
+.flag-reason {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.flag-reason.suicide {
+    background: rgba(220, 53, 69, 0.1);
+    color: var(--vermelho-emergencia);
+}
+
+.flag-reason.selfharm {
+    background: rgba(255, 193, 7, 0.1);
+    color: var(--laranja-atencao);
+}
+
+.flag-reason.aggression {
+    background: rgba(108, 117, 125, 0.1);
+    color: var(--cinza-escuro);
+}
+
+.flag-reason.crisis {
+    background: rgba(23, 162, 184, 0.1);
+    color: var(--azul-primario);
+}
+
+.btn-action {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 5px;
+    transition: opacity 0.3s ease;
+}
+
+.btn-action.review {
+    background: var(--azul-primario);
+    color: white;
+}
+
+.btn-action.dismiss {
+    background: var(--cinza-medio);
+    color: white;
+}
+
+.btn-action:hover {
+    opacity: 0.8;
+}
+
+/* Botões Pequenos */
+.btn-small {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    margin-top: 5px;
+    align-self: flex-start;
+}
