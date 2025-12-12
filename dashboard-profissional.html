@@ -158,7 +158,7 @@
                             <strong>Histórico:</strong> Ideaçāo suicida recorrente, histórico de depressão, isolamento social
                         </div>
                     </div>
-                    <button class="btn btn-emergency" onclick="event.stopPropagation(); startEmergencySession('patient1')">
+                    <button class="btn btn-emergency" onclick="event.stopPropagation(); startEmergencySession('patient1', 'João Silva', 'high')">
                         Atender Agora
                     </button>
                 </div>
@@ -176,7 +176,7 @@
                             <strong>Queixa principal:</strong> Crises de pânico, insônia, dificuldade de concentração
                         </div>
                     </div>
-                    <button class="btn btn-primary" onclick="event.stopPropagation(); scheduleSession('patient2')">
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); scheduleSession('patient2', 'Mariana Oliveira')">
                         Agendar Sessão
                     </button>
                 </div>
@@ -187,7 +187,7 @@
         <div class="card">
             <h3>📅 Agenda de Hoje</h3>
             <div class="schedule-grid">
-                <div class="schedule-slot booked">
+                <div class="schedule-slot booked" onclick="openChatSession('pedro-santos', 'Pedro Santos')">
                     <strong>09:00 - 09:50</strong>
                     <div>Pedro Santos</div>
                     <div style="font-size: 12px; color: var(--cinza-medio);">Follow-up Depressão</div>
@@ -195,16 +195,16 @@
                 <div class="schedule-slot available">
                     <strong>10:00 - 10:50</strong>
                     <div>Disponível</div>
-                    <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px; margin-top: 5px;">
+                    <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px; margin-top: 5px;" onclick="blockScheduleSlot('10:00')">
                         Bloquear
                     </button>
                 </div>
-                <div class="schedule-slot booked">
+                <div class="schedule-slot booked" onclick="openChatSession('ana-beatriz', 'Ana Beatriz')">
                     <strong>11:00 - 11:50</strong>
                     <div>Ana Beatriz</div>
                     <div style="font-size: 12px; color: var(--cinza-medio);">Avaliação Inicial</div>
                 </div>
-                <div class="schedule-slot booked">
+                <div class="schedule-slot booked" onclick="openChatSession('carlos-mendes', 'Carlos Mendes')">
                     <strong>14:00 - 14:50</strong>
                     <div>Carlos Mendes</div>
                     <div style="font-size: 12px; color: var(--cinza-medio);">TCC - Sessão 3</div>
@@ -224,15 +224,15 @@
             </div>
             
             <div style="margin-top: 20px;">
-                <button class="btn btn-primary" onclick="openClinicalNotes()">
+                <a href="anotacoes-clinicas.html" class="btn btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                     📝 Anotações Clínicas
-                </button>
-                <button class="btn btn-primary" onclick="openPrescriptions()">
+                </a>
+                <a href="prescricoes.html" class="btn btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                     💊 Prescrições e Encaminhamentos
-                </button>
-                <button class="btn btn-primary" onclick="generateClinicalReport()">
+                </a>
+                <a href="relatorio-clinico.html" class="btn btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                     📊 Relatório Clínico
-                </button>
+                </a>
             </div>
         </div>
 
@@ -240,19 +240,19 @@
         <div class="card">
             <h3>⏰ Próximas Sessões</h3>
             <div style="max-height: 300px; overflow-y: auto;">
-                <div style="padding: 10px; border-bottom: 1px solid var(--cinza-claro);">
+                <div style="padding: 10px; border-bottom: 1px solid var(--cinza-claro); cursor: pointer;" onclick="openChatSession('joao-silva-tomorrow', 'João Silva')">
                     <strong>Amanhã - 09:00</strong>
                     <div style="font-size: 14px; color: var(--cinza-medio);">
                         João Silva • Avaliação de risco
                     </div>
                 </div>
-                <div style="padding: 10px; border-bottom: 1px solid var(--cinza-claro);">
+                <div style="padding: 10px; border-bottom: 1px solid var(--cinza-claro); cursor: pointer;" onclick="openChatSession('mariana-oliveira-tomorrow', 'Mariana Oliveira')">
                     <strong>Amanhã - 14:00</strong>
                     <div style="font-size: 14px; color: var(--cinza-medio);">
                         Mariana Oliveira • Primeira sessão TCC
                     </div>
                 </div>
-                <div style="padding: 10px; border-bottom: 1px solid var(--cinza-claro);">
+                <div style="padding: 10px; border-bottom: 1px solid var(--cinza-claro); cursor: pointer;" onclick="openChatSession('carlos-mendes-followup', 'Carlos Mendes')">
                     <strong>05/12 - 10:00</strong>
                     <div style="font-size: 14px; color: var(--cinza-medio);">
                         Carlos Mendes • Follow-up medicação
@@ -287,39 +287,301 @@
 
     <script>
         function openPatientChart(patientId) {
-            window.location.href = `patient-chart.html?patient=${patientId}`;
+            // Redirecionar para a página de prontuário do paciente
+            // Em produção, esta função abriria o prontuário completo
+            alert(`Abrindo prontuário do paciente ${getPatientName(patientId)}\n\nEm produção, esta página mostraria:\n• Histórico completo\n• Anotações clínicas\n• Evolução do tratamento\n• Prescrições\n• Relatórios`);
         }
         
-        function startEmergencySession(patientId) {
-            window.location.href = `professional-chat.html?patient=${patientId}&emergency=true`;
+        function startEmergencySession(patientId, patientName, riskLevel) {
+            // Iniciar sessão de emergência direto no chat
+            if (confirm(`Iniciar sessão de emergência com ${patientName}?\nRisco: ${riskLevel === 'high' ? 'ALTO' : 'MÉDIO'}\n\nO paciente será direcionado para a sala de chat.`)) {
+                // Redirecionar para o chat.html com parâmetros específicos
+                window.location.href = `chat.html?user=profissional&patient=${patientId}&name=${encodeURIComponent(patientName)}&emergency=true&risk=${riskLevel}&role=professional`;
+            }
         }
         
-        function scheduleSession(patientId) {
-            alert(`Agendando sessão para paciente ${patientId}...`);
+        function openChatSession(patientId, patientName) {
+            // Abrir sessão de chat regular
+            if (confirm(`Iniciar sessão de chat com ${patientName}?`)) {
+                window.location.href = `chat.html?user=profissional&patient=${patientId}&name=${encodeURIComponent(patientName)}&role=professional`;
+            }
+        }
+        
+        function scheduleSession(patientId, patientName) {
+            // Abrir modal de agendamento
+            const date = prompt(`Agendar sessão para ${patientName}\nDigite a data (DD/MM/AAAA):`);
+            if (!date) return;
+            
+            const time = prompt('Digite o horário (HH:MM):');
+            if (!time) return;
+            
+            if (date && time) {
+                alert(`✅ Sessão agendada para ${patientName}\n📅 ${date} às ${time}`);
+                
+                // Adicionar à lista de próximas sessões
+                const nextSessions = document.querySelector('.card:nth-last-child(2)');
+                if (nextSessions) {
+                    const sessionDiv = document.createElement('div');
+                    sessionDiv.style.padding = '10px';
+                    sessionDiv.style.borderBottom = '1px solid var(--cinza-claro)';
+                    sessionDiv.style.cursor = 'pointer';
+                    sessionDiv.onclick = () => openChatSession(patientId.toLowerCase().replace(' ', '-'), patientName);
+                    sessionDiv.innerHTML = `
+                        <strong>${date} - ${time}</strong>
+                        <div style="font-size: 14px; color: var(--cinza-medio);">
+                            ${patientName} • Sessão agendada
+                        </div>
+                    `;
+                    nextSessions.querySelector('div').prepend(sessionDiv);
+                }
+            }
+        }
+        
+        function getPatientName(patientId) {
+            const patients = {
+                'patient1': 'João Silva',
+                'patient2': 'Mariana Oliveira',
+                'pedro-santos': 'Pedro Santos',
+                'ana-beatriz': 'Ana Beatriz',
+                'carlos-mendes': 'Carlos Mendes'
+            };
+            return patients[patientId] || 'Paciente';
+        }
+        
+        function blockScheduleSlot(timeSlot) {
+            if (confirm(`Bloquear horário ${timeSlot}?`)) {
+                const slots = document.querySelectorAll('.schedule-slot.available');
+                let targetSlot = null;
+                
+                slots.forEach(slot => {
+                    if (slot.querySelector('strong').textContent.includes(timeSlot)) {
+                        targetSlot = slot;
+                    }
+                });
+                
+                if (targetSlot) {
+                    targetSlot.classList.remove('available');
+                    targetSlot.classList.add('booked');
+                    targetSlot.innerHTML = `
+                        <strong>${timeSlot}</strong>
+                        <div>Bloqueado</div>
+                        <div style="font-size: 12px; color: var(--cinza-medio);">Manutenção/Reunião</div>
+                        <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px; margin-top: 5px;" onclick="unblockScheduleSlot('${timeSlot}')">
+                            Desbloquear
+                        </button>
+                    `;
+                    targetSlot.onclick = null; // Remove o clique para abrir chat
+                }
+            }
+        }
+        
+        function unblockScheduleSlot(timeSlot) {
+            if (confirm(`Desbloquear horário ${timeSlot}?`)) {
+                const slots = document.querySelectorAll('.schedule-slot.booked');
+                let targetSlot = null;
+                
+                slots.forEach(slot => {
+                    if (slot.querySelector('strong').textContent.includes(timeSlot)) {
+                        targetSlot = slot;
+                    }
+                });
+                
+                if (targetSlot) {
+                    targetSlot.classList.remove('booked');
+                    targetSlot.classList.add('available');
+                    targetSlot.innerHTML = `
+                        <strong>${timeSlot}</strong>
+                        <div>Disponível</div>
+                        <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px; margin-top: 5px;" onclick="blockScheduleSlot('${timeSlot}')">
+                            Bloquear
+                        </button>
+                    `;
+                    // Não adiciona onclick pois é um slot disponível
+                }
+            }
         }
         
         function openAssessment(tool) {
-            alert(`Abrindo ferramenta de avaliação: ${tool}`);
+            // Abrir ferramentas de avaliação em modal
+            const toolNames = {
+                'phq9': 'PHQ-9 (Patient Health Questionnaire)',
+                'gad7': 'GAD-7 (Generalized Anxiety Disorder)',
+                'bdi': 'BDI (Beck Depression Inventory)',
+                'who5': 'WHO-5 (Well-Being Index)',
+                'custom': 'Avaliação Customizada'
+            };
+            
+            const toolDescription = {
+                'phq9': 'Avaliação de sintomas depressivos com 9 questões.',
+                'gad7': 'Avaliação de sintomas de ansiedade generalizada.',
+                'bdi': 'Inventário de depressão de Beck - versão completa.',
+                'who5': 'Índice de bem-estar da Organização Mundial da Saúde.',
+                'custom': 'Crie sua própria avaliação personalizada.'
+            };
+            
+            // Criar modal dinâmico
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.zIndex = '1000';
+            modal.style.left = '0';
+            modal.style.top = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            modal.style.display = 'flex';
+            modal.style.alignItems = 'center';
+            modal.style.justifyContent = 'center';
+            
+            modal.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="margin: 0; color: var(--azul-profissional);">${toolNames[tool]}</h3>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--cinza-medio);">&times;</button>
+                    </div>
+                    <p>${toolDescription[tool]}</p>
+                    <div style="margin-top: 20px; padding: 15px; background: var(--cinza-claro); border-radius: 8px;">
+                        <strong>Em um ambiente real:</strong>
+                        <ul style="margin: 10px 0 10px 20px;">
+                            <li>Questionário completo seria exibido</li>
+                            <li>Possibilidade de aplicação ao paciente</li>
+                            <li>Análise automática de resultados</li>
+                            <li>Armazenamento no prontuário</li>
+                        </ul>
+                    </div>
+                    <div style="margin-top: 25px; display: flex; justify-content: flex-end; gap: 10px;">
+                        <button class="btn btn-secondary" onclick="this.parentElement.parentElement.parentElement.remove()">Fechar</button>
+                        <button class="btn btn-primary" onclick="startAssessment('${tool}')">Iniciar Avaliação</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        function startAssessment(tool) {
+            alert(`Iniciando avaliação: ${tool}\n\nNo protótipo, esta funcionalidade abriria o questionário completo.\n\nPara testar com um paciente, você pode:\n1. Iniciar uma sessão de chat\n2. Enviar o link da avaliação\n3. Analisar os resultados juntos`);
+            // Fechar modal
+            document.querySelector('div[style*="position: fixed"][style*="background: rgba(0,0,0,0.8)"]')?.remove();
         }
         
         function openClinicalNotes() {
-            alert('Abrindo anotações clínicas...');
+            window.location.href = "anotacoes-clinicas.html";
         }
         
         function openPrescriptions() {
-            alert('Abrindo prescrições e encaminhamentos...');
+            window.location.href = "prescricoes.html";
         }
         
         function generateClinicalReport() {
-            alert('Gerando relatório clínico...');
+            window.location.href = "relatorio-clinico.html";
+        }
+        
+        // Simular notificações e atualizações em tempo real
+        let patientCount = 8;
+        let pendingReferrals = 3;
+        
+        function updateMetrics() {
+            // Atualizar métricas periodicamente
+            patientCount += Math.floor(Math.random() * 2) - 1;
+            patientCount = Math.max(5, Math.min(12, patientCount));
+            
+            pendingReferrals += Math.floor(Math.random() * 2) - 1;
+            pendingReferrals = Math.max(1, Math.min(6, pendingReferrals));
+            
+            // Atualizar valores na interface
+            const metricValues = document.querySelectorAll('.metric-value');
+            if (metricValues.length >= 4) {
+                metricValues[0].textContent = patientCount;
+                metricValues[1].textContent = pendingReferrals;
+                
+                // Atualizar tempo de disponibilidade
+                const nextAvailability = Math.floor(Math.random() * 90) + 15;
+                metricValues[2].textContent = `${nextAvailability}min`;
+            }
         }
         
         // Notificação de novo encaminhamento (simulação)
-        setTimeout(() => {
-            if(confirm('Novo encaminhamento urgente recebido! Deseja visualizar?')) {
-                openPatientChart('newPatient');
+        let notificationCount = 0;
+        
+        function showNewReferralNotification() {
+            notificationCount++;
+            if (notificationCount <= 2) { // Limitar a 2 notificações
+                setTimeout(() => {
+                    if(confirm(`Novo encaminhamento urgente recebido! Deseja visualizar?`)) {
+                        // Criar novo card de paciente
+                        const referralsContainer = document.querySelector('.card:nth-child(2)');
+                        if (referralsContainer) {
+                            const newPatient = document.createElement('div');
+                            newPatient.className = 'patient-card urgent';
+                            newPatient.style.animation = 'pulse 1s';
+                            const newPatientId = `newPatient${notificationCount}`;
+                            const newPatientName = notificationCount === 1 ? 'Roberto Alves' : 'Fernanda Costa';
+                            
+                            newPatient.innerHTML = `
+                                <div style="display: flex; justify-content: between; align-items: start;">
+                                    <div style="flex: 1;">
+                                        <strong>${newPatientName} - ${notificationCount === 1 ? '35 anos' : '25 anos'}</strong>
+                                        <div style="font-size: 14px; color: var(--cinza-medio);">
+                                            <span class="risk-indicator risk-${notificationCount === 1 ? 'high' : 'medium'}"></span>
+                                            ${notificationCount === 1 ? 'Crise de Pânico' : 'Depressão Moderada'} • Encaminhado agora
+                                        </div>
+                                        <div style="margin-top: 10px; font-size: 14px;">
+                                            <strong>Queixa:</strong> ${notificationCount === 1 ? 'Múltiplas crises de pânico diárias' : 'Humor deprimido persistente há 3 meses'}
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-emergency" onclick="event.stopPropagation(); startEmergencySession('${newPatientId}', '${newPatientName}', '${notificationCount === 1 ? 'high' : 'medium'}')">
+                                        Atender Agora
+                                    </button>
+                                </div>
+                            `;
+                            newPatient.onclick = () => openPatientChart(newPatientId);
+                            referralsContainer.appendChild(newPatient);
+                        }
+                    }
+                }, Math.random() * 20000 + 10000); // Entre 10-30 segundos
             }
-        }, 10000);
+        }
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Atualizar métricas a cada 30 segundos
+            setInterval(updateMetrics, 30000);
+            
+            // Mostrar notificações simuladas
+            setTimeout(showNewReferralNotification, 5000);
+            setTimeout(showNewReferralNotification, 20000);
+            
+            // Adicionar estilo de animação para novos itens
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes pulse {
+                    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+                    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+                    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+                }
+                .btn-emergency {
+                    background: var(--vermelho-emergencia) !important;
+                    color: white !important;
+                    border: none !important;
+                    padding: 8px 16px !important;
+                    border-radius: 6px !important;
+                    cursor: pointer !important;
+                    font-weight: bold !important;
+                    white-space: nowrap !important;
+                }
+                .btn-emergency:hover {
+                    background: #c82333 !important;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Adicionar evento de clique em todos os slots de agenda
+            document.querySelectorAll('.schedule-slot.booked').forEach(slot => {
+                const patientName = slot.querySelector('div:nth-child(2)').textContent;
+                const patientId = patientName.toLowerCase().replace(' ', '-');
+                slot.onclick = () => openChatSession(patientId, patientName);
+            });
+        });
     </script>
 </body>
 </html>

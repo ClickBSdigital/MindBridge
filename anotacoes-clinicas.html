@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Anotações Clínicas</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/anotacoes.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">MindBridge - Anotações Clínicas</div>
+            <div class="user-menu">
+                <span>Dr. Silva (Psicólogo)</span>
+                <a href="dashboard-profissional.html" class="btn btn-secondary">← Voltar</a>
+                <a href="index.html" class="btn btn-warning">Sair</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- CABEÇALHO -->
+        <div class="notes-header">
+            <h1>📝 Anotações Clínicas</h1>
+            <p>Registros de sessões e acompanhamentos terapêuticos</p>
+            <div class="stats-header">
+                <div class="stat-badge">
+                    <span class="stat-number">24</span>
+                    <span class="stat-label">Pacientes Ativos</span>
+                </div>
+                <div class="stat-badge">
+                    <span class="stat-number">156</span>
+                    <span class="stat-label">Anotações</span>
+                </div>
+                <div class="stat-badge">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">Novas esta semana</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="notes-layout">
+            <!-- LISTA DE PACIENTES -->
+            <div class="patients-sidebar">
+                <div class="sidebar-header">
+                    <h3>👥 Pacientes</h3>
+                    <button class="btn btn-small btn-primary" onclick="addPatient()">+ Novo</button>
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" placeholder="🔍 Buscar paciente..." id="patientSearch">
+                </div>
+                
+                <div class="patients-list">
+                    <div class="patient-item active" onclick="selectPatient(1)">
+                        <div class="patient-avatar">JS</div>
+                        <div class="patient-info">
+                            <strong>João Silva</strong>
+                            <div class="patient-meta">
+                                <span>Última: 02/12</span>
+                                <span class="status-indicator active"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-item" onclick="selectPatient(2)">
+                        <div class="patient-avatar">AC</div>
+                        <div class="patient-info">
+                            <strong>Ana Costa</strong>
+                            <div class="patient-meta">
+                                <span>Última: 01/12</span>
+                                <span class="status-indicator scheduled"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-item" onclick="selectPatient(3)">
+                        <div class="patient-avatar">MO</div>
+                        <div class="patient-info">
+                            <strong>Mariana Oliveira</strong>
+                            <div class="patient-meta">
+                                <span>Última: 30/11</span>
+                                <span class="status-indicator inactive"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-item" onclick="selectPatient(4)">
+                        <div class="patient-avatar">RS</div>
+                        <div class="patient-info">
+                            <strong>Roberto Santos</strong>
+                            <div class="patient-meta">
+                                <span>Última: 29/11</span>
+                                <span class="status-indicator active"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-item" onclick="selectPatient(5)">
+                        <div class="patient-avatar">CM</div>
+                        <div class="patient-info">
+                            <strong>Carla Mendes</strong>
+                            <div class="patient-meta">
+                                <span>Última: 28/11</span>
+                                <span class="status-indicator follow-up"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ÁREA PRINCIPAL DE ANOTAÇÕES -->
+            <div class="notes-main">
+                <div class="notes-toolbar">
+                    <div class="toolbar-left">
+                        <h3 id="selectedPatientName">João Silva</h3>
+                        <div class="patient-details">
+                            <span class="badge-info">ID: #287</span>
+                            <span class="badge-success">Ativo</span>
+                            <span class="badge-warning">5 sessões</span>
+                        </div>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn btn-primary" onclick="newNote()">
+                            + Nova Anotação
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportNotes()">
+                            📤 Exportar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FORMULÁRIO DE NOVA ANOTAÇÃO -->
+                <div class="new-note-form" id="newNoteForm" style="display: none;">
+                    <h4>📝 Nova Anotação Clínica</h4>
+                    <div class="form-group">
+                        <label>Título</label>
+                        <input type="text" id="noteTitle" placeholder="Ex: Avaliação inicial, Sessão #3, Follow-up...">
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <select id="noteType">
+                            <option value="session">Sessão</option>
+                            <option value="assessment">Avaliação</option>
+                            <option value="progress">Progresso</option>
+                            <option value="incident">Incidente</option>
+                            <option value="followup">Follow-up</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Anotação</label>
+                        <textarea id="noteContent" rows="6" placeholder="Descreva a sessão, observações, intervenções, plano terapêutico..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Data</label>
+                            <input type="date" id="noteDate" value="2024-12-03">
+                        </div>
+                        <div class="form-group">
+                            <label>Próxima Sessão</label>
+                            <input type="date" id="nextSession">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Tags</label>
+                        <div class="tags-input">
+                            <input type="text" id="noteTags" placeholder="ansiedade, terapia-cognitiva, etc...">
+                            <small>Separar por vírgulas</small>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-secondary" onclick="cancelNote()">Cancelar</button>
+                        <button class="btn btn-primary" onclick="saveNote()">Salvar Anotação</button>
+                    </div>
+                </div>
+
+                <!-- LISTA DE ANOTAÇÕES -->
+                <div class="notes-list" id="notesList">
+                    <div class="note-card">
+                        <div class="note-header">
+                            <div class="note-title">Sessão #5 - Avaliação de Progresso</div>
+                            <div class="note-type session">Sessão</div>
+                        </div>
+                        <div class="note-date">02/12/2024 - 14:30</div>
+                        <div class="note-content">
+                            <p><strong>Observações:</strong> Paciente demonstra melhora significativa na regulação emocional. Relata que as técnicas de respiração têm sido eficientes em momentos de ansiedade.</p>
+                            <p><strong>Intervenções:</strong> Trabalhamos com reestruturação cognitiva dos pensamentos catastróficos. Introduzido conceito de aceitação radical.</p>
+                            <p><strong>Plano:</strong> Continuar com exercícios de mindfulness. Próxima sessão focar em habilidades sociais.</p>
+                        </div>
+                        <div class="note-footer">
+                            <div class="note-tags">
+                                <span class="tag">ansiedade</span>
+                                <span class="tag">terapia-cognitiva</span>
+                                <span class="tag">progresso</span>
+                            </div>
+                            <div class="note-actions">
+                                <button class="btn-action" onclick="editNote(1)">✏️ Editar</button>
+                                <button class="btn-action" onclick="deleteNote(1)">🗑️ Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-card">
+                        <div class="note-header">
+                            <div class="note-title">Sessão #4 - Trabalhando Autocompaixão</div>
+                            <div class="note-type session">Sessão</div>
+                        </div>
+                        <div class="note-date">25/11/2024 - 15:00</div>
+                        <div class="note-content">
+                            <p><strong>Tema:</strong> Autocrítica excessiva e perfeccionismo.</p>
+                            <p><strong>Atividade:</strong> Exercício da "carta de autocompaixão". Paciente teve dificuldade inicial, mas conseguiu expressar sentimentos de maneira mais gentil consigo mesmo.</p>
+                            <p><strong>Homework:</strong> Praticar autofala positiva diariamente.</p>
+                        </div>
+                        <div class="note-footer">
+                            <div class="note-tags">
+                                <span class="tag">autocompaixão</span>
+                                <span class="tag">perfeccionismo</span>
+                                <span class="tag">exercicio</span>
+                            </div>
+                            <div class="note-actions">
+                                <button class="btn-action" onclick="editNote(2)">✏️ Editar</button>
+                                <button class="btn-action" onclick="deleteNote(2)">🗑️ Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-card">
+                        <div class="note-header">
+                            <div class="note-title">Avaliação Inicial</div>
+                            <div class="note-type assessment">Avaliação</div>
+                        </div>
+                        <div class="note-date">11/11/2024 - 10:00</div>
+                        <div class="note-content">
+                            <p><strong>Queixa Principal:</strong> Ideação suicida recorrente, isolamento social, perda de interesse.</p>
+                            <p><strong>Histórico:</strong> Episódios depressivos anteriores, família com histórico de depressão.</p>
+                            <p><strong>Diagnóstico Provisório:</strong> Episódio depressivo moderado.</p>
+                            <p><strong>Plano Terapêutico:</strong> Terapia cognitivo-comportamental semanal. Monitoramento de risco.</p>
+                        </div>
+                        <div class="note-footer">
+                            <div class="note-tags">
+                                <span class="tag">avaliação</span>
+                                <span class="tag">depressão</span>
+                                <span class="tag">TCC</span>
+                            </div>
+                            <div class="note-actions">
+                                <button class="btn-action" onclick="editNote(3)">✏️ Editar</button>
+                                <button class="btn-action" onclick="deleteNote(3)">🗑️ Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESUMO DO PACIENTE -->
+                <div class="patient-summary">
+                    <h4>📋 Resumo do Paciente</h4>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="summary-label">Início do Tratamento</div>
+                            <div class="summary-value">11/11/2024</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Sessões Realizadas</div>
+                            <div class="summary-value">5</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Próxima Sessão</div>
+                            <div class="summary-value">09/12/2024</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Foco Principal</div>
+                            <div class="summary-value">Depressão, Ansiedade</div>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Observações Importantes</div>
+                        <div class="summary-value">
+                            <ul>
+                                <li>Monitorar risco de suicídio</li>
+                                <li>Familiar com histórico psiquiátrico</li>
+                                <li>Responde bem a técnicas de mindfulness</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE EDIÇÃO -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3>✏️ Editar Anotação</h3>
+            <div class="modal-body">
+                <p>Funcionalidade de edição completa disponível na versão premium.</p>
+                <p>No protótipo, você pode visualizar as anotações existentes.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/anotacoes.js"></script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Prescrições e Encaminhamentos</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/prescricoes.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">MindBridge - Prescrições</div>
+            <div class="user-menu">
+                <span>Dr. Silva (Psicólogo)</span>
+                <a href="dashboard-profissional.html" class="btn btn-secondary">← Voltar</a>
+                <a href="index.html" class="btn btn-warning">Sair</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- CABEÇALHO -->
+        <div class="prescriptions-header">
+            <h1>💊 Prescrições e Encaminhamentos</h1>
+            <p>Gerenciamento de medicamentos, receitas e encaminhamentos para especialistas</p>
+            <div class="prescription-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">💊</div>
+                    <div class="stat-info">
+                        <div class="stat-number">18</div>
+                        <div class="stat-label">Prescrições Ativas</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏥</div>
+                    <div class="stat-info">
+                        <div class="stat-number">9</div>
+                        <div class="stat-label">Encaminhamentos</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏰</div>
+                    <div class="stat-info">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Renovar em 7 dias</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="prescriptions-tabs">
+            <button class="tab-btn active" onclick="switchTab('prescriptions')">💊 Prescrições</button>
+            <button class="tab-btn" onclick="switchTab('referrals')">🏥 Encaminhamentos</button>
+            <button class="tab-btn" onclick="switchTab('templates')">📋 Modelos</button>
+            <button class="tab-btn" onclick="switchTab('history')">📜 Histórico</button>
+        </div>
+
+        <!-- CONTEÚDO DAS TABS -->
+        <div class="tab-content active" id="prescriptionsTab">
+            <div class="tab-header">
+                <h3>💊 Prescrições de Medicamentos</h3>
+                <button class="btn btn-primary" onclick="newPrescription()">
+                    + Nova Prescrição
+                </button>
+            </div>
+
+            <div class="prescriptions-grid">
+                <div class="prescription-card">
+                    <div class="prescription-header">
+                        <div class="medication-info">
+                            <h4>Sertralina</h4>
+                            <div class="medication-details">
+                                <span class="dosage">50mg</span>
+                                <span class="frequency">1x ao dia</span>
+                            </div>
+                        </div>
+                        <div class="patient-info">
+                            <div class="patient-avatar-small">JS</div>
+                            <div>João Silva</div>
+                        </div>
+                    </div>
+                    <div class="prescription-body">
+                        <div class="prescription-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Início:</span>
+                                <span class="meta-value">15/11/2024</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Duração:</span>
+                                <span class="meta-value">30 dias</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Status:</span>
+                                <span class="status-active">Ativo</span>
+                            </div>
+                        </div>
+                        <div class="prescription-instructions">
+                            <strong>Instruções:</strong> Tomar pela manhã, após o café. Monitorar possíveis efeitos colaterais.
+                        </div>
+                    </div>
+                    <div class="prescription-footer">
+                        <div class="actions">
+                            <button class="btn-action" onclick="renewPrescription(1)">🔄 Renovar</button>
+                            <button class="btn-action" onclick="printPrescription(1)">🖨️ Imprimir</button>
+                            <button class="btn-action" onclick="editPrescription(1)">✏️ Editar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prescription-card">
+                    <div class="prescription-header">
+                        <div class="medication-info">
+                            <h4>Alprazolam</h4>
+                            <div class="medication-details">
+                                <span class="dosage">0.5mg</span>
+                                <span class="frequency">SOS</span>
+                            </div>
+                        </div>
+                        <div class="patient-info">
+                            <div class="patient-avatar-small">AC</div>
+                            <div>Ana Costa</div>
+                        </div>
+                    </div>
+                    <div class="prescription-body">
+                        <div class="prescription-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Início:</span>
+                                <span class="meta-value">10/11/2024</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Duração:</span>
+                                <span class="meta-value">15 dias</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Status:</span>
+                                <span class="status-warning">Renovar em 5 dias</span>
+                            </div>
+                        </div>
+                        <div class="prescription-instructions">
+                            <strong>Instruções:</strong> Usar apenas em crises de ansiedade aguda. Máximo 2 comprimidos por dia.
+                        </div>
+                    </div>
+                    <div class="prescription-footer">
+                        <div class="actions">
+                            <button class="btn-action" onclick="renewPrescription(2)">🔄 Renovar</button>
+                            <button class="btn-action" onclick="printPrescription(2)">🖨️ Imprimir</button>
+                            <button class="btn-action" onclick="editPrescription(2)">✏️ Editar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prescription-card">
+                    <div class="prescription-header">
+                        <div class="medication-info">
+                            <h4>Clonazepam</h4>
+                            <div class="medication-details">
+                                <span class="dosage">2mg</span>
+                                <span class="frequency">1x ao dia (noite)</span>
+                            </div>
+                        </div>
+                        <div class="patient-info">
+                            <div class="patient-avatar-small">MO</div>
+                            <div>Mariana Oliveira</div>
+                        </div>
+                    </div>
+                    <div class="prescription-body">
+                        <div class="prescription-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Início:</span>
+                                <span class="meta-value">05/11/2024</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Duração:</span>
+                                <span class="meta-value">60 dias</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Status:</span>
+                                <span class="status-active">Ativo</span>
+                            </div>
+                        </div>
+                        <div class="prescription-instructions">
+                            <strong>Instruções:</strong> Tomar antes de dormir. Evitar dirigir após administração.
+                        </div>
+                    </div>
+                    <div class="prescription-footer">
+                        <div class="actions">
+                            <button class="btn-action" onclick="renewPrescription(3)">🔄 Renovar</button>
+                            <button class="btn-action" onclick="printPrescription(3)">🖨️ Imprimir</button>
+                            <button class="btn-action" onclick="editPrescription(3)">✏️ Editar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="referralsTab">
+            <div class="tab-header">
+                <h3>🏥 Encaminhamentos</h3>
+                <button class="btn btn-primary" onclick="newReferral()">
+                    + Novo Encaminhamento
+                </button>
+            </div>
+
+            <div class="referrals-list">
+                <div class="referral-card">
+                    <div class="referral-header">
+                        <h4>Psiquiatra - Dr. Carlos Mendes</h4>
+                        <span class="referral-status pending">Pendente</span>
+                    </div>
+                    <div class="referral-body">
+                        <div class="patient-info">
+                            <div class="patient-avatar-small">JS</div>
+                            <div>
+                                <strong>João Silva</strong>
+                                <div class="patient-id">ID: #287</div>
+                            </div>
+                        </div>
+                        <div class="referral-details">
+                            <p><strong>Motivo:</strong> Avaliação para ajuste medicamentoso e acompanhamento psiquiátrico.</p>
+                            <p><strong>Recomendações:</strong> Paciente com depressão moderada, necessita avaliação para possível associação medicamentosa.</p>
+                        </div>
+                        <div class="referral-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Solicitado em:</span>
+                                <span class="meta-value">25/11/2024</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Especialidade:</span>
+                                <span class="meta-value">Psiquiatria</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="referral-footer">
+                        <button class="btn btn-primary" onclick="sendReminder(1)">🔔 Lembrar</button>
+                        <button class="btn btn-secondary" onclick="printReferral(1)">🖨️ Imprimir</button>
+                    </div>
+                </div>
+
+                <div class="referral-card">
+                    <div class="referral-header">
+                        <h4>Neurologista - Dra. Ana Lima</h4>
+                        <span class="referral-status completed">Concluído</span>
+                    </div>
+                    <div class="referral-body">
+                        <div class="patient-info">
+                            <div class="patient-avatar-small">AC</div>
+                            <div>
+                                <strong>Ana Costa</strong>
+                                <div class="patient-id">ID: #156</div>
+                            </div>
+                        </div>
+                        <div class="referral-details">
+                            <p><strong>Motivo:</strong> Avaliação de cefaleia crônica e possíveis fatores neurológicos para ansiedade.</p>
+                            <p><strong>Resultado:</strong> Encaminhamento aceito. Consulta agendada para 15/12/2024.</p>
+                        </div>
+                        <div class="referral-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Solicitado em:</span>
+                                <span class="meta-value">20/11/2024</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Especialidade:</span>
+                                <span class="meta-value">Neurologia</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="referral-footer">
+                        <button class="btn btn-secondary" onclick="viewReport(1)">📋 Ver Relatório</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORMULÁRIO DE NOVA PRESCRIÇÃO -->
+        <div class="new-prescription-form" id="newPrescriptionForm" style="display: none;">
+            <h3>💊 Nova Prescrição</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Paciente</label>
+                    <select id="prescriptionPatient">
+                        <option value="">Selecionar paciente...</option>
+                        <option value="1">João Silva</option>
+                        <option value="2">Ana Costa</option>
+                        <option value="3">Mariana Oliveira</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Medicamento</label>
+                    <input type="text" id="medicationName" placeholder="Nome do medicamento">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Dosagem</label>
+                        <input type="text" id="medicationDosage" placeholder="Ex: 50mg">
+                    </div>
+                    <div class="form-group">
+                        <label>Frequência</label>
+                        <select id="medicationFrequency">
+                            <option value="1x">1x ao dia</option>
+                            <option value="2x">2x ao dia</option>
+                            <option value="3x">3x ao dia</option>
+                            <option value="sos">SOS</option>
+                            <option value="weekly">Semanal</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data de Início</label>
+                        <input type="date" id="startDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Duração</label>
+                        <select id="prescriptionDuration">
+                            <option value="7">7 dias</option>
+                            <option value="15">15 dias</option>
+                            <option value="30" selected>30 dias</option>
+                            <option value="60">60 dias</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Instruções</label>
+                    <textarea id="prescriptionInstructions" rows="4" placeholder="Instruções detalhadas para o paciente..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="cancelPrescription()">Cancelar</button>
+                    <button class="btn btn-primary" onclick="savePrescription()">Salvar Prescrição</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE IMPRESSÃO -->
+    <div id="printModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closePrintModal()">&times;</span>
+            <h3>🖨️ Prescrição para Impressão</h3>
+            <div class="print-preview">
+                <div class="prescription-print">
+                    <div class="print-header">
+                        <h2>RECEITUÁRIO MÉDICO</h2>
+                        <div class="print-info">
+                            <div>CRM: 12345/SP</div>
+                            <div>Dr. Silva - Psicólogo</div>
+                            <div>Data: 03/12/2024</div>
+                        </div>
+                    </div>
+                    <div class="print-body">
+                        <div class="print-patient">
+                            <strong>Paciente:</strong> João Silva
+                        </div>
+                        <div class="print-medication">
+                            <strong>Medicamento:</strong> Sertralina 50mg
+                        </div>
+                        <div class="print-instructions">
+                            <strong>Posologia:</strong> 1 comprimido ao dia, pela manhã
+                        </div>
+                        <div class="print-duration">
+                            <strong>Duração:</strong> 30 dias
+                        </div>
+                        <div class="print-instructions">
+                            <strong>Instruções:</strong> Tomar após o café da manhã. Não interromper o uso sem orientação médica.
+                        </div>
+                    </div>
+                    <div class="print-footer">
+                        <div class="signature">
+                            __________________________
+                            <div>Assinatura do Profissional</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir</button>
+                <button class="btn btn-secondary" onclick="closePrintModal()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/prescricoes.js"></script>
+</body>
+</html>

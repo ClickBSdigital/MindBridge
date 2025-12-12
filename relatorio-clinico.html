@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Relatório Clínico</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/relatorio-clinico.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">MindBridge - Relatório Clínico</div>
+            <div class="user-menu">
+                <span>Dr. Silva (Psicólogo)</span>
+                <a href="dashboard-profissional.html" class="btn btn-secondary">← Voltar</a>
+                <a href="index.html" class="btn btn-warning">Sair</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- CABEÇALHO -->
+        <div class="report-header">
+            <h1>📊 Relatório Clínico</h1>
+            <p>Análise clínica, evolução do paciente e indicadores terapêuticos</p>
+            
+            <div class="report-controls">
+                <div class="control-group">
+                    <label>Paciente:</label>
+                    <select id="patientSelect" onchange="loadPatientData()">
+                        <option value="1">João Silva (ID: #287)</option>
+                        <option value="2">Ana Costa (ID: #156)</option>
+                        <option value="3">Mariana Oliveira (ID: #042)</option>
+                        <option value="4">Roberto Santos (ID: #103)</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label>Período:</label>
+                    <select id="periodSelect" onchange="updateReport()">
+                        <option value="all">Todo o tratamento</option>
+                        <option value="last30">Últimos 30 dias</option>
+                        <option value="last90">Últimos 90 dias</option>
+                        <option value="custom">Personalizado</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label>Tipo de Relatório:</label>
+                    <select id="reportType" onchange="updateReport()">
+                        <option value="comprehensive">Completo</option>
+                        <option value="evolution">Evolução</option>
+                        <option value="synthesis">Síntese Clínica</option>
+                        <option value="discharge">Alta Médica</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESUMO RÁPIDO -->
+        <div class="quick-summary">
+            <div class="summary-card">
+                <div class="summary-icon">📅</div>
+                <div class="summary-info">
+                    <div class="summary-value">5</div>
+                    <div class="summary-label">Sessões</div>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <div class="summary-icon">⏱️</div>
+                <div class="summary-info">
+                    <div class="summary-value">18.4</div>
+                    <div class="summary-label">Duração Média (min)</div>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <div class="summary-icon">📈</div>
+                <div class="summary-info">
+                    <div class="summary-value">+65%</div>
+                    <div class="summary-label">Melhora Sintomas</div>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <div class="summary-icon">🎯</div>
+                <div class="summary-info">
+                    <div class="summary-value">3/5</div>
+                    <div class="summary-label">Metas Alcançadas</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="report-grid">
+            <!-- EVOLUÇÃO CLÍNICA -->
+            <div class="report-section">
+                <h3>📈 Evolução Clínica</h3>
+                <div class="evolution-chart">
+                    <div class="chart-container" id="symptomsChart">
+                        <!-- Gráfico será gerado por JS -->
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: var(--azul-profissional);"></span>
+                            <span>Ansiedade</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: var(--vermelho-emergencia);"></span>
+                            <span>Depressão</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: var(--verde-seguro);"></span>
+                            <span>Funcionamento</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIAGNÓSTICO E TRATAMENTO -->
+            <div class="report-section">
+                <h3>🏥 Diagnóstico e Tratamento</h3>
+                <div class="diagnosis-card">
+                    <div class="diagnosis-item">
+                        <div class="diagnosis-label">CID-10 Principal:</div>
+                        <div class="diagnosis-value">F32.1 - Episódio depressivo moderado</div>
+                    </div>
+                    <div class="diagnosis-item">
+                        <div class="diagnosis-label">CID-10 Secundário:</div>
+                        <div class="diagnosis-value">F41.1 - Transtorno de ansiedade generalizada</div>
+                    </div>
+                    <div class="diagnosis-item">
+                        <div class="diagnosis-label">Início do Tratamento:</div>
+                        <div class="diagnosis-value">11/11/2024</div>
+                    </div>
+                    <div class="diagnosis-item">
+                        <div class="diagnosis-label">Abordagem Terapêutica:</div>
+                        <div class="diagnosis-value">Terapia Cognitivo-Comportamental (TCC)</div>
+                    </div>
+                    <div class="diagnosis-item">
+                        <div class="diagnosis-label">Frequência:</div>
+                        <div class="diagnosis-value">Semanal</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESCALAS APLICADAS -->
+            <div class="report-section">
+                <h3>📋 Escalas de Avaliação</h3>
+                <div class="scales-grid">
+                    <div class="scale-card">
+                        <div class="scale-name">PHQ-9</div>
+                        <div class="scale-score">15 → 8</div>
+                        <div class="scale-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        <div class="scale-interpretation">Moderado → Leve</div>
+                    </div>
+                    
+                    <div class="scale-card">
+                        <div class="scale-name">GAD-7</div>
+                        <div class="scale-score">12 → 6</div>
+                        <div class="scale-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 50%"></div>
+                            </div>
+                        </div>
+                        <div class="scale-interpretation">Moderado → Leve</div>
+                    </div>
+                    
+                    <div class="scale-card">
+                        <div class="scale-name">WHO-5</div>
+                        <div class="scale-score">8 → 14</div>
+                        <div class="scale-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        <div class="scale-interpretation">Baixo → Moderado</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTERVENÇÕES REALIZADAS -->
+            <div class="report-section full-width">
+                <h3>🛠️ Intervenções Realizadas</h3>
+                <div class="interventions-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sessão</th>
+                                <th>Data</th>
+                                <th>Intervenção</th>
+                                <th>Objetivo</th>
+                                <th>Resultado</th>
+                                <th>Próximos Passos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#1</td>
+                                <td>11/11</td>
+                                <td>Avaliação Inicial, Escuta Ativa</td>
+                                <td>Estabelecer vínculo, entender queixa</td>
+                                <td><span class="result-positive">✓ Alcançado</span></td>
+                                <td>Plano terapêutico</td>
+                            </tr>
+                            <tr>
+                                <td>#2</td>
+                                <td>18/11</td>
+                                <td>Psicoeducação, Técnicas Respiração</td>
+                                <td>Entendimento sintomas, regulação emocional</td>
+                                <td><span class="result-positive">✓ Alcançado</span></td>
+                                <td>Registro pensamentos</td>
+                            </tr>
+                            <tr>
+                                <td>#3</td>
+                                <td>25/11</td>
+                                <td>Reestruturação Cognitiva, Autocompaixão</td>
+                                <td>Modificar pensamentos catastróficos</td>
+                                <td><span class="result-partial">⏳ Em andamento</span></td>
+                                <td>Praticar autofala positiva</td>
+                            </tr>
+                            <tr>
+                                <td>#4</td>
+                                <td>02/12</td>
+                                <td>Mindfulness, Habilidades Sociais</td>
+                                <td>Reduzir ansiedade, aumentar interações</td>
+                                <td><span class="result-partial">⏳ Em andamento</span></td>
+                                <td>Exercícios exposição gradual</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SÍNTESE CLÍNICA -->
+            <div class="report-section full-width">
+                <h3>📝 Síntese Clínica</h3>
+                <div class="clinical-summary">
+                    <div class="summary-section">
+                        <h4>Resumo da Evolução</h4>
+                        <p>Paciente demonstra progresso significativo desde o início do tratamento. Redução de 47% nos escores de depressão (PHQ-9) e 50% nos escores de ansiedade (GAD-7). Melhora na regulação emocional e adesão às técnicas ensinadas.</p>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <h4>Pontos Fortes Identificados</h4>
+                        <ul>
+                            <li>Boa adesão ao tratamento e às atividades propostas</li>
+                            <li>Capacidade de reflexão e insight sobre seus padrões</li>
+                            <li>Suporte familiar adequado</li>
+                            <li>Motivação para mudança</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <h4>Desafios e Fatores de Risco</h4>
+                        <ul>
+                            <li>Histórico de ideação suicida (atualmente sem risco ativo)</li>
+                            <li>Tendência ao isolamento social</li>
+                            <li>Autocrítica excessiva</li>
+                            <li>Fatores estressores ambientais (trabalho)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <h4>Recomendações</h4>
+                        <ul>
+                            <li>Continuar terapia semanal por mais 8 sessões</li>
+                            <li>Manter acompanhamento psiquiátrico para medicação</li>
+                            <li>Incluir atividades sociais graduais</li>
+                            <li>Monitorar sinais de recaída</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRESCRIÇÕES E ENCAMINHAMENTOS -->
+            <div class="report-section">
+                <h3>💊 Prescrições Ativas</h3>
+                <div class="prescriptions-list">
+                    <div class="prescription-item">
+                        <div class="med-name">Sertralina</div>
+                        <div class="med-details">50mg - 1x/dia</div>
+                        <div class="med-status active">Ativo</div>
+                    </div>
+                    <div class="prescription-item">
+                        <div class="med-name">Alprazolam</div>
+                        <div class="med-details">0.5mg - SOS</div>
+                        <div class="med-status active">Ativo</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- METAS E OBJETIVOS -->
+            <div class="report-section">
+                <h3>🎯 Metas Terapêuticas</h3>
+                <div class="goals-list">
+                    <div class="goal-item completed">
+                        <div class="goal-check">✓</div>
+                        <div class="goal-text">Reduzir ideação suicida</div>
+                    </div>
+                    <div class="goal-item completed">
+                        <div class="goal-check">✓</div>
+                        <div class="goal-text">Aprender técnicas de respiração</div>
+                    </div>
+                    <div class="goal-item completed">
+                        <div class="goal-check">✓</div>
+                        <div class="goal-text">Identificar pensamentos automáticos</div>
+                    </div>
+                    <div class="goal-item in-progress">
+                        <div class="goal-check">⏳</div>
+                        <div class="goal-text">Reduzir isolamento social</div>
+                    </div>
+                    <div class="goal-item in-progress">
+                        <div class="goal-check">⏳</div>
+                        <div class="goal-text">Desenvolver autocompaixão</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AÇÕES DO RELATÓRIO -->
+        <div class="report-actions">
+            <button class="btn btn-primary" onclick="generateFullReport()">
+                📄 Gerar Relatório Completo
+            </button>
+            <button class="btn btn-secondary" onclick="exportReport()">
+                📤 Exportar (PDF)
+            </button>
+            <button class="btn btn-success" onclick="shareReport()">
+                🔗 Compartilhar
+            </button>
+            <button class="btn btn-warning" onclick="printReport()">
+                🖨️ Imprimir
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL DE EXPORTAÇÃO -->
+    <div id="exportModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeExportModal()">&times;</span>
+            <h3>📤 Exportando Relatório</h3>
+            <div class="export-options">
+                <div class="export-option" onclick="exportAsPDF()">
+                    <div class="export-icon">📄</div>
+                    <div class="export-info">
+                        <div class="export-title">PDF Completo</div>
+                        <div class="export-desc">Relatório formatado para impressão</div>
+                    </div>
+                </div>
+                
+                <div class="export-option" onclick="exportAsDOC()">
+                    <div class="export-icon">📝</div>
+                    <div class="export-info">
+                        <div class="export-title">Documento Word</div>
+                        <div class="export-desc">Editável, compatível com prontuários</div>
+                    </div>
+                </div>
+                
+                <div class="export-option" onclick="exportAsCSV()">
+                    <div class="export-icon">📊</div>
+                    <div class="export-info">
+                        <div class="export-title">Dados CSV</div>
+                        <div class="export-desc">Dados brutos para análise</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/relatorio-clinico.js"></script>
+</body>
+</html>
