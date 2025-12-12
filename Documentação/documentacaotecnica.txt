@@ -1,0 +1,2233 @@
+# Documentação Técnica - MindBridge
+
+##  Sumário
+1. [Visão Geral da Arquitetura](#-visão-geral-da-arquitetura)
+2. [Estrutura de Pastas](#-estrutura-de-pastas)
+3. [Sistema de Design](#-sistema-de-design)
+4. [Componentes Reutilizáveis](#-componentes-reutilizáveis)
+5. [Fluxo de Dados](#-fluxo-de-dados)
+6. [Padrões de Código](#-padrões-de-código)
+7. [API de Comunicação](#-api-de-comunicação)
+8. [Sistema de Estado](#-sistema-de-estado)
+9. [Segurança e Privacidade](#-segurança-e-privacidade)
+10. [Performance e Otimização](#-performance-e-otimização)
+11. [Testes e Qualidade](#-testes-e-qualidade)
+12. [Deploy e DevOps](#-deploy-e-devops)
+13. [FAQ Técnica](#-faq-técnica)
+
+---
+
+## Visão Geral da Arquitetura
+
+### Arquitetura MVC Adaptada
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Camada de Apresentação               │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐      │
+│  │   HTML      │  │   CSS       │  │   JS View   │      │
+│  │ Componentes │  │ Componentes │  │ Controller  │      │
+│  └─────────────┘  └─────────────┘  └─────────────┘      │
+└─────────────────────────────────────────────────────────┘
+                           │
+┌─────────────────────────────────────────────────────────┐
+│                 Camada de Lógica (Model)                │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐      │
+│  │   Models    │  │  Services   │  │   Utils     │      │
+│  │   (JS)      │  │   (JS)      │  │   (JS)      │      │
+│  └─────────────┘  └─────────────┘  └─────────────┘      │
+└─────────────────────────────────────────────────────────┘
+                           │
+┌─────────────────────────────────────────────────────────┐
+│                    Camada de Dados                      │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐      │
+│  │ LocalStorage│  │ Session     │  │ IndexedDB   │      │
+│  │             │  │ Storage     │  │   (Future)  │      │
+│  └─────────────┘  └─────────────┘  └─────────────┘      │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Padrão de Comunicação
+```javascript
+// Modelo de comunicação entre módulos
+User Interface (HTML) → JavaScript Controller → Service Layer → Data Storage
+                     ↖                         ↖              ↖
+                      └── State Updates ←───────┘              ┘
+```
+
+---
+
+##  Estrutura de Pastas (Detalhada)
+
+```
+MindBridge/
+│
+├── 📁 docs/                          # Documentação
+│   ├── 📄 TECHNICAL.md              # Esta documentação
+│   ├── 📄 API.md                    # Especificação da API
+│   ├── 📄 COMPONENTS.md             # Documentação de componentes
+│   └── 📄 DEPLOYMENT.md             # Guia de deploy
+│
+├── 📁 src/                          # Código fonte (estrutura futura)
+│   ├── 📁 core/                     # Núcleo do sistema
+│   │   ├── 📁 models/               # Modelos de dados
+│   │   ├── 📁 services/             # Serviços de negócio
+│   │   └── 📁 utils/                # Utilitários
+│   │
+│   ├── 📁 modules/                  # Módulos da aplicação
+│   │   ├── 📁 auth/                 # Autenticação
+│   │   ├── 📁 chat/                 # Sistema de chat
+│   │   ├── 📁 dashboard/            # Dashboards
+│   │   ├── 📁 emergency/            # Emergência
+│   │   └── 📁 reports/              # Relatórios
+│   │
+│   ├── 📁 components/               # Componentes reutilizáveis
+│   │   ├── 📁 ui/                   # Componentes de UI
+│   │   ├── 📁 forms/                # Formulários
+│   │   └── 📁 charts/               # Gráficos
+│   │
+│   └── 📁 styles/                   # Estilos organizados
+│       ├── 📁 base/                 # Estilos base
+│       ├── 📁 components/           # Estilos por componente
+│       └── 📁 themes/               # Temas
+│
+├── 📁 public/                       # Arquivos públicos
+│   ├── 📁 assets/                   # Recursos estáticos
+│   │   ├── 📁 images/               # Imagens
+│   │   ├── 📁 icons/                # Ícones
+│   │   └── 📁 fonts/                # Fontes
+│   │
+│   └── 📁 templates/                # Templates HTML
+│
+└── 📁 tests/                        # Testes
+    ├── 📁 unit/                     # Testes unitários
+    ├── 📁 integration/              # Testes de integração
+    └── 📁 e2e/                      # Testes end-to-end
+```
+
+---
+
+## Sistema de Design
+
+### 1. **Design Tokens (CSS Custom Properties)**
+```css
+:root {
+  /* Cores Primárias */
+  --color-primary: #4A90E2;
+  --color-primary-dark: #357ABD;
+  --color-primary-light: #6BA5E8;
+  
+  /* Cores Semânticas */
+  --color-success: #28A745;
+  --color-warning: #FFC107;
+  --color-danger: #DC3545;
+  --color-info: #17A2B8;
+  
+  /* Cores de Fundo */
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #F8F9FA;
+  --color-bg-tertiary: #E9ECEF;
+  
+  /* Cores de Texto */
+  --color-text-primary: #212529;
+  --color-text-secondary: #6C757D;
+  --color-text-tertiary: #ADB5BD;
+  --color-text-inverse: #FFFFFF;
+  
+  /* Bordas */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  
+  /* Espaçamento */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  
+  /* Tipografia */
+  --font-family-primary: 'Inter', sans-serif;
+  --font-family-secondary: 'Bebas Neue', sans-serif;
+  
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+  --font-size-xxl: 32px;
+  
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Sombras */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+  --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
+  
+  /* Transições */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow: 500ms ease;
+  
+  /* Z-index Layers */
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+}
+```
+
+### 2. **Grid System**
+```css
+/* Container Responsivo */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+/* Grid System */
+.grid {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* Breakpoints */
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+```
+
+---
+
+##  Componentes Reutilizáveis
+
+### 1. **Card Component**
+```html
+<!-- Estrutura HTML -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Título do Card</h3>
+    <div class="card-actions">
+      <!-- Ações -->
+    </div>
+  </div>
+  <div class="card-body">
+    <!-- Conteúdo -->
+  </div>
+  <div class="card-footer">
+    <!-- Rodapé -->
+  </div>
+</div>
+```
+
+```css
+/* Estilos do Card */
+.card {
+  background: var(--color-bg-primary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: transform var(--transition-normal),
+              box-shadow var(--transition-normal);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-header {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-bg-tertiary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-body {
+  padding: var(--spacing-lg);
+}
+
+.card-footer {
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--color-bg-tertiary);
+  background: var(--color-bg-secondary);
+}
+```
+
+### 2. **Button Component**
+```css
+/* Sistema de Botões */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  border: 2px solid transparent;
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  gap: var(--spacing-sm);
+}
+
+/* Variantes */
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  border-color: var(--color-bg-tertiary);
+}
+
+.btn-danger {
+  background: var(--color-danger);
+  color: var(--color-text-inverse);
+}
+
+.btn-danger:hover {
+  background: #c82333;
+}
+
+/* Tamanhos */
+.btn-sm {
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: var(--font-size-xs);
+}
+
+.btn-lg {
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: var(--font-size-md);
+}
+
+/* Estados */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+```
+
+### 3. **Modal Component**
+```javascript
+// Sistema de Modals
+class ModalSystem {
+  constructor() {
+    this.modals = new Map();
+    this.init();
+  }
+  
+  init() {
+    // Overlay global
+    this.overlay = document.createElement('div');
+    this.overlay.className = 'modal-overlay';
+    document.body.appendChild(this.overlay);
+    
+    // Event listeners
+    this.overlay.addEventListener('click', (e) => {
+      if (e.target === this.overlay) {
+        this.closeAll();
+      }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeAll();
+      }
+    });
+  }
+  
+  open(modalId, options = {}) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+    
+    modal.style.display = 'block';
+    this.overlay.style.display = 'block';
+    
+    // Animar entrada
+    setTimeout(() => {
+      modal.classList.add('modal-open');
+      this.overlay.classList.add('modal-overlay-open');
+    }, 10);
+    
+    // Armazenar estado
+    this.modals.set(modalId, { options, openedAt: Date.now() });
+  }
+  
+  close(modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+    
+    modal.classList.remove('modal-open');
+    this.overlay.classList.remove('modal-overlay-open');
+    
+    setTimeout(() => {
+      modal.style.display = 'none';
+      if (this.modals.size === 1) {
+        this.overlay.style.display = 'none';
+      }
+      this.modals.delete(modalId);
+    }, 300);
+  }
+  
+  closeAll() {
+    this.modals.forEach((_, modalId) => {
+      this.close(modalId);
+    });
+  }
+}
+```
+
+---
+
+##  Fluxo de Dados
+
+### 1. **Modelo de Estado da Aplicação**
+```javascript
+// models/AppState.js
+class AppState {
+  constructor() {
+    this.state = {
+      user: {
+        id: null,
+        name: null,
+        role: null, // 'user', 'mediator', 'professional'
+        isAuthenticated: false,
+        preferences: {}
+      },
+      
+      chat: {
+        activeRoom: null,
+        rooms: [],
+        messages: new Map(),
+        unreadCount: 0,
+        typingUsers: new Set()
+      },
+      
+      emergency: {
+        activeAlert: null,
+        pendingAlerts: [],
+        history: []
+      },
+      
+      ui: {
+        theme: 'light',
+        language: 'pt-BR',
+        sidebarOpen: true,
+        notifications: []
+      },
+      
+      data: {
+        patients: new Map(),
+        sessions: new Map(),
+        reports: new Map(),
+        prescriptions: new Map()
+      }
+    };
+    
+    this.listeners = new Set();
+  }
+  
+  // Pattern: Observer
+  subscribe(listener) {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  }
+  
+  notify() {
+    this.listeners.forEach(listener => listener(this.state));
+  }
+  
+  setState(updater) {
+    const prevState = { ...this.state };
+    this.state = typeof updater === 'function' 
+      ? updater(prevState) 
+      : { ...prevState, ...updater };
+    this.notify();
+  }
+  
+  // Getters específicos
+  getUser() {
+    return this.state.user;
+  }
+  
+  getActiveChatRoom() {
+    return this.state.chat.activeRoom 
+      ? this.state.chat.rooms.find(r => r.id === this.state.chat.activeRoom)
+      : null;
+  }
+}
+```
+
+### 2. **Padrão de Gerenciamento de Estado**
+```javascript
+// services/StateManager.js
+class StateManager {
+  static instance;
+  
+  constructor() {
+    if (StateManager.instance) {
+      return StateManager.instance;
+    }
+    
+    this.appState = new AppState();
+    this.history = [];
+    this.future = [];
+    this.maxHistorySize = 50;
+    
+    StateManager.instance = this;
+  }
+  
+  // Actions (dispatchers)
+  dispatch(action) {
+    console.log('Dispatch:', action.type, action.payload);
+    
+    // Salvar no histórico para undo/redo
+    this.history.push({
+      state: JSON.parse(JSON.stringify(this.appState.state)),
+      action,
+      timestamp: Date.now()
+    });
+    
+    if (this.history.length > this.maxHistorySize) {
+      this.history.shift();
+    }
+    
+    // Limpar futuro quando nova ação é dispatchada
+    this.future = [];
+    
+    // Executar reducer
+    this.reduce(action);
+  }
+  
+  // Reducer central
+  reduce(action) {
+    const { type, payload } = action;
+    
+    switch (type) {
+      case 'USER_LOGIN':
+        this.appState.setState(prev => ({
+          ...prev,
+          user: {
+            ...payload,
+            isAuthenticated: true
+          }
+        }));
+        break;
+        
+      case 'USER_LOGOUT':
+        this.appState.setState(prev => ({
+          ...prev,
+          user: {
+            id: null,
+            name: null,
+            role: null,
+            isAuthenticated: false,
+            preferences: {}
+          },
+          chat: {
+            activeRoom: null,
+            rooms: [],
+            messages: new Map(),
+            unreadCount: 0,
+            typingUsers: new Set()
+          }
+        }));
+        break;
+        
+      case 'CHAT_JOIN_ROOM':
+        this.appState.setState(prev => ({
+          ...prev,
+          chat: {
+            ...prev.chat,
+            activeRoom: payload.roomId
+          }
+        }));
+        break;
+        
+      case 'CHAT_NEW_MESSAGE':
+        const { roomId, message } = payload;
+        this.appState.setState(prev => {
+          const messages = new Map(prev.chat.messages);
+          const roomMessages = messages.get(roomId) || [];
+          
+          messages.set(roomId, [...roomMessages, message]);
+          
+          return {
+            ...prev,
+            chat: {
+              ...prev.chat,
+              messages,
+              unreadCount: prev.chat.activeRoom === roomId 
+                ? prev.chat.unreadCount 
+                : prev.chat.unreadCount + 1
+            }
+          };
+        });
+        break;
+        
+      // ... outras actions
+    }
+  }
+  
+  // Undo/Redo
+  undo() {
+    if (this.history.length === 0) return;
+    
+    const previous = this.history.pop();
+    this.future.push({
+      state: JSON.parse(JSON.stringify(this.appState.state)),
+      action: previous.action,
+      timestamp: Date.now()
+    });
+    
+    this.appState.state = previous.state;
+    this.appState.notify();
+  }
+  
+  redo() {
+    if (this.future.length === 0) return;
+    
+    const next = this.future.pop();
+    this.history.push({
+      state: JSON.parse(JSON.stringify(this.appState.state)),
+      action: next.action,
+      timestamp: Date.now()
+    });
+    
+    this.appState.state = next.state;
+    this.appState.notify();
+  }
+}
+```
+
+---
+
+##  API de Comunicação
+
+### 1. **Service Layer Pattern**
+```javascript
+// services/ApiService.js
+class ApiService {
+  constructor(baseURL = '') {
+    this.baseURL = baseURL;
+    this.defaultHeaders = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+  }
+  
+  // Request wrapper
+  async request(endpoint, options = {}) {
+    const url = `${this.baseURL}${endpoint}`;
+    const headers = { ...this.defaultHeaders, ...options.headers };
+    
+    const config = {
+      ...options,
+      headers,
+      credentials: 'include' // Para cookies de autenticação
+    };
+    
+    try {
+      const response = await fetch(url, config);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      // Log para desenvolvimento
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`API ${options.method || 'GET'} ${endpoint}:`, data);
+      }
+      
+      return data;
+    } catch (error) {
+      console.error(`API Error ${endpoint}:`, error);
+      throw error;
+    }
+  }
+  
+  // Métodos HTTP
+  get(endpoint, options = {}) {
+    return this.request(endpoint, { ...options, method: 'GET' });
+  }
+  
+  post(endpoint, data, options = {}) {
+    return this.request(endpoint, {
+      ...options,
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+  
+  put(endpoint, data, options = {}) {
+    return this.request(endpoint, {
+      ...options,
+      method: 'PUT',
+      body: JSON.stringify(data)
+    });
+  }
+  
+  delete(endpoint, options = {}) {
+    return this.request(endpoint, { ...options, method: 'DELETE' });
+  }
+  
+  // Upload de arquivos
+  upload(endpoint, formData, options = {}) {
+    return this.request(endpoint, {
+      ...options,
+      method: 'POST',
+      body: formData,
+      headers: {
+        ...options.headers,
+        // Remover Content-Type para FormData
+        'Content-Type': undefined
+      }
+    });
+  }
+}
+
+// services/AuthService.js
+class AuthService {
+  constructor() {
+    this.api = new ApiService('/api');
+    this.tokenKey = 'mindbridge_auth_token';
+    this.refreshTokenKey = 'mindbridge_refresh_token';
+  }
+  
+  // Login
+  async login(credentials) {
+    const response = await this.api.post('/auth/login', credentials);
+    
+    if (response.success) {
+      this.setTokens(response.data);
+      return response.data.user;
+    }
+    
+    throw new Error(response.message || 'Falha no login');
+  }
+  
+  // Logout
+  async logout() {
+    try {
+      await this.api.post('/auth/logout');
+    } finally {
+      this.clearTokens();
+    }
+  }
+  
+  // Refresh token
+  async refreshToken() {
+    const refreshToken = this.getRefreshToken();
+    if (!refreshToken) throw new Error('No refresh token');
+    
+    const response = await this.api.post('/auth/refresh', { refreshToken });
+    
+    if (response.success) {
+      this.setTokens(response.data);
+      return response.data.accessToken;
+    }
+    
+    this.clearTokens();
+    throw new Error('Session expired');
+  }
+  
+  // Getters e setters de tokens
+  setTokens({ accessToken, refreshToken, user }) {
+    localStorage.setItem(this.tokenKey, accessToken);
+    localStorage.setItem(this.refreshTokenKey, refreshToken);
+    
+    // Configurar header padrão
+    this.api.defaultHeaders['Authorization'] = `Bearer ${accessToken}`;
+    
+    // Salvar user info
+    this.user = user;
+  }
+  
+  getToken() {
+    return localStorage.getItem(this.tokenKey);
+  }
+  
+  getRefreshToken() {
+    return localStorage.getItem(this.refreshTokenKey);
+  }
+  
+  clearTokens() {
+    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.refreshTokenKey);
+    delete this.api.defaultHeaders['Authorization'];
+    this.user = null;
+  }
+  
+  // Interceptor para refresh automático
+  setupInterceptor() {
+    const originalRequest = this.api.request;
+    
+    this.api.request = async function(endpoint, options) {
+      try {
+        return await originalRequest.call(this, endpoint, options);
+      } catch (error) {
+        if (error.message.includes('401')) {
+          // Token expirado, tentar refresh
+          const newToken = await this.refreshToken();
+          
+          // Re-tentar request com novo token
+          if (options.headers) {
+            options.headers['Authorization'] = `Bearer ${newToken}`;
+          }
+          
+          return await originalRequest.call(this, endpoint, options);
+        }
+        throw error;
+      }
+    }.bind(this);
+  }
+}
+
+// services/ChatService.js
+class ChatService {
+  constructor() {
+    this.api = new ApiService('/api');
+    this.ws = null;
+    this.messageHandlers = new Set();
+    this.reconnectAttempts = 0;
+    this.maxReconnectAttempts = 5;
+  }
+  
+  // Conectar WebSocket
+  connect() {
+    const token = localStorage.getItem('mindbridge_auth_token');
+    const wsUrl = `wss://api.mindbridge.com.br/chat?token=${token}`;
+    
+    this.ws = new WebSocket(wsUrl);
+    
+    this.ws.onopen = () => {
+      console.log('WebSocket conectado');
+      this.reconnectAttempts = 0;
+      this.dispatchEvent('connected', {});
+    };
+    
+    this.ws.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data);
+        this.handleMessage(message);
+      } catch (error) {
+        console.error('Erro ao processar mensagem:', error);
+      }
+    };
+    
+    this.ws.onclose = () => {
+      console.log('WebSocket desconectado');
+      this.dispatchEvent('disconnected', {});
+      
+      // Tentar reconectar
+      if (this.reconnectAttempts < this.maxReconnectAttempts) {
+        this.reconnectAttempts++;
+        setTimeout(() => this.connect(), 3000 * this.reconnectAttempts);
+      }
+    };
+    
+    this.ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+      this.dispatchEvent('error', { error });
+    };
+  }
+  
+  // Enviar mensagem
+  sendMessage(roomId, content, type = 'text') {
+    const message = {
+      type: 'chat_message',
+      payload: {
+        roomId,
+        content,
+        messageType: type,
+        timestamp: Date.now()
+      }
+    };
+    
+    this.ws.send(JSON.stringify(message));
+  }
+  
+  // Typing indicator
+  sendTyping(roomId, isTyping) {
+    const message = {
+      type: 'typing_indicator',
+      payload: {
+        roomId,
+        isTyping
+      }
+    };
+    
+    this.ws.send(JSON.stringify(message));
+  }
+  
+  // Sistema de handlers
+  onMessage(handler) {
+    this.messageHandlers.add(handler);
+  }
+  
+  offMessage(handler) {
+    this.messageHandlers.delete(handler);
+  }
+  
+  handleMessage(message) {
+    this.messageHandlers.forEach(handler => {
+      try {
+        handler(message);
+      } catch (error) {
+        console.error('Erro no handler:', error);
+      }
+    });
+    
+    // Eventos específicos
+    this.dispatchEvent(message.type, message.payload);
+  }
+  
+  dispatchEvent(eventName, data) {
+    const event = new CustomEvent(`chat:${eventName}`, { detail: data });
+    window.dispatchEvent(event);
+  }
+}
+```
+
+---
+
+##  Segurança e Privacidade
+
+### 1. **Padrões de Segurança Implementados**
+```javascript
+// utils/Security.js
+class Security {
+  // Sanitização de inputs
+  static sanitizeInput(input) {
+    if (typeof input !== 'string') return input;
+    
+    return input
+      .replace(/[<>]/g, '') // Remover tags HTML
+      .replace(/javascript:/gi, '') // Remover JavaScript URLs
+      .replace(/on\w+=/gi, '') // Remover event handlers
+      .trim();
+  }
+  
+  // Validação de email
+  static isValidEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+  
+  // Validação de senha
+  static isValidPassword(password) {
+    // Mínimo 8 caracteres, pelo menos 1 letra maiúscula, 1 minúscula e 1 número
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    return regex.test(password);
+  }
+  
+  // Hash simples para desenvolvimento
+  static simpleHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return Math.abs(hash).toString(16);
+  }
+  
+  // Criptografia básica (em produção usar Web Crypto API)
+  static encrypt(text, key) {
+    // Implementação básica para protótipo
+    // EM PRODUÇÃO: Usar Web Crypto API
+    return btoa(text + key);
+  }
+  
+  static decrypt(encrypted, key) {
+    try {
+      const decrypted = atob(encrypted);
+      return decrypted.replace(key, '');
+    } catch {
+      return null;
+    }
+  }
+  
+  // Proteção contra XSS
+  static escapeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+  
+  // Validação de dados sensíveis
+  static validateSensitiveData(data, schema) {
+    const errors = [];
+    
+    Object.keys(schema).forEach(key => {
+      const rule = schema[key];
+      const value = data[key];
+      
+      if (rule.required && !value) {
+        errors.push(`${key} é obrigatório`);
+      }
+      
+      if (value && rule.type && typeof value !== rule.type) {
+        errors.push(`${key} deve ser do tipo ${rule.type}`);
+      }
+      
+      if (value && rule.pattern && !rule.pattern.test(value)) {
+        errors.push(`${key} não está no formato correto`);
+      }
+    });
+    
+    return errors;
+  }
+}
+
+// Schema de validação para mensagens de chat
+const chatMessageSchema = {
+  content: {
+    required: true,
+    type: 'string',
+    maxLength: 2000,
+    pattern: /^[\s\S]{1,2000}$/
+  },
+  roomId: {
+    required: true,
+    type: 'string',
+    pattern: /^[a-f0-9-]{36}$/
+  },
+  userId: {
+    required: true,
+    type: 'string'
+  }
+};
+```
+
+### 2. **Sistema de Permissões**
+```javascript
+// utils/Permissions.js
+class Permissions {
+  static roles = {
+    USER: 'user',
+    MEDIATOR: 'mediator',
+    PROFESSIONAL: 'professional',
+    ADMIN: 'admin'
+  };
+  
+  static permissions = {
+    // Chat
+    CHAT_SEND_MESSAGE: 'chat:send_message',
+    CHAT_CREATE_ROOM: 'chat:create_room',
+    CHAT_DELETE_MESSAGE: 'chat:delete_message',
+    CHAT_VIEW_HISTORY: 'chat:view_history',
+    
+    // Dashboard
+    DASHBOARD_VIEW: 'dashboard:view',
+    DASHBOARD_EXPORT: 'dashboard:export',
+    
+    // Patients
+    PATIENT_VIEW: 'patient:view',
+    PATIENT_EDIT: 'patient:edit',
+    PATIENT_DELETE: 'patient:delete',
+    
+    // Clinical
+    CLINICAL_NOTES_CREATE: 'clinical:notes_create',
+    CLINICAL_NOTES_VIEW: 'clinical:notes_view',
+    CLINICAL_PRESCRIPTIONS_CREATE: 'clinical:prescriptions_create',
+    CLINICAL_REPORTS_GENERATE: 'clinical:reports_generate',
+    
+    // System
+    SYSTEM_SETTINGS_EDIT: 'system:settings_edit',
+    SYSTEM_USERS_MANAGE: 'system:users_manage'
+  };
+  
+  static rolePermissions = {
+    [this.roles.USER]: [
+      this.permissions.CHAT_SEND_MESSAGE,
+      this.permissions.DASHBOARD_VIEW
+    ],
+    
+    [this.roles.MEDIATOR]: [
+      this.permissions.CHAT_SEND_MESSAGE,
+      this.permissions.CHAT_CREATE_ROOM,
+      this.permissions.DASHBOARD_VIEW,
+      this.permissions.PATIENT_VIEW,
+      this.permissions.CLINICAL_NOTES_VIEW
+    ],
+    
+    [this.roles.PROFESSIONAL]: [
+      this.permissions.CHAT_SEND_MESSAGE,
+      this.permissions.CHAT_CREATE_ROOM,
+      this.permissions.DASHBOARD_VIEW,
+      this.permissions.DASHBOARD_EXPORT,
+      this.permissions.PATIENT_VIEW,
+      this.permissions.PATIENT_EDIT,
+      this.permissions.CLINICAL_NOTES_CREATE,
+      this.permissions.CLINICAL_NOTES_VIEW,
+      this.permissions.CLINICAL_PRESCRIPTIONS_CREATE,
+      this.permissions.CLINICAL_REPORTS_GENERATE
+    ],
+    
+    [this.roles.ADMIN]: Object.values(this.permissions)
+  };
+  
+  static can(userRole, permission) {
+    const userPermissions = this.rolePermissions[userRole] || [];
+    return userPermissions.includes(permission);
+  }
+  
+  static middleware(permission) {
+    return (req, res, next) => {
+      const userRole = req.user?.role;
+      
+      if (!userRole || !this.can(userRole, permission)) {
+        return res.status(403).json({
+          success: false,
+          message: 'Permissão negada'
+        });
+      }
+      
+      next();
+    };
+  }
+}
+
+// Uso no frontend
+function checkPermission(permission) {
+  const userRole = localStorage.getItem('user_role');
+  return Permissions.can(userRole, permission);
+}
+
+// Componente protegido
+function ProtectedComponent({ permission, children, fallback }) {
+  const hasPermission = checkPermission(permission);
+  
+  if (!hasPermission) {
+    return fallback || <div>Acesso não autorizado</div>;
+  }
+  
+  return children;
+}
+```
+
+---
+
+##  Performance e Otimização
+
+### 1. **Otimizações de Carregamento**
+```javascript
+// utils/LazyLoader.js
+class LazyLoader {
+  constructor() {
+    this.observers = new Map();
+    this.intersectionObserver = new IntersectionObserver(
+      this.handleIntersection.bind(this),
+      {
+        rootMargin: '50px',
+        threshold: 0.1
+      }
+    );
+  }
+  
+  // Lazy load de imagens
+  lazyLoadImages() {
+    const images = document.querySelectorAll('img[data-src]');
+    
+    images.forEach(img => {
+      this.intersectionObserver.observe(img);
+      this.observers.set(img, {
+        src: img.dataset.src,
+        loaded: false
+      });
+    });
+  }
+  
+  // Lazy load de componentes
+  lazyLoadComponent(componentId, loader) {
+    const element = document.getElementById(componentId);
+    if (!element) return;
+    
+    this.intersectionObserver.observe(element);
+    this.observers.set(element, {
+      loader,
+      loaded: false
+    });
+  }
+  
+  handleIntersection(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const element = entry.target;
+        const data = this.observers.get(element);
+        
+        if (data && !data.loaded) {
+          if (element.tagName === 'IMG') {
+            element.src = data.src;
+            element.removeAttribute('data-src');
+          } else {
+            data.loader();
+          }
+          
+          data.loaded = true;
+          this.intersectionObserver.unobserve(element);
+          this.observers.delete(element);
+        }
+      }
+    });
+  }
+}
+
+// utils/ResourceManager.js
+class ResourceManager {
+  constructor() {
+    this.cache = new Map();
+    this.prefetchQueue = [];
+    this.maxCacheSize = 100;
+  }
+  
+  // Cache com LRU (Least Recently Used)
+  get(key) {
+    if (this.cache.has(key)) {
+      const item = this.cache.get(key);
+      // Mover para o final (mais recente)
+      this.cache.delete(key);
+      this.cache.set(key, item);
+      return item.value;
+    }
+    return null;
+  }
+  
+  set(key, value) {
+    if (this.cache.size >= this.maxCacheSize) {
+      // Remover o mais antigo
+      const firstKey = this.cache.keys().next().value;
+      this.cache.delete(firstKey);
+    }
+    
+    this.cache.set(key, {
+      value,
+      timestamp: Date.now()
+    });
+  }
+  
+  // Prefetch de recursos
+  prefetch(resources) {
+    resources.forEach(resource => {
+      this.prefetchQueue.push(resource);
+    });
+    
+    this.processPrefetchQueue();
+  }
+  
+  async processPrefetchQueue() {
+    while (this.prefetchQueue.length > 0) {
+      const resource = this.prefetchQueue.shift();
+      
+      try {
+        const response = await fetch(resource.url, {
+          priority: 'low'
+        });
+        
+        if (response.ok) {
+          const data = await response.blob();
+          this.set(resource.key, data);
+        }
+      } catch (error) {
+        console.warn('Prefetch failed:', resource.url, error);
+      }
+      
+      // Delay para não sobrecarregar
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+  }
+  
+  // Limpar cache
+  clearCache(olderThan = null) {
+    if (olderThan) {
+      const cutoff = Date.now() - olderThan;
+      this.cache.forEach((item, key) => {
+        if (item.timestamp < cutoff) {
+          this.cache.delete(key);
+        }
+      });
+    } else {
+      this.cache.clear();
+    }
+  }
+}
+```
+
+### 2. **Virtual Scrolling para Listas Grandes**
+```javascript
+// components/VirtualList.js
+class VirtualList {
+  constructor(container, options = {}) {
+    this.container = container;
+    this.itemHeight = options.itemHeight || 50;
+    this.buffer = options.buffer || 5;
+    this.data = [];
+    this.renderedItems = new Map();
+    
+    this.init();
+  }
+  
+  init() {
+    // Criar wrapper
+    this.wrapper = document.createElement('div');
+    this.wrapper.style.position = 'relative';
+    this.wrapper.style.height = `${this.data.length * this.itemHeight}px`;
+    this.container.appendChild(this.wrapper);
+    
+    // Viewport
+    this.viewport = document.createElement('div');
+    this.viewport.style.position = 'absolute';
+    this.viewport.style.top = '0';
+    this.viewport.style.left = '0';
+    this.viewport.style.right = '0';
+    this.viewport.style.bottom = '0';
+    this.viewport.style.overflow = 'hidden';
+    this.wrapper.appendChild(this.viewport);
+    
+    // Event listeners
+    this.container.addEventListener('scroll', this.handleScroll.bind(this));
+    window.addEventListener('resize', this.handleResize.bind(this));
+    
+    this.render();
+  }
+  
+  setData(data) {
+    this.data = data;
+    this.wrapper.style.height = `${data.length * this.itemHeight}px`;
+    this.render();
+  }
+  
+  handleScroll() {
+    this.render();
+  }
+  
+  handleResize() {
+    this.render();
+  }
+  
+  getVisibleRange() {
+    const scrollTop = this.container.scrollTop;
+    const viewportHeight = this.container.clientHeight;
+    
+    const startIndex = Math.max(
+      0,
+      Math.floor(scrollTop / this.itemHeight) - this.buffer
+    );
+    
+    const endIndex = Math.min(
+      this.data.length - 1,
+      Math.ceil((scrollTop + viewportHeight) / this.itemHeight) + this.buffer
+    );
+    
+    return { startIndex, endIndex };
+  }
+  
+  render() {
+    const { startIndex, endIndex } = this.getVisibleRange();
+    
+    // Remover itens fora da viewport
+    this.renderedItems.forEach((element, index) => {
+      if (index < startIndex || index > endIndex) {
+        element.remove();
+        this.renderedItems.delete(index);
+      }
+    });
+    
+    // Adicionar novos itens
+    for (let i = startIndex; i <= endIndex; i++) {
+      if (!this.renderedItems.has(i) && this.data[i]) {
+        const element = this.createItem(this.data[i], i);
+        element.style.position = 'absolute';
+        element.style.top = `${i * this.itemHeight}px`;
+        element.style.left = '0';
+        element.style.right = '0';
+        element.style.height = `${this.itemHeight}px`;
+        
+        this.viewport.appendChild(element);
+        this.renderedItems.set(i, element);
+      }
+    }
+  }
+  
+  createItem(data, index) {
+    const element = document.createElement('div');
+    element.className = 'virtual-list-item';
+    element.textContent = data.text || `Item ${index}`;
+    return element;
+  }
+  
+  destroy() {
+    this.container.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('resize', this.handleResize);
+    this.wrapper.remove();
+  }
+}
+```
+
+---
+
+##  Testes e Qualidade
+
+### 1. **Estrutura de Testes**
+```javascript
+// tests/unit/ChatService.test.js
+describe('ChatService', () => {
+  let chatService;
+  let mockWebSocket;
+  
+  beforeEach(() => {
+    // Mock do WebSocket
+    global.WebSocket = jest.fn().mockImplementation(() => ({
+      send: jest.fn(),
+      close: jest.fn(),
+      onopen: null,
+      onmessage: null,
+      onclose: null,
+      onerror: null
+    }));
+    
+    chatService = new ChatService();
+    mockWebSocket = chatService.ws;
+  });
+  
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  
+  test('deve conectar ao WebSocket', () => {
+    chatService.connect();
+    expect(global.WebSocket).toHaveBeenCalled();
+  });
+  
+  test('deve enviar mensagem', () => {
+    chatService.connect();
+    chatService.sendMessage('room-123', 'Hello World');
+    
+    expect(mockWebSocket.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        type: 'chat_message',
+        payload: {
+          roomId: 'room-123',
+          content: 'Hello World',
+          messageType: 'text',
+          timestamp: expect.any(Number)
+        }
+      })
+    );
+  });
+  
+  test('deve lidar com mensagem recebida', () => {
+    const handler = jest.fn();
+    chatService.onMessage(handler);
+    
+    chatService.connect();
+    
+    // Simular mensagem recebida
+    const testMessage = {
+      type: 'chat_message',
+      payload: {
+        roomId: 'room-123',
+        content: 'Test',
+        sender: 'user-1'
+      }
+    };
+    
+    const messageEvent = {
+      data: JSON.stringify(testMessage)
+    };
+    
+    mockWebSocket.onmessage(messageEvent);
+    
+    expect(handler).toHaveBeenCalledWith(testMessage);
+  });
+});
+
+// tests/unit/Security.test.js
+describe('Security', () => {
+  describe('sanitizeInput', () => {
+    test('deve remover tags HTML', () => {
+      const input = '<script>alert("xss")</script>';
+      const result = Security.sanitizeInput(input);
+      expect(result).toBe('alert("xss")');
+    });
+    
+    test('deve remover JavaScript URLs', () => {
+      const input = 'javascript:alert(1)';
+      const result = Security.sanitizeInput(input);
+      expect(result).toBe('alert(1)');
+    });
+  });
+  
+  describe('isValidEmail', () => {
+    test('deve validar email correto', () => {
+      expect(Security.isValidEmail('test@example.com')).toBe(true);
+    });
+    
+    test('deve rejeitar email inválido', () => {
+      expect(Security.isValidEmail('test@')).toBe(false);
+      expect(Security.isValidEmail('test.com')).toBe(false);
+    });
+  });
+});
+
+// tests/integration/AuthFlow.test.js
+describe('Auth Flow Integration', () => {
+  let authService;
+  let mockApi;
+  
+  beforeEach(() => {
+    mockApi = {
+      post: jest.fn()
+    };
+    
+    authService = new AuthService();
+    authService.api = mockApi;
+  });
+  
+  test('fluxo completo de login/logout', async () => {
+    // Mock login response
+    mockApi.post.mockResolvedValueOnce({
+      success: true,
+      data: {
+        accessToken: 'token-123',
+        refreshToken: 'refresh-123',
+        user: {
+          id: 'user-1',
+          name: 'Test User',
+          role: 'user'
+        }
+      }
+    });
+    
+    // Login
+    const user = await authService.login({
+      email: 'test@example.com',
+      password: 'Password123'
+    });
+    
+    expect(user).toEqual({
+      id: 'user-1',
+      name: 'Test User',
+      role: 'user'
+    });
+    
+    expect(localStorage.getItem('mindbridge_auth_token')).toBe('token-123');
+    
+    // Mock logout
+    mockApi.post.mockResolvedValueOnce({ success: true });
+    
+    // Logout
+    await authService.logout();
+    
+    expect(localStorage.getItem('mindbridge_auth_token')).toBeNull();
+  });
+});
+
+// tests/e2e/chat.spec.js
+describe('Chat E2E', () => {
+  beforeAll(async () => {
+    // Configurar servidor de teste
+    await page.goto('http://localhost:3000');
+    
+    // Login
+    await page.type('#email', 'test@example.com');
+    await page.type('#password', 'Password123');
+    await page.click('#login-button');
+    
+    // Aguardar login
+    await page.waitForSelector('.dashboard');
+  });
+  
+  test('deve enviar e receber mensagens', async () => {
+    // Entrar na sala
+    await page.click('.chat-room:first-child');
+    
+    // Aguardar carregamento
+    await page.waitForSelector('.chat-messages');
+    
+    // Enviar mensagem
+    await page.type('.message-input', 'Hello, this is a test message');
+    await page.click('.send-button');
+    
+    // Verificar se mensagem apareceu
+    await page.waitForSelector('.message:last-child');
+    const lastMessage = await page.$eval('.message:last-child', el => el.textContent);
+    
+    expect(lastMessage).toContain('Hello, this is a test message');
+  });
+  
+  test('deve exibir indicador de digitação', async () => {
+    // Começar a digitar
+    await page.type('.message-input', 'Typing...');
+    
+    // Verificar se indicador apareceu
+    await page.waitForSelector('.typing-indicator');
+    const isVisible = await page.$eval('.typing-indicator', el => 
+      el.style.display !== 'none'
+    );
+    
+    expect(isVisible).toBe(true);
+  });
+});
+```
+
+### 2. **Configuração do Jest**
+```json
+// jest.config.json
+{
+  "testEnvironment": "jsdom",
+  "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
+  "moduleNameMapper": {
+    "\\.(css|less|scss)$": "identity-obj-proxy",
+    "\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/tests/__mocks__/fileMock.js"
+  },
+  "collectCoverageFrom": [
+    "src/**/*.{js,jsx}",
+    "!src/**/*.test.{js,jsx}",
+    "!src/index.js",
+    "!src/serviceWorker.js"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "branches": 80,
+      "functions": 80,
+      "lines": 80,
+      "statements": 80
+    }
+  },
+  "testMatch": [
+    "<rootDir>/tests/**/*.test.js",
+    "<rootDir>/tests/**/*.spec.js"
+  ]
+}
+```
+
+---
+
+##  Deploy e DevOps
+
+### 1. **Configuração de Build**
+```json
+// package.json (exemplo para build futuro)
+{
+  "name": "mindbridge",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix",
+    "format": "prettier --write src/**/*.{js,jsx,json,css}",
+    "prepare": "husky install",
+    "deploy:staging": "npm run build && deploy-staging.sh",
+    "deploy:production": "npm run build && deploy-production.sh"
+  },
+  "devDependencies": {
+    "vite": "^4.0.0",
+    "jest": "^29.0.0",
+    "jest-environment-jsdom": "^29.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-airbnb": "^19.0.0",
+    "prettier": "^2.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.0"
+  }
+}
+```
+
+### 2. **Git Hooks (Husky)**
+```json
+// .husky/pre-commit
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npm run lint
+npm run test -- --passWithNoTests
+```
+
+```json
+// .lintstagedrc.json
+{
+  "*.js": ["eslint --fix", "prettier --write"],
+  "*.css": ["prettier --write"],
+  "*.html": ["prettier --write"],
+  "*.json": ["prettier --write"]
+}
+```
+
+### 3. **Docker Configuration**
+```dockerfile
+# Dockerfile
+FROM node:18-alpine as builder
+
+WORKDIR /app
+
+# Instalar dependências
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copiar código
+COPY . .
+
+# Build
+RUN npm run build
+
+# Production
+FROM nginx:alpine
+
+# Copiar build
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Configuração nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD curl -f http://localhost/ || exit 1
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+```nginx
+# nginx.conf
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    
+    # Compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css text/xml text/javascript 
+               application/javascript application/xml+rss 
+               application/json;
+    
+    server {
+        listen 80;
+        server_name localhost;
+        root /usr/share/nginx/html;
+        index index.html;
+        
+        # Security headers
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        
+        # Cache static assets
+        location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
+            expires 1y;
+            add_header Cache-Control "public, immutable";
+        }
+        
+        # SPA fallback
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+        
+        # API proxy (para desenvolvimento)
+        location /api {
+            proxy_pass http://backend:3000;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+    }
+}
+```
+
+### 4. **CI/CD Pipeline (GitHub Actions)**
+```yaml
+# .github/workflows/ci-cd.yml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Lint
+      run: npm run lint
+    
+    - name: Run tests
+      run: npm run test
+    
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+  
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build
+      run: npm run build
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build
+        path: dist/
+  
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: build
+    
+    - name: Deploy to staging
+      run: |
+        # Comandos de deploy para staging
+        echo "Deploying to staging..."
+    
+  deploy-production:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: build
+    
+    - name: Deploy to production
+      run: |
+        # Comandos de deploy para produção
+        echo "Deploying to production..."
+```
+
+---
+
+##  FAQ Técnica
+
+### 1. **Como adicionar um novo componente?**
+```
+1. Criar arquivo HTML na pasta apropriada
+2. Adicionar estilos no CSS correspondente
+3. Criar lógica JavaScript se necessário
+4. Adicionar ao sistema de componentes se for reutilizável
+5. Documentar no COMPONENTS.md
+```
+
+### 2. **Como lidar com dados sensíveis?**
+```javascript
+// Sempre usar:
+- HTTPS em produção
+- Sanitização de inputs
+- Validação no frontend E backend
+- Tokens de autenticação com expiração
+- Criptografia de dados sensíveis
+- Logs sem informações pessoais
+```
+
+### 3. **Como otimizar performance?**
+```
+Implementado:
+- Lazy loading de imagens
+- Virtual scrolling para listas
+- Cache de recursos
+- Bundle splitting (futuro)
+- Compression de assets
+
+Planejado:
+- Service Workers para offline
+- CDN para assets estáticos
+- Image optimization pipeline
+- Code splitting dinâmico
+```
+
+### 4. **Como contribuir com código?**
+```
+1. Fork do repositório
+2. Criar branch feature/nome-da-feature
+3. Seguir padrões de código
+4. Escrever testes
+5. Documentar mudanças
+6. Abrir Pull Request
+7. Revisão de código obrigatória
+```
+
+### 5. **Como debugar problemas?**
+```javascript
+// Ferramentas disponíveis:
+- console.log (apenas desenvolvimento)
+- Debug mode no localStorage
+- Network tab no DevTools
+- Performance profiling
+- Error tracking (Sentry futuramente)
+- Logs estruturados no servidor
+```
+
+---
+
+##  Recursos Adicionais
+
+### **Documentação Externa:**
+- [MDN Web Docs](https://developer.mozilla.org/)
+- [JavaScript.info](https://javascript.info/)
+- [CSS-Tricks](https://css-tricks.com/)
+- [Web.dev](https://web.dev/)
+
+### **Ferramentas Recomendadas:**
+- **Editor**: VS Code com extensões
+- **Versionamento**: Git + GitHub
+- **Testing**: Jest + Testing Library
+- **Linting**: ESLint + Prettier
+- **Build**: Vite ou Webpack
+- **Deploy**: Docker + Nginx
+
+### **Padrões de Código:**
+- [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
+- [Google HTML/CSS Style Guide](https://google.github.io/styleguide/htmlcssguide.html)
+- [Conventional Commits](https://www.conventionalcommits.org/)
+
+---
+
+**Última atualização:** Dezembro 2024  
+**Versão do documento:** 2.0.0  
+**Manutenido por:** Equipe de Desenvolvimento MindBridge
+
+Esta documentação está em constante evolução. Para sugestões ou correções, abra uma issue no repositório.
+
+# O que é uma Issue no GitHub?
+
+##  Definição Simples
+Uma **Issue** no GitHub é como um **"ticket"** ou **"solicitação"** que você cria para:
+-  Reportar um **bug** (problema)
+-  Sugerir uma **nova funcionalidade**
+-  Pedir uma **melhoria**
+-  Fazer uma **pergunta**
+-  Listar **tarefas** a fazer
+
+##  Analogia Prática
+Pense em uma **Issue** como um **"post-it" digital** que você coloca no projeto com:
+- **Título**: O que precisa ser feito
+- **Descrição**: Detalhes do que precisa ser feito
+- **Etiquetas**: Classificação (bug, melhoria, etc.)
+- **Responsável**: Quem vai fazer
+- **Status**: Em andamento, concluído, etc.
+
+##  Tipos Comuns de Issues
+
+### 1. ** Bug Report**
+```markdown
+## Descrição do Bug
+Quando clico no botão X, acontece Y em vez de Z.
+
+## Passos para Reproduzir
+1. Vá para página A
+2. Clique no botão B
+3. Observe o erro C
+
+## Comportamento Esperado
+Deveria acontecer D
+
+## Screenshots/Logs
+[Inserir imagem ou código de erro]
+```
+
+### 2. ** Feature Request**
+```markdown
+## Descrição da Funcionalidade
+Seria útil ter uma funcionalidade que faça X.
+
+## Motivação
+Isso resolveria o problema Y para os usuários Z.
+
+## Proposta de Solução
+[Descrever como implementar]
+```
+
+### 3. ** Melhoria**
+```markdown
+## O que pode ser melhorado
+A página A está muito lenta.
+
+## Sugestão de Melhoria
+Implementar cache ou otimizar consultas.
+```
+
+##  Como Criar uma Issue no MindBridge
+
+### Passo 1: Acessar o Repositório
+```
+1. Vá para: https://github.com/ClickBSdigital/MindBridge
+2. Clique na aba "Issues"
+3. Clique no botão verde "New Issue"
+```
+
+### Passo 2: Escolher Template
+```
+Templates disponíveis no MindBridge:
+-  Reportar Bug
+-  Nova Funcionalidade  
+-  Melhoria
+-  Dúvida Técnica
+-  Tarefa de Desenvolvimento
+```
+
+### Passo 3: Preencher a Issue
+Exemplo real para o MindBridge:
+```markdown
+Título: [BUG] Botão "Atender Agora" não redireciona para chat
+
+## Descrição
+No dashboard-profissional.html, o botão "Atender Agora" 
+dos encaminhamentos urgentes não está redirecionando 
+corretamente para o chat.html.
+
+## Passos para Reproduzir
+1. Faça login como profissional
+2. Vá para "Encaminhamentos Urgentes"
+3. Clique em "Atender Agora"
+4. Observe que nada acontece
+
+## Comportamento Esperado
+Deveria redirecionar para chat.html com os parâmetros:
+- user=profissional
+- patient=patient1
+- emergency=true
+
+## Ambiente
+- Navegador: Chrome 120
+- Sistema: Windows 11
+- URL: http://localhost/MindBridge/dashboard-profissional.html
+
+## Screenshot
+![Erro no botão](link-da-imagem)
+```
+
+### Passo 4: Adicionar Labels
+```
+Labels importantes:
+- bug            # Para problemas
+- enhancement    # Para melhorias  
+- question       # Para dúvidas
+- good-first-issue # Para novos contribuidores
+- help-wanted    # Precisa de ajuda
+- documentation  # Problema na documentação
+```
+
+##  Ciclo de Vida de uma Issue
+
+```
+Criada →  Triagem →  Atribuída →  Em Desenvolvimento 
+    ↓
+ Resolvida ←  Em Testes ←  Em Revisão
+```
+
+##  Exemplos Reais do MindBridge
+
+### Exemplo 1: Issue de Bug
+```markdown
+Título: [BUG] Chat não atualiza mensagens em tempo real
+
+Descrição:
+Quando um usuário envia mensagem no chat, a outra parte 
+não vê a mensagem até recarregar a página.
+
+Solução Proposta:
+Implementar WebSockets ou polling para atualização automática.
+
+Labels: bug, chat, help-wanted
+```
+
+### Exemplo 2: Issue de Melhoria  
+```markdown
+Título: [ENHANCEMENT] Adicionar dark mode ao sistema
+
+Descrição:
+Os usuários relatam cansaço visual após uso prolongado.
+Seria bom ter uma opção de tema escuro.
+
+Proposta:
+1. Adicionar toggle no header
+2. Criar variáveis CSS para dark mode
+3. Salvar preferência no localStorage
+
+Labels: enhancement, ui, good-first-issue
+```
+
+### Exemplo 3: Issue de Documentação
+```markdown
+Título: [DOCS] Falta documentação do módulo de relatórios
+
+Descrição:
+O módulo de relatórios não tem documentação técnica.
+Novos desenvolvedores não sabem como usar.
+
+O que falta:
+- Explicação da arquitetura
+- Exemplos de uso
+- API documentation
+
+Labels: documentation, reports
+```
+
+##  Boas Práticas
+
+###  **O que fazer:**
+- Use títulos claros e descritivos
+- Descreva os passos para reproduzir bugs
+- Adicione screenshots quando útil
+- Use labels apropriadas
+- Mantenha a issue atualizada
+- Feche quando resolvido
+
+### **O que evitar:**
+- Títulos vagos como "Não funciona"
+- Múltiplos problemas em uma issue só  
+- Issues duplicadas
+- Comentários ofensivos
+- Deixar issues abandonadas
+
+##  Links Úteis
+
+### Para o MindBridge:
+-  **Repositório**: https://github.com/ClickBSdigital/MindBridge
+-  **Issues**: https://github.com/ClickBSdigital/MindBridge/issues
+-  **Labels**: https://github.com/ClickBSdigital/MindBridge/labels
+-  **Projects**: https://github.com/ClickBSdigital/MindBridge/projects
+
+### Documentação GitHub:
+-  **Guia de Issues**: https://docs.github.com/issues
+-  **Sobre Labels**: https://docs.github.com/labels
+-  **Templates**: https://docs.github.com/communities/using-templates
+
+##  Exercício Prático
+
+### Crie sua primeira Issue:
+
+**Título**: [DOCS] Adicionar exemplo de código no README
+
+**Descrição**:
+O README.md atual não tem exemplos de como usar o sistema.
+Seria útil adicionar um exemplo básico de como:
+1. Fazer login
+2. Iniciar um chat
+3. Usar o dashboard
+
+**Labels**: documentation, good-first-issue
+
+---
+
+##  Quando Criar uma Issue?
+
+###  **Criar Issue quando:**
+- Encontrar um bug
+- Tiver uma ideia de melhoria
+- Precisar de esclarecimento
+- Ver documentação faltando
+- Encontrar problema de segurança
+
+###  **Não criar Issue quando:**
+- For dúvida muito básica (use discussões)
+- Já existir issue igual
+- For problema no seu ambiente local
+- For solicitação fora do escopo
+
+---
+
+##  Suporte
+
+Se tiver dúvidas sobre:
+- Como criar uma issue
+- Qual template usar
+- Como descrever um problema
+- Processo de contribuição
+
+Abra uma issue com label **"question"** ou entre em contato com os mantenedores!
+
+---
+
+**Resumindo**: Issues são o **coração da colaboração** no GitHub. Elas mantêm o projeto organizado, rastreável e colaborativo! 

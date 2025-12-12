@@ -1,0 +1,570 @@
+# Manual de Usuário - MindBridge
+
+## Sumário
+1. [Introdução ao MindBridge](#-introdução-ao-mindbridge)
+2. [Primeiros Passos](#-primeiros-passos)
+3. [Manual do Usuário](#-manual-do-usuário)
+4. [Manual do Mediador](#️-manual-do-mediador)
+5. [Manual do Profissional](#️-manual-do-profissional)
+6. [Emergências e Crises](#-emergências-e-crises)
+7. [Acessando em Dispositivos Móveis](#-acessando-em-dispositivos-móveis)
+8. [Perguntas Frequentes (FAQ)](#-perguntas-frequentes-faq)
+9. [Solução de Problemas](#-solução-de-problemas)
+10. [Suporte e Contato](#-suporte-e-contato)
+
+---
+
+## Introdução ao MindBridge
+
+### O que é o MindBridge?
+O MindBridge é uma plataforma de **primeiros socorros emocionais** que conecta pessoas em sofrimento emocional com mediadores treinados e profissionais de saúde mental.
+
+### Para quem é?
+- ** Para você** que está passando por um momento difícil
+- ** Para voluntários** que querem ajudar como mediadores
+- ** Para profissionais** de saúde mental
+
+### Principais Características:
+- ✅ **24/7** - Disponível a qualquer hora
+- ✅ **Gratuito** - Sem custos para usuários
+- ✅ **Anônimo** - Você escolhe se identifica
+- ✅ **Imediato** - Conexão em menos de 2 minutos
+- ✅ **Profissional** - Mediação supervisionada
+
+---
+
+## Primeiros Passos
+
+### 1. Acessando a Plataforma
+```
+Site: http://localhost/MindBridge/home.html
+Compatível com: Chrome, Firefox, Safari, Edge
+Conexão: Internet necessária
+```
+
+### 2. Primeiro Acesso
+```mermaid
+graph LR
+    A[Acesse Home] --> B[Clique em Login]
+    B --> C[Escolha seu perfil]
+    C --> D[Preencha dados]
+    D --> E[Acesse Dashboard]
+```
+
+### 3. Perfis Disponíveis
+
+| Perfil | Descrição | Acesso |
+|--------|-----------|---------|
+| ** Usuário** | Busca suporte emocional | Imediato |
+| ** Mediador** | Oferece escuta ativa | Após treinamento |
+| ** Profissional** | Atendimento especializado | Credencial profissional |
+
+---
+
+##  Manual do Usuário
+
+###  Dashboard do Usuário
+
+####  **Painel Principal**
+```
+┌─────────────────────────────────────┐
+│  Olá, [Seu Nome]!                │
+│  Como você está se sentindo hoje?   │
+├─────────────────────────────────────┤
+│  🚨 EMERGÊNCIA                     │
+│  💬 CONVERSAR AGORA                │
+│  📚 RECURSOS                       │
+│  📖 MEU HISTÓRICO                  │
+└─────────────────────────────────────┘
+```
+
+####  **Iniciando uma Conversa**
+1. Clique em **"Conversar Agora"**
+2. Aguarde a conexão com um mediador (≤ 2 minutos)
+3. Comece a conversar com segurança
+
+####  **Recursos Disponíveis**
+- **🧘 Exercícios de respiração**
+- **📝 Diário emocional**
+- **🎧 Meditações guiadas**
+- **📖 Artigos de psicoeducação**
+
+####  **Avaliando o Atendimento**
+Após cada conversa:
+1. Avalie de 1 a 5 estrelas
+2. Deixe um comentário (opcional)
+3. Sua opinião ajuda a melhorar o serviço!
+
+---
+
+##  Manual do Mediador
+
+###  Dashboard do Mediador
+
+####  **Painel de Monitoramento**
+```
+┌─────────────────────────────────────┐
+│  METRÉTRICAS                        │
+│  • 12 Conversas Ativas              │
+│  • 3 Alertas Críticos               │
+│  • 98% Taxa de Resposta             │
+├─────────────────────────────────────┤
+│  🚨 ALERTAS CRÍTICOS                │
+│  💬 SALAS ATIVAS                    │
+│  🛠️ FERRAMENTAS                    │
+└─────────────────────────────────────┘
+```
+
+###  **Monitorando Conversas**
+
+#### 1. **Sistema de Alertas**
+| Cor | Nível | Ação |
+|-----|-------|------|
+| 🔴 **Vermelho** | Alto Risco | Intervenção imediata |
+| 🟠 **Laranja** | Médio Risco | Monitoramento próximo |
+| 🟡 **Amarelo** | Baixo Risco | Acompanhamento |
+
+#### 2. **Entrando em uma Sala**
+1. Clique na sala desejada
+2. Leia o histórico da conversa
+3. Identifique o nível de risco
+4. Intervenha conforme necessário
+
+###  **Ferramentas do Mediador**
+
+####  **Painel de Supervisão**
+Acesse para:
+- Ver todas as conversas ativas
+- Acompanhar outros mediadores
+- Revisar conversas sinalizadas
+
+####  **Treinamento**
+- ** Módulos obrigatórios**
+- ** Vídeos educativos**
+- ** Simulador de casos**
+- ** Protocolos de emergência**
+
+#### **Relatórios**
+- Gerar relatórios de atendimento
+- Exportar dados em PDF/Excel
+- Analisar métricas de desempenho
+
+### **Protocolos de Atuação**
+
+#### **Caso: Baixo Risco**
+```
+1. Ofereça escuta ativa
+2. Valide emoções
+3. Sugira recursos de autoajuda
+4. Encerre com plano de autocuidado
+```
+
+#### **Caso: Médio Risco**
+```
+1. Avalie risco de autoagressão
+2. Ofereça suporte contínuo
+3. Sugira acompanhamento
+4. Documente cuidadosamente
+```
+
+#### **Caso: Alto Risco**
+```
+1. Mantenha a pessoa segura
+2. Ative protocolo de emergência
+3. Conecte com profissional
+4. Notifique supervisão
+```
+
+---
+
+## Manual do Profissional
+
+### Dashboard do Profissional
+
+#### **Agenda do Dia**
+```
+┌─────────────────────────────────────┐
+│  HOJE - 03/12/2024                  │
+│  ⏰ 09:00 - Pedro Santos            │
+│  ⏰ 11:00 - Ana Beatriz             │
+│  ⏰ 14:00 - Carlos Mendes           │
+├─────────────────────────────────────┤
+│  🚨 ENCAMINHAMENTOS URGENTES       │
+│  🛠️ FERRAMENTAS CLÍNICAS           │
+│  ⏰ PRÓXIMAS SESSÕES                │
+└─────────────────────────────────────┘
+```
+
+### **Atendendo Encaminhamentos Urgentes**
+
+#### 1. **Avaliação Rápida**
+- Leia o encaminhamento do mediador
+- Verifique o nível de risco
+- Decida: atendimento imediato ou agendado
+
+#### 2. **Atendimento Imediato**
+1. Clique em **"Atender Agora"**
+2. Você será direcionado ao chat de emergência
+3. Realize avaliação de risco
+4. Defina plano de ação
+
+###  **Ferramentas Clínicas**
+
+####  **Anotações Clínicas**
+```
+Como acessar:
+1. Clique em "Anotações Clínicas"
+2. Selecione o paciente
+3. Registre a sessão
+4. Salve no prontuário
+
+Funcionalidades:
+✅ Histórico completo
+✅ Sistema de tags
+✅ Busca avançada
+✅ Exportação PDF
+```
+
+#### **Prescrições e Encaminhamentos**
+```
+Prescrevendo medicamentos:
+1. Selecione paciente
+2. Escolha medicamento
+3. Defina dosagem
+4. Adicione instruções
+5. Imprima receita
+
+Encaminhando para especialistas:
+1. Selecione especialidade
+2. Preencha motivo
+3. Adicione observações
+4. Envie para paciente
+```
+
+#### **Relatório Clínico**
+```
+Gerando relatório:
+1. Selecione paciente
+2. Escolha período
+3. Adicione escalas aplicadas
+4. Inclua intervenções
+5. Gere relatório completo
+
+Escalas disponíveis:
+• PHQ-9 - Depressão
+• GAD-7 - Ansiedade
+• BDI - Inventário Beck
+• WHO-5 - Bem-estar
+```
+
+### **Protocolos Clínicos**
+
+#### **Avaliação Inicial**
+```
+1. História do problema atual
+2. Histórico psiquiátrico
+3. Fatores de risco/proteção
+4. Diagnóstico preliminar
+5. Plano terapêutico
+```
+
+#### **Sessão Regular**
+```
+1. Checagem inicial
+2. Revisão do homework
+3. Trabalho terapêutico
+4. Definição de metas
+5. Encerramento
+```
+
+#### **Crise Aguda**
+```
+1. Avaliação de segurança
+2. Redução de danos
+3. Plano de contenção
+4. Acompanhamento próximo
+5. Rede de apoio
+```
+
+---
+
+## Emergências e Crises
+
+### **Quando Usar o Botão de Emergência**
+
+| Situação | Ação Recomendada |
+|----------|------------------|
+| Pensamentos suicidas | **EMERGÊNCIA IMEDIATA** |
+| Autoagressão ativa | **EMERGÊNCIA IMEDIATA** |
+| Crise de pânico severa | **EMERGÊNCIA OU CHAT** |
+| Ideaçāo suicida passada | **CHAT COM PROFISSIONAL** |
+
+### **Protocolo de Emergência**
+
+#### Para Usuários:
+1. Clique no **botão vermelho 🚨**
+2. Você será conectado imediatamente
+3. Siga as orientações do profissional
+4. Permaneça online até a crise passar
+
+#### Para Mediadores:
+1. **NÃO TENTE RESOLVER SOZINHO**
+2. Ative o protocolo de emergência
+3. Mantenha a pessoa segura online
+4. Transfira para profissional
+
+#### Para Profissionais:
+1. Avalie risco imediato
+2. Estabilize emocionalmente
+3. Acione rede de apoio se necessário
+4. Documente a intervenção
+
+###  **Recursos Externos de Emergência**
+
+```
+CVV - Centro de Valorização da Vida
+• Telefone: 188 (24 horas)
+• Site: www.cvv.org.br
+• Chat: www.cvv.org.br/chat
+
+SAMU
+• Telefone: 192
+
+Bombeiros
+• Telefone: 193
+```
+## Também podemod por outras entidades de ajuda dependendo da localidade !!
+---
+
+## Acessando em Dispositivos Móveis
+
+### **Compatibilidade**
+
+| Dispositivo | Navegador | Status   |
+|-------------|-----------|----------|
+| **Android** | Chrome    | ✅ Ótimo |
+| **Android** | Firefox   | ✅ Ótimo |
+| **iOS**     | Safari    | ✅ Ótimo |
+| **iOS**     | Chrome    | ✅ Ótimo |
+
+### **Dicas para Mobile**
+
+#### Melhor Experiência:
+- Use modo paisagem para dashboards
+- Ative notificações do navegador
+- Salve como app na tela inicial
+
+#### Como salvar como app:
+```
+Android (Chrome):
+1. Acesse o site
+2. Menu → "Adicionar à tela inicial"
+
+iOS (Safari):
+1. Acesse o site  
+2. Compartilhar → "Adicionar à tela de início"
+```
+
+---
+
+##  Perguntas Frequentes (FAQ)
+
+###  **Para Usuários**
+
+####  É realmente gratuito?
+**Sim!** O MindBridge é totalmente gratuito para quem busca ajuda.
+
+####  Meus dados são privados?
+**Sim!** Usamos criptografia e não compartilhamos seus dados.
+
+####  Posso ficar anônimo?
+**Sim!** Você escolhe quanto quer compartilhar sobre você.
+
+####  Quanto tempo dura uma conversa?
+**Varia conforme necessidade**, geralmente 15-45 minutos.
+
+###  **Para Mediadores**
+
+####  Preciso de formação específica?
+**Sim**, todos os mediadores passam por treinamento certificado.
+
+####  Como é a supervisão?
+**Contínua**, com profissionais disponíveis 24/7 para apoio.
+
+####  Posso atender de qualquer lugar?
+**Sim**, desde que tenha internet e privacidade.
+
+####  Recebo algum suporte emocional?
+**Sim**, temos grupo de apoio e supervisão para mediadores.
+
+###  **Para Profissionais**
+
+####  Como me cadastrar como profissional?
+Entre em contato pelo email: profissionais@mindbridge.com.br
+
+####  Posso usar para teleatendimento?
+**Sim**, a plataforma é ideal para telepsicologia.
+
+####  Como são os encaminhamentos?
+São triados por mediadores e encaminhados com histórico.
+
+####  Posso emitir receitas?
+**Sim**, temos sistema de prescrições digital com validade.
+
+---
+
+## Solução de Problemas
+
+### **Problemas Comuns e Soluções**
+
+#### Não consigo fazer login
+```
+Solução:
+1. Verifique se Caps Lock está ativado
+2. Limpe cache do navegador
+3. Tente modo anônimo
+4. Contacte suporte
+```
+
+#### Chat não carrega
+```
+Solução:
+1. Verifique conexão com internet
+2. Atualize a página (F5)
+3. Tente outro navegador
+4. Contacte suporte técnico
+```
+
+#### Não consigo ouvir/video
+```
+Solução:
+1. Verifique permissões do navegador
+2. Teste em outro dispositivo
+3. Reinicie o navegador
+4. Use fones de ouvido
+```
+
+#### Página não responde
+```
+Solução:
+1. Aguarde 30 segundos
+2. Recarregue a página
+3. Feche outras abas
+4. Reinicie o navegador
+```
+
+### **Dicas Técnicas**
+
+#### Para melhor performance:
+- Use **Chrome** ou **Firefox**
+- Mantenha o navegador **atualizado**
+- Tenha **conexão estável**
+- **Feche abas** não usadas
+
+#### Em caso de bugs:
+1. **Anote** o que estava fazendo
+2. **Tire print** da tela
+3. **Abra uma issue** no GitHub
+4. **Contacte** o suporte
+
+---
+
+## Suporte e Contato
+
+### **Canais de Atendimento**
+
+#### Para Usuários:
+```
+Emergência: Botão 🚨 na plataforma
+Dúvidas: suporte@mindbridge.com.br
+Horário: 24 horas por dia
+```
+
+#### Para Mediadores:
+```
+Supervisão: Disponível na plataforma
+Treinamento: treinamento@mindbridge.com.br
+Técnico: suporte@mindbridge.com.br
+```
+
+#### Para Profissionais:
+```
+Cadastro: profissionais@mindbridge.com.br
+Técnico: suporte@mindbridge.com.br
+Parcerias: parcerias@mindbridge.com.br
+```
+
+### **Redes Sociais**
+```
+Facebook: /MindBridgeBrasil
+Twitter: @MindBridgeBR
+Instagram: @mindbridge.brasil
+YouTube: MindBridge Brasil
+```
+
+### **Endereço**
+```
+MindBridge - Primeiros Socorros Emocionais
+Campo Grande - MS, Brasil
+www.mindbridge.com.br
+(67) 99999-9999
+```
+
+---
+
+## Importante!
+
+### **Limites da Plataforma**
+```
+O que fazemos:
+• Oferecemos suporte emocional imediato
+• Conectamos com profissionais
+• Fornecemos recursos de autocuidado
+
+O que NÃO fazemos:
+• Substituímos tratamento psicológico
+• Oferecemos diagnóstico médico
+• Atendemos emergências físicas
+```
+
+### **Avisos Legais**
+- Esta plataforma **não substitui** atendimento médico
+- Em caso de risco à vida, **ligue 192** imediatamente
+- **Privacidade** garantida conforme LGPD
+- **Consentimento** necessário para menores
+
+### **Nosso Compromisso**
+```
+Respeito à sua jornada
+Privacidade e confidencialidade  
+Resposta rápida e acolhedora
+Acesso democrático à saúde mental
+```
+
+---
+
+## Glossário
+
+| Termo              | Significado                         |
+|--------------------|-------------------------------------|
+| **Mediador** ----- | Voluntário treinado em escuta ativa |
+| **Profissional** --| Psicólogo/Psiquiatra cadastrado     |
+| **Sala** ----------| Conversa individual no chat         |
+| **Alerta** --------| Sinalização de risco                |
+| **Encaminhamento** | Indicação para profissional         |
+| **Protocolo** -----| Procedimento padrão de atuação      |
+
+---
+
+## Atualizações
+
+Este manual é atualizado regularmente. A versão mais recente está sempre disponível na plataforma.
+
+**Última atualização:** Dezembro 2025 
+**Versão:** 1.0.0
+
+---
+
+**MindBridge - Porque cuidar da mente é atravessar pontes interiores.**
+
+Precisa de ajuda agora? Clique no botão 🚨 ou ligue 188.
