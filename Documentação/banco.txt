@@ -1,0 +1,913 @@
+# Arquitetura de Banco de Dados - MindBridge
+
+##  **Estrutura Recomendada: PostgreSQL + Redis**
+
+### **Arquitetura Híbrida:**
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Camada de Aplicação                   │
+│                    (Node.js/Express)                     │
+└─────────────────────────────────────────────────────────┘
+                           │
+┌─────────────────────────────────────────────────────────┐
+│                    Camada de Cache                       │
+│                    (Redis - In-Memory)                   │
+│  • Sessões de usuário                                   │
+│  • Cache de chats ativos                                │
+│  • Fila de mensagens                                    │
+│  • Estatísticas em tempo real                           │
+└─────────────────────────────────────────────────────────┘
+                           │
+┌─────────────────────────────────────────────────────────┐
+│                 Banco de Dados Principal                 │
+│                 (PostgreSQL - Relacional)                │
+│  • Dados estruturados                                  │
+│  • Relacionamentos complexos                           │
+│  • Transações ACID                                     │
+│  • Backup e recovery                                   │
+└─────────────────────────────────────────────────────────┘
+                           │
+┌─────────────────────────────────────────────────────────┐
+│                  Armazenamento de Blobs                  │
+│                  (AWS S3 / MinIO)                       │
+│  • Arquivos de mídia                                   │
+│  • Documentos PDF                                      │
+│  • Backups                                             │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+##  **Esquema de Banco de Dados - PostgreSQL**
+
+### **1. TABELA: users (Usuários do Sistema)**
+```sql
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    
+    -- Informações básicas
+    full_name VARCHAR(255) NOT NULL,
+    display_name VARCHAR(100),
+    date_of_birth DATE,
+    gender VARCHAR(20),
+    
+    -- Perfil e autenticação
+    user_type VARCHAR(20) NOT NULL CHECK (user_type IN ('user', 'mediator', 'professional', 'admin')),
+    role VARCHAR(50),
+    credentials JSONB, -- CRP, CRM, etc
+    
+    -- Segurança
+    password_hash VARCHAR(255) NOT NULL,
+    salt VARCHAR(255) NOT NULL,
+    mfa_enabled BOOLEAN DEFAULT FALSE,
+    mfa_secret VARCHAR(255),
+    
+    -- Status
+    account_status VARCHAR(20) DEFAULT 'active' 
+        CHECK (account_status IN ('active', 'inactive', 'suspended', 'pending_verification')),
+    verified BOOLEAN DEFAULT FALSE,
+    last_login TIMESTAMP WITH TIME ZONE,
+    
+    -- Preferências
+    preferences JSONB DEFAULT '{
+        "theme": "light",
+        "language": "pt-BR",
+        "notifications": {
+            "email": true,
+            "push": true,
+            "emergency": true
+        },
+        "privacy": {
+            "anonymous_mode": false,
+            "data_sharing": "minimal"
+        }
+    }'::jsonb,
+    
+    -- Dados clínicos (apenas para profissionais)
+    clinical_data JSONB,
+    
+    -- Metadados
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP WITH TIME ZONE,
+    
+    -- Índices
+    INDEX idx_users_email ON users(email),
+    INDEX idx_users_user_type ON users(user_type),
+    INDEX idx_users_status ON users(account_status),
+    INDEX idx_users_created_at ON users(created_at)
+);
+
+-- Trigger para updated_at
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_users_updated_at 
+    BEFORE UPDATE ON users 
+    FOR EACH ROW 
+    EXECUTE FUNCTION update_updated_at_column();
+```
+
+### **2. TABELA: user_profiles (Perfis Extendidos)**
+```sql
+CREATE TABLE user_profiles (
+    user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    
+    -- Dados demográficos
+    cpf VARCHAR(14) UNIQUE,
+    rg VARCHAR(20),
+    
+    -- Endereço
+    address_street VARCHAR(255),
+    address_number VARCHAR(20),
+    address_complement VARCHAR(100),
+    address_neighborhood VARCHAR(100),
+    address_city VARCHAR(100),
+    address_state VARCHAR(2),
+    address_zipcode VARCHAR(10),
+    address_country VARCHAR(50) DEFAULT 'Brasil',
+    
+    -- Contato de emergência
+    emergency_contact_name VARCHAR(255),
+    emergency_contact_phone VARCHAR(20),
+    emergency_contact_relationship VARCHAR(50),
+    
+    -- Informações de saúde
+    has_health_insurance BOOLEAN DEFAULT FALSE,
+    health_insurance_provider VARCHAR(100),
+    health_insurance_number VARCHAR(50),
+    
+    -- Histórico médico (apenas com consentimento)
+    medical_history JSONB DEFAULT '{}'::jsonb,
+    current_medications TEXT[],
+    allergies TEXT[],
+    
+    -- Fatores de risco
+    risk_factors JSONB DEFAULT '{
+        "previous_attempts": false,
+        "self_harm_history": false,
+        "family_history": false,
+        "substance_abuse": false,
+        "trauma_history": false
+    }'::jsonb,
+    
+    -- Fatores de proteção
+    protective_factors JSONB DEFAULT '{
+        "social_support": false,
+        "access_care": false,
+        "coping_skills": false,
+        "future_orientation": false
+    }'::jsonb,
+    
+    -- Consentimentos
+    consents JSONB DEFAULT '{
+        "data_processing": false,
+        "clinical_records": false,
+        "emergency_contact": false,
+        "research_participation": false
+    }'::jsonb,
+    
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    
+    INDEX idx_user_profiles_city ON user_profiles(address_city),
+    INDEX idx_user_profiles_state ON user_profiles(address_state)
+);
+```
+
+### **3. TABELA: chat_rooms (Salas de Conversa)**
+```sql
+CREATE TABLE chat_rooms (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    
+    -- Informações da sala
+    room_code VARCHAR(50) UNIQUE NOT NULL,
+    room_type VARCHAR(20) NOT NULL DEFAULT 'regular'
+        CHECK (room_type IN ('regular', 'emergency', 'group', 'supervision')),
+    
+    -- Participantes
+    user_id UUID REFERENCES users(id),
+    mediator_id UUID REFERENCES users(id),
+    professional_id UUID REFERENCES users(id),
+    
+    -- Status
+    room_status VARCHAR(20) NOT NULL DEFAULT 'waiting'
+        CHECK (room_status IN ('waiting', 'active', 'paused', 'escalated', 'closed', 'archived')),
+    
+    -- Avaliação de risco
+    initial_risk_level VARCHAR(10) DEFAULT 'low'
+        CHECK (initial_risk_level IN ('low', 'medium', 'high', 'critical')),
+    current_risk_level VARCHAR(10) DEFAULT 'low'
+        CHECK (current_risk_level IN ('low', 'medium', 'high', 'critical')),
+    
+    -- Metadados
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    started_at TIMESTAMP WITH TIME ZONE,
+    ended_at TIMESTAMP WITH TIME ZONE,
+    duration INTERVAL GENERATED ALWAYS AS (ended_at - started_at) STORED,
+    
+    -- Dados da sessão
+    session_data JSONB DEFAULT '{
+        "topics_discussed": [],
+        "resources_shared": [],
+        "crisis_interventions": []
+    }'::jsonb,
+    
+    -- Avaliação
+    user_rating INTEGER CHECK (user_rating BETWEEN 1 AND 5),
+    user_feedback TEXT,
+    mediator_notes TEXT,
+    
+    -- Índices
+    INDEX idx_chat_rooms_user_id ON chat_rooms(user_id),
+    INDEX idx_chat_rooms_mediator_id ON chat_rooms(mediator_id),
+    INDEX idx_chat_rooms_status ON chat_rooms(room_status),
+    INDEX idx_chat_rooms_created_at ON chat_rooms(created_at),
+    INDEX idx_chat_rooms_risk_level ON chat_rooms(current_risk_level),
+    
+    -- Constraints
+    CONSTRAINT chk_room_participants CHECK (
+        (user_id IS NOT NULL) OR
+        (mediator_id IS NOT NULL) OR
+        (professional_id IS NOT NULL)
+    )
+);
+```
+
+### **4. TABELA: messages (Mensagens do Chat)**
+```sql
+CREATE TABLE messages (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    room_id UUID NOT NULL REFERENCES chat_rooms(id) ON DELETE CASCADE,
+    sender_id UUID NOT NULL REFERENCES users(id),
+    
+    -- Conteúdo
+    message_type VARCHAR(20) NOT NULL DEFAULT 'text'
+        CHECK (message_type IN ('text', 'image', 'file', 'assessment', 'resource', 'system')),
+    content TEXT NOT NULL,
+    
+    -- Para mensagens não-texto
+    media_url VARCHAR(500),
+    file_name VARCHAR(255),
+    file_size INTEGER,
+    mime_type VARCHAR(100),
+    
+    -- Análise de risco
+    risk_flag BOOLEAN DEFAULT FALSE,
+    risk_reason VARCHAR(100),
+    flagged_by UUID REFERENCES users(id),
+    flag_resolved BOOLEAN DEFAULT FALSE,
+    
+    -- Análise de sentimentos (opcional, com consentimento)
+    sentiment_score FLOAT CHECK (sentiment_score BETWEEN -1 AND 1),
+    keywords TEXT[],
+    
+    -- Status
+    delivered BOOLEAN DEFAULT FALSE,
+    read BOOLEAN DEFAULT FALSE,
+    read_at TIMESTAMP WITH TIME ZONE,
+    deleted BOOLEAN DEFAULT FALSE,
+    
+    -- Timestamps
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Índices (CRÍTICOS para performance)
+    INDEX idx_messages_room_id ON messages(room_id),
+    INDEX idx_messages_sender_id ON messages(sender_id),
+    INDEX idx_messages_created_at ON messages(created_at),
+    INDEX idx_messages_risk_flag ON messages(risk_flag) WHERE risk_flag = TRUE,
+    
+    -- Índice composto para queries frequentes
+    INDEX idx_messages_room_created ON messages(room_id, created_at DESC)
+);
+
+-- Tabela de pesquisa full-text
+CREATE INDEX idx_messages_content_search ON messages 
+    USING gin(to_tsvector('portuguese', content));
+```
+
+### **5. TABELA: clinical_notes (Anotações Clínicas)**
+```sql
+CREATE TABLE clinical_notes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id),
+    professional_id UUID NOT NULL REFERENCES users(id),
+    room_id UUID REFERENCES chat_rooms(id),
+    
+    -- Metadados
+    note_type VARCHAR(50) NOT NULL DEFAULT 'session'
+        CHECK (note_type IN ('session', 'assessment', 'progress', 'incident', 'followup')),
+    title VARCHAR(255) NOT NULL,
+    session_date DATE NOT NULL,
+    session_duration INTERVAL,
+    
+    -- Conteúdo
+    subjective TEXT,   -- O que o paciente relata
+    objective TEXT,    -- Observações do profissional
+    assessment TEXT,   -- Avaliação/impressão
+    plan TEXT,         -- Plano terapêutico
+    
+    -- Dados estruturados
+    diagnosis_codes VARCHAR(50)[], -- CID-10
+    interventions TEXT[],
+    homework_assigned TEXT[],
+    
+    -- Escalas aplicadas
+    scales JSONB DEFAULT '[]'::jsonb, -- [{scale: 'PHQ-9', score: 15, date: '...'}]
+    
+    -- Tags e categorização
+    tags VARCHAR(50)[],
+    confidentiality_level VARCHAR(20) DEFAULT 'confidential'
+        CHECK (confidentiality_level IN ('confidential', 'restricted', 'internal')),
+    
+    -- Anexos
+    attachments JSONB DEFAULT '[]'::jsonb,
+    
+    -- Validação
+    draft BOOLEAN DEFAULT TRUE,
+    signed BOOLEAN DEFAULT FALSE,
+    signed_at TIMESTAMP WITH TIME ZONE,
+    signed_by UUID REFERENCES users(id),
+    
+    -- Metadados
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP WITH TIME ZONE,
+    
+    -- Índices
+    INDEX idx_clinical_notes_user_id ON clinical_notes(user_id),
+    INDEX idx_clinical_notes_professional_id ON clinical_notes(professional_id),
+    INDEX idx_clinical_notes_session_date ON clinical_notes(session_date),
+    INDEX idx_clinical_notes_tags ON clinical_notes USING gin(tags),
+    
+    -- Constraints
+    CONSTRAINT fk_notes_room FOREIGN KEY (room_id) 
+        REFERENCES chat_rooms(id) ON DELETE SET NULL
+);
+```
+
+### **6. TABELA: prescriptions (Prescrições)**
+```sql
+CREATE TABLE prescriptions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id),
+    professional_id UUID NOT NULL REFERENCES users(id),
+    
+    -- Dados da prescrição
+    prescription_number VARCHAR(50) UNIQUE NOT NULL,
+    prescription_date DATE NOT NULL,
+    valid_until DATE NOT NULL,
+    
+    -- Medicamento
+    medication_name VARCHAR(255) NOT NULL,
+    generic_name VARCHAR(255),
+    dosage VARCHAR(100) NOT NULL, -- '50mg', '0.5mg'
+    pharmaceutical_form VARCHAR(50), -- 'comprimido', 'cápsula'
+    
+    -- Posologia
+    frequency VARCHAR(50) NOT NULL, -- '1x ao dia', 'SOS'
+    administration_route VARCHAR(50), -- 'oral', 'sublingual'
+    duration_days INTEGER,
+    total_quantity INTEGER,
+    
+    -- Instruções
+    instructions TEXT,
+    precautions TEXT,
+    contraindications TEXT,
+    
+    -- Status
+    status VARCHAR(20) DEFAULT 'active'
+        CHECK (status IN ('active', 'completed', 'cancelled', 'expired')),
+    
+    -- Renovação
+    renewable BOOLEAN DEFAULT FALSE,
+    renewals_remaining INTEGER DEFAULT 0,
+    original_prescription_id UUID REFERENCES prescriptions(id),
+    
+    -- Digital signature
+    digital_signature TEXT,
+    qr_code_url VARCHAR(500),
+    
+    -- Metadados
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    filled_at TIMESTAMP WITH TIME ZONE,
+    filled_by UUID REFERENCES users(id),
+    
+    -- Índices
+    INDEX idx_prescriptions_user_id ON prescriptions(user_id),
+    INDEX idx_prescriptions_professional_id ON prescriptions(professional_id),
+    INDEX idx_prescriptions_status ON prescriptions(status),
+    INDEX idx_prescriptions_valid_until ON prescriptions(valid_until),
+    
+    -- Constraints
+    CONSTRAINT chk_prescription_dates CHECK (valid_until >= prescription_date),
+    CONSTRAINT chk_duration CHECK (duration_days > 0 AND duration_days <= 365)
+);
+```
+
+### **7. TABELA: referrals (Encaminhamentos)**
+```sql
+CREATE TABLE referrals (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id),
+    referrer_id UUID NOT NULL REFERENCES users(id), -- quem encaminha
+    receiver_id UUID REFERENCES users(id), -- quem recebe (se já designado)
+    
+    -- Dados do encaminhamento
+    referral_type VARCHAR(50) NOT NULL
+        CHECK (referral_type IN ('psychiatry', 'psychology', 'social_work', 'neurology', 'general_practice')),
+    urgency_level VARCHAR(20) NOT NULL DEFAULT 'routine'
+        CHECK (urgency_level IN ('routine', 'urgent', 'emergency')),
+    
+    -- Motivo
+    reason TEXT NOT NULL,
+    clinical_summary TEXT,
+    relevant_history TEXT,
+    
+    -- Status
+    status VARCHAR(20) NOT NULL DEFAULT 'pending'
+        CHECK (status IN ('pending', 'accepted', 'rejected', 'scheduled', 'completed', 'cancelled')),
+    
+    -- Agendamento
+    preferred_dates DATE[],
+    scheduled_date TIMESTAMP WITH TIME ZONE,
+    appointment_location VARCHAR(500),
+    
+    -- Resultado
+    outcome TEXT,
+    outcome_date DATE,
+    followup_needed BOOLEAN DEFAULT FALSE,
+    
+    -- Documentos
+    attached_documents JSONB DEFAULT '[]'::jsonb,
+    
+    -- Metadados
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    responded_at TIMESTAMP WITH TIME ZONE,
+    completed_at TIMESTAMP WITH TIME ZONE,
+    
+    -- Índices
+    INDEX idx_referrals_user_id ON referrals(user_id),
+    INDEX idx_referrals_referrer_id ON referrals(referrer_id),
+    INDEX idx_referrals_status ON referrals(status),
+    INDEX idx_referrals_urgency ON referrals(urgency_level),
+    INDEX idx_referrals_created_at ON referrals(created_at)
+);
+```
+
+### **8. TABELA: assessments (Avaliações Psicológicas)**
+```sql
+CREATE TABLE assessments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id),
+    administered_by UUID REFERENCES users(id),
+    room_id UUID REFERENCES chat_rooms(id),
+    
+    -- Dados da avaliação
+    assessment_type VARCHAR(50) NOT NULL
+        CHECK (assessment_type IN ('PHQ-9', 'GAD-7', 'BDI', 'WHO-5', 'custom')),
+    assessment_name VARCHAR(255) NOT NULL,
+    
+    -- Resultados
+    scores JSONB NOT NULL, -- {total: 15, items: [{question: 1, score: 3}, ...]}
+    interpretation TEXT,
+    severity_level VARCHAR(50),
+    cutoff_score INTEGER,
+    
+    -- Contexto
+    assessment_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    assessment_duration INTERVAL,
+    
+    -- Validade
+    valid_until DATE,
+    can_retake BOOLEAN DEFAULT TRUE,
+    retake_after_days INTEGER,
+    
+    -- Anexos
+    raw_responses JSONB,
+    notes TEXT,
+    
+    -- Metadados
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Índices
+    INDEX idx_assessments_user_id ON assessments(user_id),
+    INDEX idx_assessments_type ON assessments(assessment_type),
+    INDEX idx_assessments_date ON assessments(assessment_date),
+    
+    -- Constraints
+    CONSTRAINT fk_assessments_room FOREIGN KEY (room_id) 
+        REFERENCES chat_rooms(id) ON DELETE SET NULL
+);
+```
+
+### **9. TABELA: emergency_alerts (Alertas de Emergência)**
+```sql
+CREATE TABLE emergency_alerts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    
+    -- Origem
+    user_id UUID REFERENCES users(id),
+    room_id UUID REFERENCES chat_rooms(id),
+    triggered_by UUID NOT NULL REFERENCES users(id), -- quem acionou
+    
+    -- Dados do alerta
+    alert_type VARCHAR(50) NOT NULL
+        CHECK (alert_type IN ('suicide_risk', 'self_harm', 'crisis', 'safety_concern')),
+    severity VARCHAR(20) NOT NULL DEFAULT 'high'
+        CHECK (severity IN ('low', 'medium', 'high', 'critical')),
+    
+    -- Detalhes
+    description TEXT NOT NULL,
+    immediate_risk BOOLEAN DEFAULT FALSE,
+    location_known BOOLEAN DEFAULT FALSE,
+    location_details TEXT,
+    
+    -- Resposta
+    first_responder_id UUID REFERENCES users(id),
+    response_actions JSONB DEFAULT '[]'::jsonb,
+    contacted_emergency_services BOOLEAN DEFAULT FALSE,
+    emergency_services_details TEXT,
+    
+    -- Status
+    status VARCHAR(20) NOT NULL DEFAULT 'active'
+        CHECK (status IN ('active', 'handling', 'resolved', 'closed', 'false_alarm')),
+    
+    -- Timestamps
+    triggered_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    first_response_at TIMESTAMP WITH TIME ZONE,
+    resolved_at TIMESTAMP WITH TIME ZONE,
+    followup_required BOOLEAN DEFAULT TRUE,
+    followup_scheduled DATE,
+    
+    -- Metadados
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Índices
+    INDEX idx_emergency_alerts_user_id ON emergency_alerts(user_id),
+    INDEX idx_emergency_alerts_status ON emergency_alerts(status),
+    INDEX idx_emergency_alerts_severity ON emergency_alerts(severity),
+    INDEX idx_emergency_alerts_triggered_at ON emergency_alerts(triggered_at),
+    
+    -- Full-text search para descrição
+    INDEX idx_emergency_alerts_description_search ON emergency_alerts 
+        USING gin(to_tsvector('portuguese', description))
+);
+```
+
+### **10. TABELA: audit_logs (Logs de Auditoria)**
+```sql
+CREATE TABLE audit_logs (
+    id BIGSERIAL PRIMARY KEY,
+    
+    -- Identificação
+    user_id UUID REFERENCES users(id),
+    user_ip INET,
+    user_agent TEXT,
+    
+    -- Ação
+    action VARCHAR(100) NOT NULL,
+    entity_type VARCHAR(50) NOT NULL,
+    entity_id UUID,
+    
+    -- Dados
+    old_data JSONB,
+    new_data JSONB,
+    changes JSONB,
+    
+    -- Status
+    success BOOLEAN DEFAULT TRUE,
+    error_message TEXT,
+    
+    -- Timestamp
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Índices (CRÍTICOS para performance de auditoria)
+    INDEX idx_audit_logs_user_id ON audit_logs(user_id),
+    INDEX idx_audit_logs_action ON audit_logs(action),
+    INDEX idx_audit_logs_entity ON audit_logs(entity_type, entity_id),
+    INDEX idx_audit_logs_created_at ON audit_logs(created_at DESC)
+);
+
+-- Partitioning por mês para logs (para volumes altos)
+CREATE TABLE audit_logs_y2024m01 PARTITION OF audit_logs
+    FOR VALUES FROM ('2024-01-01') TO ('2024-02-01');
+```
+
+### **11. TABELA: notifications (Notificações)**
+```sql
+CREATE TABLE notifications (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id),
+    
+    -- Conteúdo
+    notification_type VARCHAR(50) NOT NULL
+        CHECK (notification_type IN ('chat', 'emergency', 'appointment', 'system', 'reminder')),
+    title VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    
+    -- Dados relacionados
+    related_entity_type VARCHAR(50),
+    related_entity_id UUID,
+    
+    -- Ações
+    actions JSONB DEFAULT '[]'::jsonb, -- [{label: 'Ver', url: '/chat/...'}]
+    
+    -- Status
+    status VARCHAR(20) DEFAULT 'unread'
+        CHECK (status IN ('unread', 'read', 'actioned', 'dismissed')),
+    
+    -- Prioridade
+    priority INTEGER DEFAULT 0 CHECK (priority BETWEEN 0 AND 10),
+    
+    -- Expiração
+    expires_at TIMESTAMP WITH TIME ZONE,
+    
+    -- Entrega
+    delivery_method VARCHAR(20) DEFAULT 'in_app'
+        CHECK (delivery_method IN ('in_app', 'email', 'sms', 'push')),
+    sent_at TIMESTAMP WITH TIME ZONE,
+    delivered BOOLEAN DEFAULT FALSE,
+    read_at TIMESTAMP WITH TIME ZONE,
+    
+    -- Metadados
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Índices
+    INDEX idx_notifications_user_id ON notifications(user_id),
+    INDEX idx_notifications_status ON notifications(status),
+    INDEX idx_notifications_priority ON notifications(priority DESC),
+    INDEX idx_notifications_created_at ON notifications(created_at DESC),
+    
+    -- Índice composto para queries frequentes
+    INDEX idx_notifications_user_status ON notifications(user_id, status)
+);
+```
+
+---
+
+##  **Modelo de Permissões e RBAC**
+
+### **12. TABELA: roles (Papéis)**
+```sql
+CREATE TABLE roles (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(50) UNIQUE NOT NULL,
+    description TEXT,
+    is_system_role BOOLEAN DEFAULT FALSE,
+    permissions JSONB NOT NULL DEFAULT '[]'::jsonb,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Inserir roles padrão
+INSERT INTO roles (name, description, is_system_role, permissions) VALUES
+('user', 'Usuário comum', true, '["chat:send", "profile:view", "resources:access"]'),
+('mediator', 'Mediador treinado', true, '["chat:moderate", "alerts:view", "reports:basic"]'),
+('professional', 'Profissional de saúde', true, '["clinical:notes", "prescriptions:create", "assessments:administer"]'),
+('supervisor', 'Supervisor de mediadores', true, '["supervision:access", "analytics:view", "users:manage"]'),
+('admin', 'Administrador do sistema', true, '["system:configure", "users:all", "data:export"]');
+```
+
+### **13. TABELA: user_roles (Papéis dos Usuários)**
+```sql
+CREATE TABLE user_roles (
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    role_id UUID NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
+    assigned_by UUID REFERENCES users(id),
+    assigned_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP WITH TIME ZONE,
+    
+    PRIMARY KEY (user_id, role_id),
+    
+    INDEX idx_user_roles_user_id ON user_roles(user_id),
+    INDEX idx_user_roles_role_id ON user_roles(role_id)
+);
+```
+
+---
+
+##  **Configurações de Performance**
+
+### **Índices Otimizados:**
+```sql
+-- Índices para queries frequentes
+CREATE INDEX CONCURRENTLY idx_messages_recent 
+    ON messages(room_id, created_at DESC) 
+    WHERE deleted = FALSE;
+
+CREATE INDEX CONCURRENTLY idx_chat_rooms_active 
+    ON chat_rooms(room_status) 
+    WHERE room_status IN ('active', 'waiting', 'paused');
+
+CREATE INDEX CONCURRENTLY idx_users_online 
+    ON users(last_login) 
+    WHERE account_status = 'active' 
+    AND last_login > NOW() - INTERVAL '15 minutes';
+
+-- Índices para full-text search
+CREATE INDEX CONCURRENTLY idx_messages_search 
+    ON messages USING gin(
+        setweight(to_tsvector('portuguese', content), 'A')
+    );
+```
+
+### **Partitioning para Dados Massivos:**
+```sql
+-- Partitioning para mensagens (por mês)
+CREATE TABLE messages_y2024m01 PARTITION OF messages
+    FOR VALUES FROM ('2024-01-01') TO ('2024-02-01');
+
+-- Partitioning para logs (por dia)
+CREATE TABLE audit_logs_y2024m01d01 PARTITION OF audit_logs
+    FOR VALUES FROM ('2024-01-01') TO ('2024-01-02');
+```
+
+---
+
+##  **Configurações de Segurança**
+
+### **Funções de Segurança:**
+```sql
+-- Row Level Security (RLS)
+ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY messages_access_policy ON messages
+    USING (
+        -- Usuário pode ver mensagens das suas salas
+        room_id IN (
+            SELECT id FROM chat_rooms 
+            WHERE user_id = current_user_id() 
+            OR mediator_id = current_user_id() 
+            OR professional_id = current_user_id()
+        )
+        OR
+        -- Supervisores podem ver todas as mensagens
+        EXISTS (
+            SELECT 1 FROM user_roles ur 
+            JOIN roles r ON ur.role_id = r.id 
+            WHERE ur.user_id = current_user_id() 
+            AND r.name IN ('supervisor', 'admin')
+        )
+    );
+
+-- Função para auditoria de acesso
+CREATE OR REPLACE FUNCTION log_data_access()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO audit_logs (
+        user_id, action, entity_type, entity_id,
+        old_data, new_data
+    ) VALUES (
+        current_user_id(),
+        TG_OP,
+        TG_TABLE_NAME,
+        COALESCE(NEW.id, OLD.id),
+        to_jsonb(OLD),
+        to_jsonb(NEW)
+    );
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+```
+
+---
+
+##  **Configuração Redis (Cache)**
+
+### **Estrutura de Chaves:**
+```redis
+# Sessões de usuário
+SESSION:{userId} -> JSON da sessão (TTL: 24h)
+
+# Chat rooms ativos
+ROOM:{roomId}:messages -> Lista de IDs de mensagens
+ROOM:{roomId}:typing -> Set de usuários digitando
+ROOM:{roomId}:participants -> Set de participantes
+
+# Cache de usuários
+USER:{userId}:profile -> Perfil do usuário (TTL: 1h)
+
+# Estatísticas em tempo real
+STATS:daily:{date} -> Contadores do dia
+STATS:hourly:{hour} -> Contadores da hora
+
+# Filas
+QUEUE:notifications -> Notificações pendentes
+QUEUE:emails -> Emails para enviar
+QUEUE:messages -> Mensagens para processar
+
+# Rate limiting
+RATELIMIT:{userId}:{action}:{window} -> Contador
+```
+
+---
+
+##  **Backup e Recovery**
+
+### **Script de Backup Automatizado:**
+```bash
+#!/bin/bash
+# backup_mindbridge.sh
+
+DATE=$(date +%Y%m%d_%H%M%S)
+BACKUP_DIR="/backups/mindbridge"
+LOG_FILE="/var/log/backup_mindbridge.log"
+
+# Backup PostgreSQL
+pg_dump -U mindbridge -h localhost -d mindbridge_prod \
+  --format=custom \
+  --file="$BACKUP_DIR/db_$DATE.dump" \
+  --verbose 2>> "$LOG_FILE"
+
+# Backup Redis
+redis-cli --rdb "$BACKUP_DIR/redis_$DATE.rdb"
+
+# Compactar
+tar -czf "$BACKUP_DIR/full_$DATE.tar.gz" \
+  "$BACKUP_DIR/db_$DATE.dump" \
+  "$BACKUP_DIR/redis_$DATE.rdb"
+
+# Upload para S3 (opcional)
+aws s3 cp "$BACKUP_DIR/full_$DATE.tar.gz" \
+  s3://mindbridge-backups/
+
+# Limpar backups antigos
+find "$BACKUP_DIR" -name "*.tar.gz" -mtime +30 -delete
+
+echo "Backup completed: $DATE" >> "$LOG_FILE"
+```
+
+---
+
+## **Por que esta arquitetura?**
+
+### ** Vantagens:**
+1. **PostgreSQL**: ACID compliance, JSONB, full-text search, partitioning
+2. **Redis**: Cache, sessions, real-time data, queues
+3. **S3/MinIO**: Armazenamento escalável de arquivos
+4. **RLS**: Segurança em nível de linha
+5. **Partitioning**: Performance para grandes volumes
+6. **Índices otimizados**: Queries rápidas
+
+### ** Estatísticas Esperadas:**
+- **Usuários ativos**: 50,000+
+- **Mensagens/dia**: 1,000,000+
+- **Consultas/dia**: 10,000,000+
+- **Storage**: 500GB - 1TB inicial
+- **Uptime**: 99.95%
+
+### ** Manutenção:**
+```sql
+-- Otimizações semanais
+VACUUM ANALYZE;  -- Manutenção de índices
+
+-- Backup diário
+-- Monitoramento: pg_stat_statements
+-- Alertas: pg_monitor
+-- Replicação: Streaming replication
+```
+
+---
+
+##  **Próximos Passos**
+
+### **Fase 1 (MVP):**
+1. ✅ Estrutura básica PostgreSQL
+2. ✅ Tabelas principais
+3. ✅ Índices básicos
+
+### **Fase 2 (Escala):**
+1. 🔄 Implementar Redis
+2. 🔄 Partitioning de dados
+3. 🔄 RLS (Row Level Security)
+
+### **Fase 3 (Produção):**
+1. 📅 Backup automatizado
+2. 📅 Monitoramento
+3. 📅 Replicação
+4. 📅 Disaster recovery
+
+---
+
+## **Suporte Técnico**
+
+Para implementação completa:
+1. **DBA**: Configurar PostgreSQL + otimizações
+2. **DevOps**: Redis + S3 + monitoring
+3. **Backend**: Integração com APIs
+4. **Segurança**: Pentest + compliance
+
+Esta estrutura suporta **alta escala** com **segurança hospitalar**! 
