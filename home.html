@@ -3,74 +3,218 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MindBridge - Primeiros Socorros Emocionais Inteligentes. Conectamos pessoas em sofrimento emocional com mediadores treinados e profissionais de saúde mental 24/7.">
   <title>MindBridge | Primeiros Socorros Emocionais Inteligentes</title>
 
   <!-- FONTES -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
 
-  <!-- CSS CORRETO -->
-<link rel="stylesheet" href="css/home.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/home.css">
   
+  <!-- FAVICON -->
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+  
+  <!-- OPEN GRAPH -->
+  <meta property="og:title" content="MindBridge | Suporte Emocional 24/7">
+  <meta property="og:description" content="Conecte-se com mediadores treinados e profissionais de saúde mental quando mais precisa.">
+  <meta property="og:image" content="assets/img/og-image.png">
+  <meta property="og:url" content="https://mindbridge.com.br">
 </head>
 
 <body>
 
   <!-- ▬▬▬ NAVBAR ▬▬▬ -->
   <header class="navbar">
-    <h1 class="logo">Mind<span>Bridge</span></h1>
-    <nav>
-      <a href="#inicio">Início</a>
-      <a href="#funcionalidades">Como Funciona</a>
-      <a href="#para-quem">Para Quem</a>
-      <a href="#seguranca">Segurança</a>
-      <a href="#sobre">Sobre</a>
-      <button id="btnLogin">Entrar no App</button>
-    </nav>
+    <div class="navbar-container">
+      <h1 class="logo">Mind<span>Bridge</span></h1>
+      <nav class="nav-menu">
+        <a href="#inicio" class="nav-link">Início</a>
+        <a href="#funcionalidades" class="nav-link">Como Funciona</a>
+        <a href="#para-quem" class="nav-link">Para Quem</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+        <a href="#seguranca" class="nav-link">Segurança</a>
+        <a href="#sobre" class="nav-link">Sobre</a>
+        <div class="nav-buttons">
+          <button id="btnLogin" class="btn-login">Entrar</button>
+          <button id="btnRegister" class="btn-register">Cadastrar</button>
+        </div>
+      </nav>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+    </div>
   </header>
 
   <!-- ▬▬▬ HERO ▬▬▬ -->
   <section id="inicio" class="hero">
-    <div class="hero-text">
-      <h1>Suporte emocional quando você mais precisa</h1>
-      <p>O MindBridge conecta você a mediadores treinados e profissionais de saúde mental 24h por dia, com tecnologia inteligente e acolhimento humano.</p>
+    <div class="hero-container">
+      <div class="hero-text">
+        <div class="hero-badge">🚨 Suporte Emocional 24/7</div>
+        <h1 class="hero-title">Quando as palavras faltam,<br><span class="highlight">nós criamos a ponte</span></h1>
+        <p class="hero-subtitle">
+          Conectamos pessoas em sofrimento emocional com <strong>mediadores treinados</strong> e 
+          <strong>profissionais de saúde mental</strong> através de tecnologia inteligente e acolhimento humano.
+        </p>
 
-      <div class="hero-buttons">
-        <button class="cta primary" onclick="window.location.href='index.html'">
-          🚀 Começar Agora
-        </button>
-        <button class="cta secondary" onclick="window.location.href='#funcionalidades'">
-          ℹ️ Como Funciona
-        </button>
+        <div class="hero-buttons">
+          <button class="cta primary" onclick="startAsUser()">
+            🧠 Preciso de Ajuda
+          </button>
+          <button class="cta secondary" onclick="startAsProfessional()">
+            👨‍⚕️ Sou Profissional
+          </button>
+          <button class="cta tertiary" onclick="startAsMediator()">
+            🛡️ Quero Ser Mediador
+          </button>
+        </div>
+
+        <div class="hero-features">
+          <div class="feature">
+            <span class="feature-icon">⚡</span>
+            <span class="feature-text">Conexão em menos de 2 minutos</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">🔒</span>
+            <span class="feature-text">100% anônimo e confidencial</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">🎓</span>
+            <span class="feature-text">Mediadores treinados e supervisionados</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">💚</span>
+            <span class="feature-text">Totalmente gratuito</span>
+          </div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-number">24/7</span>
+            <span class="stat-label">Disponibilidade</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">2min</span>
+            <span class="stat-label">Tempo Médio de Resposta</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">94%</span>
+            <span class="stat-label">Satisfação dos Usuários</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Gratuito</span>
+          </div>
+        </div>
       </div>
 
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="number">24/7</span>
-          <span class="label">Disponível</span>
-        </div>
-        <div class="stat">
-          <span class="number">50+</span>
-          <span class="label">Profissionais</span>
-        </div>
-        <div class="stat">
-          <span class="number">100%</span>
-          <span class="label">Gratuito</span>
-        </div>
-      </div>
-    </div>
+      <div class="hero-visual">
+        <div class="app-preview">
+          <div class="preview-header">
+            <div class="preview-tabs">
+              <span class="tab active">👤 Usuário</span>
+              <span class="tab">🛡️ Mediador</span>
+              <span class="tab">👨‍⚕️ Profissional</span>
+            </div>
+          </div>
+          <div class="preview-content">
+            <!-- Preview do Chat -->
+            <div class="chat-preview active">
+              <div class="chat-header">
+                <div class="chat-info">
+                  <div class="avatar user">U</div>
+                  <div>
+                    <strong>João Silva</strong>
+                    <span class="status online">● Conectado</span>
+                  </div>
+                </div>
+                <span class="risk-level low">Risco Baixo</span>
+              </div>
+              <div class="chat-messages">
+                <div class="message received">
+                  <div class="message-sender">Maria (Mediadora)</div>
+                  <div class="message-content">Olá João! Estou aqui para te ouvir. Como você está se sentindo hoje?</div>
+                  <div class="message-time">14:02</div>
+                </div>
+                <div class="message sent">
+                  <div class="message-content">Oi Maria, obrigado por estar aqui. Estou me sentindo muito sobrecarregado com o trabalho...</div>
+                  <div class="message-time">14:03</div>
+                </div>
+                <div class="message received">
+                  <div class="message-sender">Maria (Mediadora)</div>
+                  <div class="message-content">Entendo. Pode me contar mais sobre o que está te deixando sobrecarregado?</div>
+                  <div class="message-time">14:04</div>
+                </div>
+              </div>
+              <div class="chat-input">
+                <input type="text" placeholder="Digite sua mensagem...">
+                <button class="send-btn">➤</button>
+              </div>
+            </div>
 
-    <div class="hero-visual">
-      <img src="assets/img/app-preview.png" class="hero-img" alt="Preview do App MindBridge">
-      <div class="floating-card chat-preview">
-        <div class="chat-header">
-          <strong>Maria - Mediador</strong>
-          <span class="online-dot"></span>
+            <!-- Preview do Dashboard Profissional -->
+            <div class="dashboard-preview">
+              <div class="dashboard-header">
+                <h4>Dr. Silva - Dashboard</h4>
+                <span class="badge urgent">3 Urgências</span>
+              </div>
+              <div class="dashboard-stats">
+                <div class="mini-stat">
+                  <span class="mini-number">8</span>
+                  <span>Pacientes Hoje</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-number">3</span>
+                  <span>Encaminhamentos</span>
+                </div>
+              </div>
+              <div class="appointments">
+                <div class="appointment">
+                  <strong>14:30</strong>
+                  <span>Pedro Santos</span>
+                </div>
+                <div class="appointment urgent">
+                  <strong>🚨 AGORA</strong>
+                  <span>João Silva</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview do Painel Mediador -->
+            <div class="mediator-preview">
+              <div class="monitor-header">
+                <h4>Monitor de Conversas</h4>
+                <span class="alert-count">2 Alertas</span>
+              </div>
+              <div class="active-rooms">
+                <div class="room">
+                  <span class="room-id">#287</span>
+                  <span class="risk-high">Alto Risco</span>
+                </div>
+                <div class="room">
+                  <span class="room-id">#156</span>
+                  <span class="risk-medium">Médio Risco</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="chat-message received">
-          Olá! Estou aqui para te ouvir. Como você está se sentindo?
-        </div>
-        <div class="chat-message sent">
-          Oi Maria, estou me sentindo muito sobrecarregado...
+
+        <div class="trust-badges">
+          <div class="trust-badge">
+            <span>🔐</span>
+            <span>LGPD</span>
+          </div>
+          <div class="trust-badge">
+            <span>🏥</span>
+            <span>Protocolos Clínicos</span>
+          </div>
+          <div class="trust-badge">
+            <span>🎓</span>
+            <span>Treinamento Certificado</span>
+          </div>
+          <div class="trust-badge">
+            <span>🤝</span>
+            <span>Parceiro CVV</span>
+          </div>
         </div>
       </div>
     </div>
@@ -78,38 +222,89 @@
 
   <!-- ▬▬▬ COMO FUNCIONA ▬▬▬ -->
   <section id="funcionalidades" class="secao funcionalidades">
-    <h2 class="titulo">Como o MindBridge Funciona</h2>
-    
-    <div class="passos">
-      <div class="passo">
-        <div class="passo-numero">1</div>
-        <div class="passo-content">
-          <h3>Conecte-se Instantaneamente</h3>
-          <p>Acesse o app e seja direcionado automaticamente para um mediador treinado em escuta ativa</p>
-        </div>
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">✨ Processo Simples e Seguro</span>
+        <h2 class="titulo">Como Funciona o MindBridge</h2>
+        <p class="section-description">Em 4 passos simples, conectamos você ao suporte emocional adequado</p>
       </div>
       
-      <div class="passo">
-        <div class="passo-numero">2</div>
-        <div class="passo-content">
-          <h3>Receba Suporte Imediato</h3>
-          <p>Converse com mediadores que oferecem acolhimento emocional e orientação inicial</p>
+      <div class="passos">
+        <div class="passo">
+          <div class="passo-visual">
+            <div class="passo-numero">1</div>
+            <div class="passo-icone">👤</div>
+          </div>
+          <div class="passo-content">
+            <h3>Cadastro Rápido e Anônimo</h3>
+            <p>Entre como usuário, mediador ou profissional. Você escolhe o quanto quer compartilhar sobre você.</p>
+            <ul class="passo-detalhes">
+              <li>✓ Dados opcionais</li>
+              <li>✓ Nome social permitido</li>
+              <li>✓ Sem necessidade de documentos</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="passo">
+          <div class="passo-visual">
+            <div class="passo-numero">2</div>
+            <div class="passo-icone">💬</div>
+          </div>
+          <div class="passo-content">
+            <h3>Conexão Imediata com Mediador</h3>
+            <p>Clique em "Conversar Agora" e seja conectado em menos de 2 minutos com um mediador treinado em escuta ativa.</p>
+            <ul class="passo-detalhes">
+              <li>✓ Sistema de triagem inteligente</li>
+              <li>✓ Mediadores disponíveis 24/7</li>
+              <li>✓ Chat criptografado e seguro</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="passo">
+          <div class="passo-visual">
+            <div class="passo-numero">3</div>
+            <div class="passo-icone">📊</div>
+          </div>
+          <div class="passo-content">
+            <h3>Avaliação e Encaminhamento</h3>
+            <p>Nossa IA analisa a conversa e, se necessário, encaminha para profissionais especializados automaticamente.</p>
+            <ul class="passo-detalhes">
+              <li>✓ Sistema de alertas de risco</li>
+              <li>✓ Encaminhamento para rede de saúde</li>
+              <li>✓ Agendamento de consultas online</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="passo">
+          <div class="passo-visual">
+            <div class="passo-numero">4</div>
+            <div class="passo-icone">📱</div>
+          </div>
+          <div class="passo-content">
+            <h3>Acompanhamento Contínuo</h3>
+            <p>Acesse recursos de autoajuda, acompanhe seu progresso e tenha suporte contínuo quando precisar.</p>
+            <ul class="passo-detalhes">
+              <li>✓ Diário emocional digital</li>
+              <li>✓ Exercícios de mindfulness</li>
+              <li>✓ Acompanhamento profissional</li>
+            </ul>
+          </div>
         </div>
       </div>
-      
-      <div class="passo">
-        <div class="passo-numero">3</div>
-        <div class="passo-content">
-          <h3>Encaminhamento Inteligente</h3>
-          <p>Em casos de maior complexidade, seja encaminhado para profissionais de saúde mental</p>
+
+      <div class="demo-video">
+        <div class="video-container">
+          <!-- Substitua esta div pelo iframe do YouTube -->
+          <div class="youtube-video">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/8YG8HABY25w?si=4IcTlKgK6ucyiz5I&amp;start=2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
         </div>
-      </div>
-      
-      <div class="passo">
-        <div class="passo-numero">4</div>
-        <div class="passo-content">
-          <h3>Acompanhamento Contínuo</h3>
-          <p>Tenha acesso a recursos de autoajuda e acompanhamento profissional quando necessário</p>
+        <div class="video-info">
+          <h4>Veja o MindBridge em ação</h4>
+          <p>Entenda em poucos minutos como nossa plataforma funciona na prática, desde o cadastro até o acompanhamento.</p>
         </div>
       </div>
     </div>
@@ -117,171 +312,811 @@
 
   <!-- ▬▬▬ PARA QUEM ▬▬▬ -->
   <section id="para-quem" class="secao para-quem">
-    <h2 class="titulo">Para Quem é o MindBridge?</h2>
-    
-    <div class="publicos">
-      <div class="publico-card">
-        <div class="icone">👤</div>
-        <h3>Para Você</h3>
-        <ul>
-          <li>Busca suporte emocional imediato</li>
-          <li>Está passando por momentos difíceis</li>
-          <li>Precisa de alguém para conversar</li>
-          <li>Quer cuidado psicológico acessível</li>
-        </ul>
-        <button class="btn-publico" onclick="window.location.href='index.html'">
-          Buscar Ajuda
-        </button>
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">🎯 Feito para Todos</span>
+        <h2 class="titulo">Para Quem é o MindBridge?</h2>
+        <p class="section-description">Oferecemos soluções específicas para diferentes necessidades emocionais</p>
       </div>
       
-      <div class="publico-card">
-        <div class="icone">🛡️</div>
-        <h3>Para Mediadores</h3>
-        <ul>
-          <li>Quer ajudar pessoas em sofrimento</li>
-          <li>Tem treinamento em escuta ativa</li>
-          <li>Deseja fazer diferença na comunidade</li>
-          <li>Busca experiência em saúde mental</li>
-        </ul>
-        <button class="btn-publico" onclick="window.location.href='index.html'">
-          Tornar-se Mediador
-        </button>
+      <div class="publicos-tabs">
+        <button class="tab-btn active" data-target="usuario">👤 Para Você</button>
+        <button class="tab-btn" data-target="mediador">🛡️ Para Mediadores</button>
+        <button class="tab-btn" data-target="profissional">👨‍⚕️ Para Profissionais</button>
       </div>
-      
-      <div class="publico-card">
-        <div class="icone">👨‍⚕️</div>
-        <h3>Para Profissionais</h3>
-        <ul>
-          <li>Psicólogos e psiquiatras</li>
-          <li>Quer ampliar seu alcance</li>
-          <li>Interesse em teleatendimento</li>
-          <li>Deseja voluntariado supervisionado</li>
-        </ul>
-        <button class="btn-publico" onclick="window.location.href='index.html'">
-          Cadastrar como Profissional
+
+      <div class="tab-content active" id="usuario">
+        <div class="publico-detalhado">
+          <div class="publico-info">
+            <h3>Para Você que Busca Ajuda</h3>
+            <p>Se você está passando por momentos difíceis, sentindo ansiedade, depressão, solidão ou qualquer sofrimento emocional, estamos aqui para você.</p>
+            
+            <div class="beneficios">
+              <div class="beneficio">
+                <span class="beneficio-icone">🚀</span>
+                <div>
+                  <strong>Imediato</strong>
+                  <p>Conecte-se em menos de 2 minutos</p>
+                </div>
+              </div>
+              <div class="beneficio">
+                <span class="beneficio-icone">🔒</span>
+                <div>
+                  <strong>Anônimo</strong>
+                  <p>Use nome social ou permaneça anônimo</p>
+                </div>
+              </div>
+              <div class="beneficio">
+                <span class="beneficio-icone">💚</span>
+                <div>
+                  <strong>Gratuito</strong>
+                  <p>Sem custos, sem limites de uso</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial">
+              <p>"O MindBridge me salvou em uma crise de ansiedade às 3h da manhã. Não tinha ninguém para conversar."</p>
+              <span class="author">— Ana, 28 anos</span>
+            </div>
+
+            <button class="btn-publico grande" onclick="startAsUser()">
+              🧠 Buscar Ajuda Agora
+            </button>
+          </div>
+
+          <div class="publico-recursos">
+            <h4>Recursos Disponíveis</h4>
+            <ul>
+              <li>💬 Chat 24/7 com mediadores</li>
+              <li>🧘 Exercícios de respiração guiada</li>
+              <li>📝 Diário emocional digital</li>
+              <li>🎧 Meditações para ansiedade</li>
+              <li>📊 Acompanhamento de progresso</li>
+              <li>🏥 Encaminhamento para profissionais</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="mediador">
+        <div class="publico-detalhado">
+          <div class="publico-info">
+            <h3>Para Mediadores e Voluntários</h3>
+            <p>Estudantes de psicologia, profissionais em transição de carreira ou qualquer pessoa com interesse em ajudar outros emocionalmente.</p>
+            
+            <div class="requisitos">
+              <h4>Requisitos para Mediadores:</h4>
+              <ul>
+                <li>✓ Maior de 18 anos</li>
+                <li>✓ Curso de escuta ativa (fornecemos)</li>
+                <li>✓ Disponibilidade mínima: 4h/semana</li>
+                <li>✓ Computador com internet estável</li>
+              </ul>
+            </div>
+
+            <div class="vantagens">
+              <h4>Vantagens de Ser Mediador:</h4>
+              <ul>
+                <li>🎓 Certificação reconhecida</li>
+                <li>👨‍🏫 Supervisão profissional 24/7</li>
+                <li>📈 Experiência em saúde mental</li>
+                <li>🤝 Grupo de apoio entre mediadores</li>
+                <li>📊 Dashboard com métricas</li>
+              </ul>
+            </div>
+
+            <button class="btn-publico grande" onclick="startAsMediator()">
+              🛡️ Tornar-se Mediador
+            </button>
+          </div>
+
+          <div class="publico-recursos">
+            <h4>Ferramentas para Mediadores</h4>
+            <ul>
+              <li>🖥️ Dashboard de monitoramento</li>
+              <li>🚨 Sistema de alertas de risco</li>
+              <li>📚 Biblioteca de treinamento</li>
+              <li>🔄 Simulador de casos</li>
+              <li>📊 Relatórios automáticos</li>
+              <li>👨‍🏫 Supervisão em tempo real</li>
+            </ul>
+
+            <div class="stats">
+              <div class="stat-mini">
+                <span>200+</span>
+                <small>Mediadores ativos</small>
+              </div>
+              <div class="stat-mini">
+                <span>94%</span>
+                <small>Satisfação</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="profissional">
+        <div class="publico-detalhado">
+          <div class="publico-info">
+            <h3>Para Profissionais de Saúde Mental</h3>
+            <p>Psicólogos, psiquiatras, terapeutas e assistentes sociais que desejam expandir seu alcance e oferecer atendimento online.</p>
+            
+            <div class="beneficios">
+              <div class="beneficio">
+                <span class="beneficio-icone">👥</span>
+                <div>
+                  <strong>Novos Pacientes</strong>
+                  <p>Receba encaminhamentos qualificados</p>
+                </div>
+              </div>
+              <div class="beneficio">
+                <span class="beneficio-icone">💻</span>
+                <div>
+                  <strong>Plataforma Completa</strong>
+                  <p>Tudo que precisa para teleatendimento</p>
+                </div>
+              </div>
+              <div class="beneficio">
+                <span class="beneficio-icone">⚡</span>
+                <div>
+                  <strong>Eficiência</strong>
+                  <p>Automatize agendamentos e documentação</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="features-grid">
+              <div class="feature-item">
+                <span>📝</span>
+                <strong>Anotações Clínicas</strong>
+              </div>
+              <div class="feature-item">
+                <span>💊</span>
+                <strong>Prescrições Digitais</strong>
+              </div>
+              <div class="feature-item">
+                <span>📊</span>
+                <strong>Relatórios Automáticos</strong>
+              </div>
+              <div class="feature-item">
+                <span>🎯</span>
+                <strong>Avaliações (PHQ-9, GAD-7)</strong>
+              </div>
+            </div>
+
+            <button class="btn-publico grande" onclick="startAsProfessional()">
+              👨‍⚕️ Cadastrar como Profissional
+            </button>
+          </div>
+
+          <div class="publico-recursos">
+            <h4>Sistema Profissional Completo</h4>
+            <ul>
+              <li>🏥 Agenda de teleconsultas</li>
+              <li>📋 Prontuário eletrônico</li>
+              <li>💊 Sistema de prescrições</li>
+              <li>📈 Analytics de pacientes</li>
+              <li>🔐 Assinatura digital</li>
+              <li>📄 Laudos automáticos</li>
+            </ul>
+
+            <div class="compliance">
+              <h5>✔️ Totalmente Compliance:</h5>
+              <p>Respeitamos todas as regulamentações do CFP, CRM e LGPD para prática profissional segura.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ▬▬▬ FAQ COMPLETO ▬▬▬ -->
+  <section id="faq" class="secao faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">❓ Tire Todas as Suas Dúvidas</span>
+        <h2 class="titulo">Perguntas Frequentes</h2>
+        <p class="section-description">Encontre respostas para as dúvidas mais comuns sobre o MindBridge</p>
+      </div>
+
+      <div class="faq-tabs">
+        <button class="faq-tab active" data-category="geral">🌐 Geral</button>
+        <button class="faq-tab" data-category="usuario">👤 Para Usuários</button>
+        <button class="faq-tab" data-category="mediador">🛡️ Para Mediadores</button>
+        <button class="faq-tab" data-category="profissional">👨‍⚕️ Para Profissionais</button>
+        <button class="faq-tab" data-category="seguranca">🔒 Segurança</button>
+      </div>
+
+      <div class="faq-content">
+        <!-- GERAL -->
+        <div class="faq-category active" id="geral">
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>O que é o MindBridge?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>O MindBridge é uma plataforma digital de primeiros socorros emocionais que conecta pessoas em sofrimento emocional com mediadores treinados e profissionais de saúde mental 24 horas por dia, 7 dias por semana.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>É realmente gratuito?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p><strong>Sim, 100% gratuito para usuários!</strong> O MindBridge é financiado por parcerias, doações e programas sociais. Não cobramos nada por conversas com mediadores nem pelo uso básico da plataforma.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Quais são os horários de atendimento?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p><strong>24 horas por dia, 7 dias por semana!</strong> Temos mediadores e profissionais em diferentes fusos horários para garantir que alguém sempre esteja disponível quando você precisar.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- USUÁRIO -->
+        <div class="faq-category" id="usuario">
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Preciso me identificar?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p><strong>Não!</strong> Você pode usar um nome fictício, apelido ou permanecer completamente anônimo. Só pedimos um email válido para criar sua conta, mas ele não é compartilhado com ninguém.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Quanto tempo dura uma conversa?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>O tempo varia conforme sua necessidade. Algumas conversas duram 15 minutos, outras podem durar 1 hora. Você decide quando começar e quando terminar. Não há limites de tempo.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>E se eu precisar de ajuda profissional?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Nosso sistema identifica quando é necessário encaminhamento profissional. Nesse caso, conectamos você diretamente com psicólogos ou psiquiatras da nossa rede, podendo agendar consultas online ou presenciais.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- MEDIADOR -->
+        <div class="faq-category" id="mediador">
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Quem pode ser mediador?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Qualquer pessoa maior de 18 anos que complete nosso treinamento gratuito de escuta ativa. Não é necessário ter formação em psicologia, mas é preciso disponibilidade mínima de 4 horas semanais.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Recebo algum suporte como mediador?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p><strong>Sim!</strong> Todos os mediadores têm acesso a: supervisão profissional 24/7, grupo de apoio entre pares, treinamentos contínuos e dashboard com métricas de desempenho.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFISSIONAL -->
+        <div class="faq-category" id="profissional">
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Como funciona para profissionais?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Profissionais cadastrados recebem encaminhamentos qualificados, têm acesso a plataforma completa para teleatendimento com prontuário eletrônico, prescrições digitais e sistema de agendamento.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>É necessário algum equipamento especial?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Apenas um computador com internet estável e webcam. Todo o sistema funciona diretamente no navegador, sem necessidade de instalar softwares.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEGURANÇA -->
+        <div class="faq-category" id="seguranca">
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Minhas conversas são privadas?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p><strong>Sim, totalmente!</strong> Todas as conversas são criptografadas de ponta a ponta. Nem mesmo nossos administradores podem acessar o conteúdo das mensagens.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Como é a segurança dos dados?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Seguimos rigorosamente a LGPD. Usamos criptografia AES-256, servidores no Brasil, backups diários e auditorias regulares de segurança.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-cta">
+        <p>❓ Não encontrou sua dúvida?</p>
+        <button class="btn-contato" onclick="openContactModal()">
+          📞 Fale Conosco
         </button>
       </div>
     </div>
   </section>
 
-  <!-- ▬▬▬ SEGURANÇA ▬▬▬ -->
+  <!-- ▬▬▬ SEGURANÇA DETALHADA ▬▬▬ -->
   <section id="seguranca" class="secao seguranca">
-    <h2 class="titulo">Segurança e Confiança</h2>
-    
-    <div class="recursos-seguranca">
-      <div class="recurso">
-        <div class="recurso-icone">🔒</div>
-        <h3>Privacidade Total</h3>
-        <p>Todas as conversas são criptografadas e seus dados são protegidos conforme a LGPD</p>
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">🔒 Sua Segurança em Primeiro Lugar</span>
+        <h2 class="titulo">Como Protegemos Você</h2>
+        <p class="section-description">Implementamos múltiplas camadas de segurança para garantir sua privacidade e bem-estar</p>
       </div>
       
-      <div class="recurso">
-        <div class="recurso-icone">🚨</div>
-        <h3>Sistema de Alerta</h3>
-        <p>Detecção automática de situações de risco com acionamento de protocolos de emergência</p>
+      <div class="seguranca-grid">
+        <div class="seguranca-card">
+          <div class="seguranca-header">
+            <div class="seguranca-icone">🔐</div>
+            <h3>Criptografia de Ponta a Ponta</h3>
+          </div>
+          <p>Todas as conversas são criptografadas com AES-256. Nem nossos administradores têm acesso ao conteúdo.</p>
+          <ul class="seguranca-lista">
+            <li>✓ Mensagens criptografadas</li>
+            <li>✓ Dados em trânsito protegidos</li>
+            <li>✓ Armazenamento seguro</li>
+          </ul>
+        </div>
+        
+        <div class="seguranca-card">
+          <div class="seguranca-header">
+            <div class="seguranca-icone">👁️</div>
+            <h3>Anonimato Garantido</h3>
+          </div>
+          <p>Use apelido, nome social ou permaneça completamente anônimo. Você controla suas informações.</p>
+          <ul class="seguranca-lista">
+            <li>✓ Dados opcionais</li>
+            <li>✓ Pseudônimos permitidos</li>
+            <li>✓ Controle de privacidade</li>
+          </ul>
+        </div>
+        
+        <div class="seguranca-card">
+          <div class="seguranca-header">
+            <div class="seguranca-icone">🚨</div>
+            <h3>Sistema de Emergência</h3>
+          </div>
+          <p>Protocolos automáticos para situações de risco com conexão direta com serviços de emergência.</p>
+          <ul class="seguranca-lista">
+            <li>✓ Detecção automática de risco</li>
+            <li>✓ Conexão com CVV 188</li>
+            <li>✓ Acionamento de rede de apoio</li>
+          </ul>
+        </div>
+        
+        <div class="seguranca-card">
+          <div class="seguranca-header">
+            <div class="seguranca-icone">📋</div>
+            <h3>Conformidade com LGPD</h3>
+          </div>
+          <p>Todos os processos seguem rigorosamente a Lei Geral de Proteção de Dados brasileira.</p>
+          <ul class="seguranca-lista">
+            <li>✓ Consentimento explícito</li>
+            <li>✓ Direito ao esquecimento</li>
+            <li>✓ Transparência no uso de dados</li>
+          </ul>
+        </div>
       </div>
-      
-      <div class="recurso">
-        <div class="recurso-icone">👥</div>
-        <h3>Mediação Supervisionada</h3>
-        <p>Todos os mediadores passam por treinamento e são supervisionados por profissionais</p>
-      </div>
-      
-      <div class="recurso">
-        <div class="recurso-icone">📞</div>
-        <h3>Integração com Rede de Apoio</h3>
-        <p>Conectamos com CVV, CAPS e outros serviços de emergência quando necessário</p>
+
+      <div class="certificacoes">
+        <h4>✔️ Certificações e Parcerias:</h4>
+        <div class="certificacoes-list">
+          <div class="certificacao">
+            <span>🏛️</span>
+            <span>Conformidade LGPD</span>
+          </div>
+          <div class="certificacao">
+            <span>⚖️</span>
+            <span>Ética CFP/CRM</span>
+          </div>
+          <div class="certificacao">
+            <span>🤝</span>
+            <span>Parceiro CVV</span>
+          </div>
+          <div class="certificacao">
+            <span>🔐</span>
+            <span>SSL/TLS</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ▬▬▬ SOBRE ▬▬▬ -->
   <section id="sobre" class="secao sobre">
-    <h2 class="titulo">Sobre o MindBridge</h2>
-    
-    <div class="sobre-content">
-      <div class="sobre-texto">
-        <p>
-          Desenvolvido em <strong>Campo Grande-MS</strong>, o MindBridge nasceu da necessidade de oferecer 
-          <strong>suporte emocional acessível e imediato</strong> para a população sul-mato-grossense.
-        </p>
-        
-        <p>
-          Combinamos <strong>tecnologia inteligente</strong> com <strong>acolhimento humano</strong> para criar 
-          uma ponte entre o sofrimento emocional e o cuidado especializado, especialmente em regiões 
-          com escassez de profissionais de saúde mental.
-        </p>
-        
-        <div class="destaques">
-          <div class="destaque">
-            <strong>+1000</strong>
-            <span>Pessoas ajudadas</span>
-          </div>
-          <div class="destaque">
-            <strong>24/7</strong>
-            <span>Disponibilidade</span>
-          </div>
-          <div class="destaque">
-            <strong>100%</strong>
-            <span>Gratuito</span>
-          </div>
-        </div>
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">💚 Nossa Missão</span>
+        <h2 class="titulo">Sobre o MindBridge</h2>
+        <p class="section-description">Mais que uma plataforma, um movimento por saúde mental acessível</p>
       </div>
       
-      <div class="sobre-imagem">
-        <img src="assets/img/equipe.png" alt="Equipe MindBridge">
+      <div class="sobre-content">
+        <div class="sobre-texto">
+          <div class="missao">
+            <h3>Nossa Missão</h3>
+            <p>
+              <strong>Democratizar o acesso à saúde mental</strong> através da tecnologia, conectando pessoas 
+              em sofrimento emocional com suporte imediato e qualificado, especialmente em regiões com 
+              escassez de profissionais.
+            </p>
+          </div>
+          
+          <div class="historia">
+            <h3>Nossa História</h3>
+            <p>
+              Nascido em <strong>Campo Grande-MS</strong>, o MindBridge foi criado por uma equipe multidisciplinar 
+              que identificou a carência de serviços de saúde mental em mais de 23 municípios do estado 
+              sem psicólogos no SUS.
+            </p>
+          </div>
+          
+          <div class="equipe">
+            <h3>Nossa Equipe</h3>
+            <div class="equipe-membros">
+              <div class="membro">
+                <div class="membro-avatar">E</div>
+                <div>
+                  <strong>Eliandro Silva</strong>
+                  <small>Desenvolvedor Full-Stack</small>
+                </div>
+              </div>
+              <div class="membro">
+                <div class="membro-avatar">H</div>
+                <div>
+                  <strong>Heinrich Feltrin</strong>
+                  <small>Arquiteto de Software</small>
+                </div>
+              </div>
+              <div class="membro">
+                <div class="membro-avatar">J</div>
+                <div>
+                  <strong>Jowilson Nunes</strong>
+                  <small>UX/UI Designer</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="destaques">
+            <div class="destaque">
+              <strong>1000+</strong>
+              <span>Pessoas Ajudadas</span>
+            </div>
+            <div class="destaque">
+              <strong>200+</strong>
+              <span>Mediadores Treinados</span>
+            </div>
+            <div class="destaque">
+              <strong>50+</strong>
+              <span>Profissionais na Rede</span>
+            </div>
+            <div class="destaque">
+              <strong>94%</strong>
+              <span>Satisfação dos Usuários</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="sobre-imagem">
+          <div class="impacto-card">
+            <h4>📊 Nosso Impacto em MS</h4>
+            <div class="impacto-item">
+              <span>🏙️ 23+</span>
+              <small>Municípios sem psicólogo no SUS</small>
+            </div>
+            <div class="impacto-item">
+              <span>⏳ 6 meses</span>
+              <small>Tempo de espera por consulta</small>
+            </div>
+            <div class="impacto-item">
+              <span>📈 15%</span>
+              <small>Acima da média nacional em depressão</small>
+            </div>
+            <div class="impacto-item">
+              <span>🚑 40%</span>
+              <small>Mais tentativas de suicídio</small>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ▬▬▬ CTA FINAL ▬▬▬ -->
   <section class="cta-final">
-    <div class="cta-content">
-      <h2>Precisa de ajuda agora?</h2>
-      <p>Não espere para cuidar da sua saúde mental. Converse com alguém agora mesmo.</p>
-      
-      <div class="cta-buttons">
-        <button class="cta emergency" onclick="window.location.href='emergencia.html'">
-          🚨 Preciso de Ajuda Imediata
-        </button>
-        <button class="cta primary" onclick="window.location.href='index.html'">
-          👤 Entrar no App
-        </button>
+    <div class="container">
+      <div class="cta-content">
+        <div class="cta-text">
+          <span class="cta-badge">🚨 Disponível Agora</span>
+          <h2>Comece sua jornada de cuidado emocional hoje</h2>
+          <p>Milhares de pessoas já encontraram suporte no MindBridge. Você pode ser a próxima.</p>
+        </div>
+        
+        <div class="cta-options">
+          <div class="cta-option">
+            <div class="option-header">
+              <span class="option-icone">🧠</span>
+              <h4>Preciso de Ajuda</h4>
+            </div>
+            <p>Converse agora com um mediador treinado</p>
+            <button class="option-btn primary" onclick="startAsUser()">
+              Buscar Ajuda Gratuita
+            </button>
+          </div>
+          
+          <div class="cta-option">
+            <div class="option-header">
+              <span class="option-icone">🛡️</span>
+              <h4>Quero Ajudar</h4>
+            </div>
+            <p>Torne-se mediador e faça a diferença</p>
+            <button class="option-btn secondary" onclick="startAsMediator()">
+              Tornar-se Mediador
+            </button>
+          </div>
+          
+          <div class="cta-option">
+            <div class="option-header">
+              <span class="option-icone">👨‍⚕️</span>
+              <h4>Sou Profissional</h4>
+            </div>
+            <p>Junte-se à nossa rede de saúde mental</p>
+            <button class="option-btn tertiary" onclick="startAsProfessional()">
+              Cadastrar como Profissional
+            </button>
+          </div>
+        </div>
+        
+        <div class="cta-emergencia">
+          <p><strong>🚨 EMERGÊNCIA?</strong> Se você ou alguém que você conhece está em perigo imediato:</p>
+          <button class="btn-emergencia" onclick="window.location.href='emergencia.html'">
+            PRECISO DE AJUDA IMEDIATA
+          </button>
+          <div class="contatos-emergencia">
+            <span>CVV: <strong>188</strong></span>
+            <span>SAMU: <strong>192</strong></span>
+            <span>Bombeiros: <strong>193</strong></span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ▬▬▬ FOOTER ▬▬▬ -->
   <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>MindBridge</h3>
-        <p>Primeiros Socorros Emocionais Inteligentes</p>
-        <p>Campo Grande - MS</p>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3 class="footer-logo">Mind<span>Bridge</span></h3>
+          <p class="footer-description">Primeiros Socorros Emocionais Inteligentes</p>
+          <p class="footer-local">Campo Grande - Mato Grosso do Sul</p>
+          <div class="footer-social">
+            <a href="#" class="social-link">📘</a>
+            <a href="#" class="social-link">📸</a>
+            <a href="#" class="social-link">🐦</a>
+            <a href="#" class="social-link">📧</a>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Acesso Rápido</h4>
+          <a href="index.html" class="footer-link">👉 Entrar no Sistema</a>
+          <a href="#faq" class="footer-link">❓ Perguntas Frequentes</a>
+          <a href="#seguranca" class="footer-link">🔒 Política de Privacidade</a>
+          <a href="#sobre" class="footer-link">💚 Sobre Nós</a>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Contatos Importantes</h4>
+          <div class="contato-item">
+            <span>🚨 CVV</span>
+            <strong>188</strong>
+          </div>
+          <div class="contato-item">
+            <span>🏥 SAMU</span>
+            <strong>192</strong>
+          </div>
+          <div class="contato-item">
+            <span>🚑 Bombeiros</span>
+            <strong>193</strong>
+          </div>
+          <div class="contato-item">
+            <span>📧 Suporte</span>
+            <strong>suporte@mindbridge.com.br</strong>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Baixe nosso App</h4>
+          <p>Em breve disponível para iOS e Android</p>
+          <div class="app-badges">
+            <button class="app-badge disabled">📱 App Store</button>
+            <button class="app-badge disabled">🤖 Google Play</button>
+          </div>
+          <p class="footer-newsletter">
+            <strong>📩 Receba novidades</strong>
+            <input type="email" placeholder="Seu email" class="newsletter-input">
+            <button class="newsletter-btn">Inscrever</button>
+          </p>
+        </div>
       </div>
       
-      <div class="footer-section">
-        <h4>Contatos de Emergência</h4>
-        <p>CVV: 188</p>
-        <p>SAMU: 192</p>
-        <p>Bombeiros: 193</p>
+      <div class="footer-bottom">
+        <div class="footer-copyright">
+          MindBridge © 2025 — Desenvolvido com 💚 em Campo Grande-MS
+        </div>
+        <div class="footer-legal">
+          <span>Todos os direitos reservados</span>
+          <span>CNPJ: 12.345.678/0001-90</span>
+          <span>Ética e sigilo garantidos</span>
+        </div>
       </div>
-      
-      <div class="footer-section">
-        <h4>Links Rápidos</h4>
-        <a href="index.html">Entrar no App</a>
-        <a href="#funcionalidades">Como Funciona</a>
-        <a href="#seguranca">Segurança</a>
-      </div>
-    </div>
-    
-    <div class="footer-bottom">
-      MindBridge © 2025 — Desenvolvido com 💚 para cuidar de você.
     </div>
   </footer>
 
+  <!-- MODAL DE CONTATO -->
+  <div id="contactModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h3>📞 Fale Conosco</h3>
+      <div class="modal-body">
+        <p>Tem dúvidas específicas? Entre em contato com nossa equipe:</p>
+        <div class="contact-options">
+          <div class="contact-option">
+            <span>📧</span>
+            <div>
+              <strong>Email Geral</strong>
+              <p>contato@mindbridge.com.br</p>
+            </div>
+          </div>
+          <div class="contact-option">
+            <span>👨‍⚕️</span>
+            <div>
+              <strong>Para Profissionais</strong>
+              <p>profissionais@mindbridge.com.br</p>
+            </div>
+          </div>
+          <div class="contact-option">
+            <span>🛡️</span>
+            <div>
+              <strong>Para Mediadores</strong>
+              <p>mediadores@mindbridge.com.br</p>
+            </div>
+          </div>
+          <div class="contact-option">
+            <span>🔧</span>
+            <div>
+              <strong>Suporte Técnico</strong>
+              <p>suporte@mindbridge.com.br</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE REGISTRO -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h3>🚀 Comece Agora</h3>
+      <div class="modal-body">
+        <p>Escolha como deseja usar o MindBridge:</p>
+        <div class="register-options">
+          <button class="register-option" onclick="window.location.href='index.html?role=user'">
+            <span class="register-icon">🧠</span>
+            <div>
+              <strong>Preciso de Ajuda</strong>
+              <small>Buscar suporte emocional</small>
+            </div>
+          </button>
+          <button class="register-option" onclick="window.location.href='index.html?role=mediator'">
+            <span class="register-icon">🛡️</span>
+            <div>
+              <strong>Quero Ser Mediador</strong>
+              <small>Ajudar outras pessoas</small>
+            </div>
+          </button>
+          <button class="register-option" onclick="window.location.href='index.html?role=professional'">
+            <span class="register-icon">👨‍⚕️</span>
+            <div>
+              <strong>Sou Profissional</strong>
+              <small>Oferecer atendimento</small>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- JS -->
-<script defer src="js/home.js"></script>
+  <script defer src="js/home.js"></script>
+  <script>
+    // Funções de navegação
+    function startAsUser() {
+      window.location.href = 'index.html?role=user';
+    }
+    
+    function startAsMediator() {
+      window.location.href = 'index.html?role=mediator';
+    }
+    
+    function startAsProfessional() {
+      window.location.href = 'index.html?role=professional';
+    }
+    
+    // Modal functions
+    function openContactModal() {
+      document.getElementById('contactModal').style.display = 'flex';
+    }
+    
+    function openRegisterModal() {
+      document.getElementById('registerModal').style.display = 'flex';
+    }
+    
+    // Fechar modais ao clicar fora
+    window.onclick = function(event) {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
+    
+    // Fechar modais com botão X
+    document.querySelectorAll('.close-modal').forEach(btn => {
+      btn.onclick = function() {
+        this.closest('.modal').style.display = 'none';
+      }
+    });
+    
+    // Botão de registro
+    document.getElementById('btnRegister').onclick = openRegisterModal;
+    document.getElementById('btnLogin').onclick = function() {
+      window.location.href = 'index.html';
+    }
+  </script>
 
 </body>
 </html>
